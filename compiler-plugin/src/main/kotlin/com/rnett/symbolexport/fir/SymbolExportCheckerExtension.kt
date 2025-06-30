@@ -1,7 +1,7 @@
 package com.rnett.symbolexport.fir
 
-import com.rnett.symbolexport.internal.InternalName
 import com.rnett.symbolexport.NameReporter
+import com.rnett.symbolexport.internal.InternalName
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactoryToRendererMap
 import org.jetbrains.kotlin.diagnostics.error0

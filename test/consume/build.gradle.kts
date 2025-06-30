@@ -3,7 +3,7 @@ plugins {
     id("com.rnett.symbol-exporter.import")
 }
 
-kotlin{
+kotlin {
     jvmToolchain(17)
 }
 

@@ -1,4 +1,3 @@
-
 ## Project structure
 
 - `annotations` contains annotations that are shared between the compiler plugin and the runtime

@@ -103,7 +103,7 @@ public open class ImportSymbolGenerationTask @Inject constructor(objectFactory: 
         val outputFile = outputDirectory.asFile.get().resolve(packageName.get().replace('.', '/')).resolve("Symbols.kt")
         outputFile.parentFile.mkdirs()
 
-        if(outputFile.exists()) {
+        if (outputFile.exists()) {
             outputFile.delete()
         }
 
