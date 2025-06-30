@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="symbols-wasm-wasi-1.0-SNAPSHOT">
+    <output-path>$PROJECT_DIR$/symbols/build/libs</output-path>
+    <root id="archive" name="symbols-wasm-wasi-1.0-SNAPSHOT.jar">
+      <element id="module-output" name="symbol-export.symbols.wasmWasiMain" />
+    </root>
+  </artifact>
+</component>

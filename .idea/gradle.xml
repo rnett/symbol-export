@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/annotations" />
+            <option value="$PROJECT_DIR$/compiler-plugin" />
+            <option value="$PROJECT_DIR$/gradle-plugins" />
+            <option value="$PROJECT_DIR$/names-internal" />
+            <option value="$PROJECT_DIR$/symbols" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$" name="symbol-export">
+                <projects>
+                  <project path="$PROJECT_DIR$" />
+                  <project path="$PROJECT_DIR$/annotations" />
+                  <project path="$PROJECT_DIR$/compiler-plugin" />
+                  <project path="$PROJECT_DIR$/gradle-plugins" />
+                  <project path="$PROJECT_DIR$/names-internal" />
+                  <project path="$PROJECT_DIR$/symbols" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/test" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/annotations" />
+            <option value="$PROJECT_DIR$/compiler-plugin" />
+            <option value="$PROJECT_DIR$/gradle-plugins" />
+            <option value="$PROJECT_DIR$/names-internal" />
+            <option value="$PROJECT_DIR$/symbols" />
+            <option value="$PROJECT_DIR$/test" />
+            <option value="$PROJECT_DIR$/test/consume" />
+            <option value="$PROJECT_DIR$/test/produce" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
