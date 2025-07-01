@@ -1,5 +1,6 @@
 package com.rnett.test
 
+import com.rnett.symbolexport.ChildrenExported
 import com.rnett.symbolexport.ExportSymbol
 
 
@@ -15,7 +16,7 @@ val notExposedProperty = 1
 
 @ExportSymbol
 class ExposedClass(@ExportSymbol val prop: Int) {
-    @ExportSymbol
+    @ChildrenExported
     companion object {
         @ExportSymbol
         fun exposedFun() = 3

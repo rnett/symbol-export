@@ -9,10 +9,14 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
 import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
 import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
+import org.slf4j.LoggerFactory
+import java.io.File
 
 @Suppress("unused")
 // Used via reflection.
 public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
+    private val logger = LoggerFactory.getLogger(ExportPlugin::class.java)
+
     internal companion object {
         val CONFIGURATION_NAME = "exportedSymbols"
     }
@@ -21,6 +25,13 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
         target.extensions.create("symbolExport", ExportExtension::class.java).apply {
             symbolExportOutputDirectory.convention(target.layout.buildDirectory.dir("symbol-export"))
             autoAddAnnotationDependency.convention(true)
+            ignoreSourceSets.convention(emptySet())
+            exportFromSourceSets.convention(emptySet())
+
+            autoAddAnnotationDependency.finalizeValueOnRead()
+            symbolExportOutputDirectory.finalizeValueOnRead()
+            exportFromSourceSets.finalizeValueOnRead()
+            ignoreSourceSets.finalizeValueOnRead()
         }
 
         val nameListConfiguration = target.configurations.register(CONFIGURATION_NAME) {
@@ -29,11 +40,57 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
             }
             it.isCanBeResolved = false
         }
-
     }
 
-    override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean =
-        "test" !in kotlinCompilation.name.lowercase()
+    private val KotlinCompilation<*>.symbolExtension
+        get() = this.project.extensions.getByType(ExportExtension::class.java)
+
+    private val KotlinCompilation<*>.symbolExportFile: Provider<File>
+        get() = symbolExtension.symbolExportOutputDirectory.asFile.map { it.resolve("${Shared.SYMBOLS_FILE_PREFIX}${defaultSourceSet.name}${Shared.SYMBOLS_FILE_EXTENSION}") }
+
+    override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean {
+        if ("test" in kotlinCompilation.name.lowercase()) {
+            return false
+        }
+
+        setupCompilation(kotlinCompilation)
+
+        val sourceSetName = kotlinCompilation.defaultSourceSet.name
+
+        val exportFrom = kotlinCompilation.symbolExtension.exportFromSourceSets.orNull?.ifEmpty { null }
+        val inExport = exportFrom == null || sourceSetName in exportFrom
+
+        val doExport = inExport && sourceSetName !in kotlinCompilation.symbolExtension.ignoreSourceSets.get()
+        if (!doExport) {
+            logger.info(
+                "Ignoring symbols from compilation {} @ {}",
+                kotlinCompilation.name,
+                kotlinCompilation.target.name
+            )
+        }
+        return doExport
+    }
+
+    private val alreadySetup = mutableSetOf<String>()
+
+    private fun setupCompilation(kotlinCompilation: KotlinCompilation<*>) {
+        if (!alreadySetup.add(kotlinCompilation.compileTaskProvider.name)) {
+            return
+        }
+        logger.debug(
+            "Set up symbol export for compilation {} @ {} (symbols may still be ignored)",
+            kotlinCompilation.name,
+            kotlinCompilation.target.name
+        )
+
+        val file = kotlinCompilation.symbolExportFile
+
+        kotlinCompilation.compileTaskProvider.configure {
+            it.outputs.file(file)
+                .optional()
+                .withPropertyName("symbolExportOutputFile")
+        }
+    }
 
     override fun getCompilerPluginId(): String = BuildConfig.KOTLIN_PLUGIN_ID
 
@@ -46,36 +103,35 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
     override fun applyToCompilation(
         kotlinCompilation: KotlinCompilation<*>
     ): Provider<List<SubpluginOption>> {
-        val project = kotlinCompilation.target.project
-        val extension = project.extensions.getByType(ExportExtension::class.java)
+        logger.warn(
+            "Applying symbol export plugin to compilation {} @ {}",
+            kotlinCompilation.name,
+            kotlinCompilation.target.name
+        )
 
-        if (extension.autoAddAnnotationDependency.getOrElse(false)) {
-            kotlinCompilation.dependencies { implementation(BuildConfig.ANNOTATIONS_LIBRARY_COORDINATES) }
+        if (kotlinCompilation.symbolExtension.autoAddAnnotationDependency.getOrElse(false)) {
+            kotlinCompilation.dependencies {
+                implementation(BuildConfig.ANNOTATIONS_LIBRARY_COORDINATES)
+            }
             kotlinCompilation.defaultSourceSet.dependencies {
                 implementation(BuildConfig.ANNOTATIONS_LIBRARY_COORDINATES)
             }
         }
 
-        val file =
-            extension.symbolExportOutputDirectory.file("${Shared.SYMBOLS_FILE_PREFIX}${kotlinCompilation.defaultSourceSet.name}${Shared.SYMBOLS_FILE_EXTENSION}")
+        val file = kotlinCompilation.symbolExportFile
 
-        kotlinCompilation.compileTaskProvider.configure {
-            it.outputs.file(file)
-                .withPropertyName("symbolExportOutputFile").optional()
-        }
-
-        project.artifacts {
+        kotlinCompilation.project.artifacts {
             it.add(CONFIGURATION_NAME, kotlinCompilation.compileTaskProvider.flatMap { file }) {
                 it.builtBy(kotlinCompilation.compileTaskProvider)
             }
         }
 
-        return project.provider {
+        return kotlinCompilation.project.provider {
 
             listOf(
                 SubpluginOption(
                     "symbolExportOutputFilePath",
-                    file.get().asFile.absolutePath
+                    file.get().absolutePath
                 )
             )
         }

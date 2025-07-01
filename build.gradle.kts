@@ -5,6 +5,6 @@ plugins {
 
 /*
 TODO
- - integrations: kotlin compiler and kotlinpoet
+ - integrations: kotlin compiler, kotlinpoet, KSP?
  - better tests
  */

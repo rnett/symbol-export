@@ -2,6 +2,7 @@ package com.rnett.symbolexport.import
 
 import com.rnett.symbolexport.BuildConfig
 import com.rnett.symbolexport.Shared
+import com.rnett.symbolexport.kotlinExtension
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -18,7 +19,6 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
-import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 import javax.inject.Inject
 
 public class ImportPlugin : Plugin<Project> {
@@ -64,7 +64,7 @@ public class ImportPlugin : Plugin<Project> {
         extension: ImportExtension,
         task: TaskProvider<ImportSymbolGenerationTask>
     ) {
-        val kotlinExtension = target.extensions.getByType(KotlinBaseExtension::class.java)
+        val kotlinExtension = target.kotlinExtension
         kotlinExtension.sourceSets.configureEach {
             if (it.name in extension.attachToSourceSets.get()) {
                 it.kotlin.srcDir(task.flatMap { it.outputDirectory })

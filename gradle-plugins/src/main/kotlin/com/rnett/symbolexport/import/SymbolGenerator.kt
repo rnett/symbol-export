@@ -13,7 +13,7 @@ internal object SymbolGenerator {
 
     val commonMainSourceSet = SourceSet("commonMain")
 
-    fun generateSymbols(files: List<File>, outputFile: File, get: String) {
+    fun generateSymbols(files: List<File>, outputFile: File, packageName: String) {
         if (outputFile.exists()) {
             outputFile.deleteRecursively()
         }
@@ -24,7 +24,7 @@ internal object SymbolGenerator {
         if (symbols.isEmpty()) return
 
         if (symbols.size == 1) {
-            generateSingle(outputFile, symbols.keys.single(), symbols.values.single())
+            generateSingle(outputFile, packageName, symbols.keys.single(), symbols.values.single())
         } else {
             val commonMain = symbols[commonMainSourceSet]
             val updated = symbols.minus(commonMainSourceSet).mapValues {
@@ -33,7 +33,7 @@ internal object SymbolGenerator {
                 else
                     it.value
             }
-            generateMultiple(outputFile, commonMain, updated.filter { it.value.isNotEmpty() })
+            generateMultiple(outputFile, packageName, commonMain, updated.filter { it.value.isNotEmpty() })
         }
     }
 
@@ -51,12 +51,13 @@ internal object SymbolGenerator {
 
     private fun generateMultiple(
         outputFile: File,
+        packageName: String,
         commonMain: Set<InternalName>? = null,
         otherPlatforms: Map<SourceSet, Set<InternalName>>
     ) {
         outputFile.writeText(
             buildString {
-                appendLine(imports)
+                appendLine(premable(packageName))
                 appendLine()
 
                 append("// Generated from multiple source sets")
@@ -81,33 +82,81 @@ internal object SymbolGenerator {
                     appendLine()
                 }
 
+                appendLine(
+                    generateAllSymbols(
+                        commonMain.orEmpty(),
+                        otherPlatforms.mapKeys { it.key.objectName() }).replaceIndent("    ")
+                )
+                appendLine()
                 appendLine("}")
             }
         )
     }
 
-    private fun generateSingle(outputFile: File, sourceSet: SourceSet, symbols: Set<InternalName>) {
+    private fun generateSingle(
+        outputFile: File,
+        packageName: String,
+        sourceSet: SourceSet,
+        symbols: Set<InternalName>
+    ) {
         outputFile.writeText(buildString {
-            appendLine(imports)
+            appendLine(premable(packageName))
             appendLine()
-            append(generateSingleString("Symbols", sourceSet, symbols))
+            append(generateSingleString("Symbols", sourceSet, symbols) {
+                appendLine()
+                appendLine(generateAllSymbols(symbols, emptyMap()).replaceIndent("    "))
+                appendLine()
+            })
         })
     }
 
-    val imports = """
+    fun premable(packageName: String) = """
+        package $packageName
+        
         import com.rnett.symbolexport.symbol.Symbol.Classifier
         import com.rnett.symbolexport.symbol.Symbol.ClassifierMember
         import com.rnett.symbolexport.symbol.Symbol.TopLevelMember
         import com.rnett.symbolexport.symbol.NameSegments
+        import com.rnett.symbolexport.symbol.Symbol
     """.trimIndent()
 
-    private fun generateSingleString(name: String, sourceSet: SourceSet, symbols: Set<InternalName>) = buildString {
+    fun generateAllSymbols(topLevelSymbols: Set<InternalName>, otherSymbols: Map<String, Set<InternalName>>) =
+        buildString {
+            appendLine("val ALL_SYMBOLS: Set<Symbol> = setOf(")
+            topLevelSymbols.forEach {
+                append("    ")
+                append(it.fieldName())
+                appendLine(",")
+            }
+
+            otherSymbols.forEach { (name, symbols) ->
+                symbols.forEach {
+                    append("    ")
+                    append(name)
+                    append(".")
+                    append(it.fieldName())
+                    appendLine(",")
+                }
+            }
+
+            appendLine(")")
+        }
+
+    private fun generateSingleString(
+        name: String,
+        sourceSet: SourceSet,
+        symbols: Set<InternalName>,
+        additional: StringBuilder.() -> Unit = {}
+    ) = buildString {
         appendLine("// Generated from ${sourceSet.name}")
         appendLine("public object $name {")
 
         append(generateProperties(symbols).replaceIndent("    "))
 
         appendLine()
+
+        additional()
+
         appendLine("}")
     }
 

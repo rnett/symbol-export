@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="produce-js-1.0-SNAPSHOT">
+    <output-path>$PROJECT_DIR$/test/produce/build/libs</output-path>
+    <root id="archive" name="produce-js-1.0-SNAPSHOT.jar">
+      <element id="module-output" name="test.produce.jsMain" />
+    </root>
+  </artifact>
+</component>

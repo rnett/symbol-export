@@ -41,14 +41,17 @@ import org.jetbrains.kotlin.psi.KtDeclaration
 class SymbolExportCheckerExtension(session: FirSession, val reporter: NameReporter) :
     FirAdditionalCheckersExtension(session) {
     companion object {
-        val ANNOTATION_FQN = FqName("com.rnett.symbolexport.ExportSymbol")
-        val ANNOTATION_CLASSID = ClassId.topLevel(ANNOTATION_FQN)
+        val EXPORT_ANNOTATION_FQN = FqName("com.rnett.symbolexport.ExportSymbol")
+        val EXPORT_ANNOTATION_CLASSID = ClassId.topLevel(EXPORT_ANNOTATION_FQN)
+
+        val PARENT_ANNOTATION_FQN = FqName("com.rnett.symbolexport.ChildrenExported")
+        val PARENT_ANNOTATION_CLASSID = ClassId.topLevel(PARENT_ANNOTATION_FQN)
     }
 
     override fun FirDeclarationPredicateRegistrar.registerPredicates() {
         register(
             DeclarationPredicate.create {
-                annotated(ANNOTATION_FQN)
+                annotated(EXPORT_ANNOTATION_FQN)
             }
         )
     }
@@ -64,7 +67,7 @@ class SymbolExportCheckerExtension(session: FirSession, val reporter: NameReport
         context(context: CheckerContext, reporter: DiagnosticReporter)
         override fun check(declaration: T) {
 
-            if (!declaration.hasAnnotation(ANNOTATION_CLASSID, context.session))
+            if (!declaration.hasAnnotation(EXPORT_ANNOTATION_CLASSID, context.session))
                 return
 
             if (declaration.isActual) {
@@ -75,9 +78,10 @@ class SymbolExportCheckerExtension(session: FirSession, val reporter: NameReport
                 return
             }
 
-            val parentMissingAnnotation =
-                declaration.getContainingClassSymbol()?.hasAnnotation(ANNOTATION_CLASSID, context.session) == false
-            if (parentMissingAnnotation) {
+            val parent = declaration.getContainingClassSymbol()
+            if (parent?.hasAnnotation(EXPORT_ANNOTATION_CLASSID, context.session) == false &&
+                !parent.hasAnnotation(PARENT_ANNOTATION_CLASSID, context.session)
+            ) {
                 reporter.reportOn(
                     declaration.source,
                     Errors.NLG_PARENT_MUST_BE_EXPOSED
@@ -175,7 +179,7 @@ class SymbolExportCheckerExtension(session: FirSession, val reporter: NameReport
         override val MAP = KtDiagnosticFactoryToRendererMap("SymbolExport").apply {
             put(
                 NLG_PARENT_MUST_BE_EXPOSED,
-                "Parents of '@ExportSymbol' declarations must also be annotated with '@ExportSymbol'."
+                "Parents of '@ExportSymbol' declarations must also be annotated with '@ExportSymbol' or '@ChildrenExported'."
             )
             put(
                 NLG_NO_LOCAL_DECLARATIONS,

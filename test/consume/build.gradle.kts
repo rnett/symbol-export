@@ -14,4 +14,5 @@ symbolImport {
 dependencies {
     importSymbols(project(":produce"))
     implementation("com.rnett.symbol-export:symbols")
+    testImplementation(kotlin("test"))
 }
