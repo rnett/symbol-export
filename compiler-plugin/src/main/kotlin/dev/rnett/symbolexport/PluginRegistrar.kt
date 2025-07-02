@@ -2,6 +2,8 @@ package dev.rnett.symbolexport
 
 import dev.rnett.symbolexport.fir.SymbolExportCheckerExtension
 import dev.rnett.symbolexport.internal.InternalName
+import dev.rnett.symbolexport.internal.InternalNameEntry
+import dev.rnett.symbolexport.internal.ProjectCoordinates
 import kotlinx.serialization.json.Json
 import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
@@ -14,16 +16,23 @@ import kotlin.io.path.exists
 import kotlin.io.path.isDirectory
 import kotlin.io.path.writeText
 
-class PluginRegistrar(val outputFile: Path) : FirExtensionRegistrar() {
+class PluginRegistrar(
+    val outputFile: Path,
+    val projectName: String,
+    val projectCoordinates: ProjectCoordinates,
+    val sourceSetName: String
+) :
+    FirExtensionRegistrar() {
     val json = Json {}
 
     init {
         if (outputFile.exists()) {
             if (outputFile.isDirectory()) {
                 outputFile.deleteExisting()
+                outputFile.createFile()
+            } else {
+                outputFile.writeText("")
             }
-
-            outputFile.writeText("")
         } else {
             outputFile.createParentDirectories()
             outputFile.createFile()
@@ -31,7 +40,16 @@ class PluginRegistrar(val outputFile: Path) : FirExtensionRegistrar() {
     }
 
     fun writeDeclaration(name: InternalName) {
-        outputFile.appendText(json.encodeToString(name) + "\n")
+        outputFile.appendText(
+            json.encodeToString(
+                InternalNameEntry(
+                    projectName,
+                    projectCoordinates,
+                    sourceSetName,
+                    name
+                )
+            ) + "\n"
+        )
     }
 
     override fun ExtensionRegistrarContext.configurePlugin() {

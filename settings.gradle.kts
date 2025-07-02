@@ -20,7 +20,8 @@ include(
     ":names-internal",
     ":compiler-plugin",
     ":annotations",
-    ":gradle-plugins"
+    ":gradle-plugins",
+    ":generator"
 )
 
 includeBuild("gradle/build-logic")

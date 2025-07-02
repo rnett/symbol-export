@@ -26,4 +26,12 @@ public open class ExportExtension(objectFactory: ObjectFactory) {
      * Do not export from these source sets.
      */
     public val ignoreSourceSets: SetProperty<String> = objectFactory.setProperty(String::class.java)
+
+    /**
+     * The project name to use for the exported symbols.
+     * If symbols from multiple projects are imported, this name will be used to distinguish them, typically as a property on the root `Symbols` object.
+     *
+     * Defaults to the Gradle project name.
+     */
+    public val projectName: Property<String> = objectFactory.property(String::class.java)
 }

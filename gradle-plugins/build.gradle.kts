@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(project(":names-internal"))
+    implementation(project(":generator"))
     implementation(libs.kotlinx.serialization.json)
     implementation(kotlin("gradle-plugin-api"))
 }

@@ -10,28 +10,84 @@ import kotlin.io.path.Path
 
 @Suppress("unused") // Used via reflection.
 class CommandLineProcessor : CommandLineProcessor {
-    companion object {
-        val symbolExportFileKey = CompilerConfigurationKey.create<Path>("The file to write exported symbols to")
-        val cliOption = CliOption(
-            "symbolExportOutputFilePath",
+
+
+    object Keys {
+        val outputFile = CompilerConfigurationKey.create<Path>("The file to write exported symbols to")
+
+        val projectName = CompilerConfigurationKey.create<String>("The configured name of the gradle project")
+
+        val projectGroup = CompilerConfigurationKey.create<String>("The group of the gradle project")
+        val projectArtifact = CompilerConfigurationKey.create<String>("The artifact of the gradle project")
+        val projectVersion = CompilerConfigurationKey.create<String>("The version of the gradle project")
+        val sourceSetName = CompilerConfigurationKey.create<String>("The source set name")
+    }
+
+    object Options {
+        val outputFile = CliOption(
+            "outputFile",
             "<path>",
             "The file to output the exported symbols to",
             required = true,
             allowMultipleOccurrences = false
+        )
+
+        val projectName = CliOption(
+            "projectName",
+            "<string>",
+            "The configured name of the gradle project",
+            required = true,
+            allowMultipleOccurrences = false
+        )
+
+        val projectGroup = CliOption(
+            "projectGroup",
+            "<string>",
+            "The group of the gradle project",
+            required = true,
+            allowMultipleOccurrences = false
+        )
+        val projectArtifact = CliOption(
+            "projectArtifact",
+            "<string>",
+            "The artifact of the gradle project",
+            required = true,
+            allowMultipleOccurrences = false
+        )
+        val projectVersion = CliOption(
+            "projectVersion",
+            "<string>",
+            "The gradle project version",
+            required = true,
+            allowMultipleOccurrences = false
+        )
+        val sourceSetName = CliOption(
+            "sourceSetName",
+            "<string>",
+            "The source set name",
         )
     }
 
     override val pluginId: String = BuildConfig.KOTLIN_PLUGIN_ID
 
     override val pluginOptions: Collection<CliOption> = listOf(
-        cliOption
+        Options.outputFile,
+        Options.projectName,
+        Options.projectGroup,
+        Options.projectArtifact,
+        Options.projectVersion,
+        Options.sourceSetName,
     )
 
     override fun processOption(option: AbstractCliOption, value: String, configuration: CompilerConfiguration) {
-        if (option.optionName == cliOption.optionName) {
-            configuration.put(symbolExportFileKey, Path(value))
-        } else {
-            error("Unexpected config option: '${option.optionName}'")
+        when (option) {
+            Options.outputFile -> configuration.put(Keys.outputFile, Path(value))
+            Options.projectName -> configuration.put(Keys.projectName, value)
+            Options.projectGroup -> configuration.put(Keys.projectGroup, value)
+            Options.projectArtifact -> configuration.put(Keys.projectArtifact, value)
+            Options.projectVersion -> configuration.put(Keys.projectVersion, value)
+            Options.sourceSetName -> configuration.put(Keys.sourceSetName, value)
+            else -> error("Unexpected config option: '${option.optionName}'")
         }
     }
 }

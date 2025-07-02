@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
@@ -12,6 +11,7 @@
                   <project path="$PROJECT_DIR$" />
                   <project path="$PROJECT_DIR$/annotations" />
                   <project path="$PROJECT_DIR$/compiler-plugin" />
+                  <project path="$PROJECT_DIR$/generator" />
                   <project path="$PROJECT_DIR$/gradle-plugins" />
                   <project path="$PROJECT_DIR$/names-internal" />
                   <project path="$PROJECT_DIR$/symbols" />
@@ -35,6 +35,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/annotations" />
             <option value="$PROJECT_DIR$/compiler-plugin" />
+            <option value="$PROJECT_DIR$/generator" />
             <option value="$PROJECT_DIR$/gradle-plugins" />
             <option value="$PROJECT_DIR$/gradle/build-logic" />
             <option value="$PROJECT_DIR$/gradle/build-logic/kotlin-setup" />
@@ -44,8 +45,10 @@
             <option value="$PROJECT_DIR$/symbols-kotlinpoet" />
             <option value="$PROJECT_DIR$/symbols-ksp" />
             <option value="$PROJECT_DIR$/test" />
-            <option value="$PROJECT_DIR$/test/consume" />
-            <option value="$PROJECT_DIR$/test/produce" />
+            <option value="$PROJECT_DIR$/test/consume-a" />
+            <option value="$PROJECT_DIR$/test/consume-all" />
+            <option value="$PROJECT_DIR$/test/produce-a" />
+            <option value="$PROJECT_DIR$/test/produce-b" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -19,7 +19,18 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
     private val logger = LoggerFactory.getLogger(ExportPlugin::class.java)
 
     internal companion object {
-        val CONFIGURATION_NAME = "exportedSymbols"
+        const val CONFIGURATION_NAME = "exportedSymbols"
+    }
+
+    private object PluginParameters {
+        // from CommandLineProcessor
+
+        const val OUTPUT_FILE = "outputFile"
+        const val PROJECT_NAME = "projectName"
+        const val PROJECT_GROUP = "projectGroup"
+        const val PROJECT_ARTIFACT = "projectArtifact"
+        const val PROJECT_VERSION = "projectVersion"
+        const val SOURCE_SET_NAME = "sourceSetName"
     }
 
     override fun apply(target: Project) {
@@ -28,6 +39,7 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
             autoAddAnnotationDependency.convention(true)
             ignoreSourceSets.convention(emptySet())
             exportFromSourceSets.convention(emptySet())
+            projectName.convention(target.provider { target.name })
         }
 
         val nameListConfiguration = target.configurations.register(CONFIGURATION_NAME) {
@@ -102,6 +114,7 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
     override fun applyToCompilation(
         kotlinCompilation: KotlinCompilation<*>
     ): Provider<List<SubpluginOption>> {
+        val project = kotlinCompilation.project
         logger.info(
             "Applying symbol export plugin to compilation {} @ {}",
             kotlinCompilation.name,
@@ -123,18 +136,37 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
         }
         val file = kotlinCompilation.symbolExportFile
 
-        kotlinCompilation.project.artifacts {
+        project.artifacts {
             it.add(CONFIGURATION_NAME, kotlinCompilation.compileTaskProvider.flatMap { file }) {
                 it.builtBy(kotlinCompilation.compileTaskProvider)
             }
         }
 
-        return kotlinCompilation.project.provider {
-
+        return project.provider {
             listOf(
                 SubpluginOption(
-                    "symbolExportOutputFilePath",
+                    PluginParameters.OUTPUT_FILE,
                     file.get().absolutePath
+                ),
+                SubpluginOption(
+                    PluginParameters.PROJECT_NAME,
+                    kotlinCompilation.symbolExtension.projectName.get()
+                ),
+                SubpluginOption(
+                    PluginParameters.PROJECT_GROUP,
+                    project.group.toString()
+                ),
+                SubpluginOption(
+                    PluginParameters.PROJECT_ARTIFACT,
+                    project.name
+                ),
+                SubpluginOption(
+                    PluginParameters.PROJECT_VERSION,
+                    project.version.toString()
+                ),
+                SubpluginOption(
+                    PluginParameters.SOURCE_SET_NAME,
+                    kotlinCompilation.defaultSourceSet.name
                 )
             )
         }

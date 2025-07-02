@@ -1,5 +1,6 @@
 package dev.rnett.symbolexport
 
+import dev.rnett.symbolexport.internal.ProjectCoordinates
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrarAdapter
@@ -9,7 +10,23 @@ class PluginComponentRegistrar : CompilerPluginRegistrar() {
         get() = true
 
     override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
-        val outputFile = configuration.getNotNull(CommandLineProcessor.symbolExportFileKey)
-        FirExtensionRegistrarAdapter.registerExtension(PluginRegistrar(outputFile))
+        val outputFile = configuration.getNotNull(CommandLineProcessor.Keys.outputFile)
+
+        val projectName = configuration.getNotNull(CommandLineProcessor.Keys.projectName)
+
+        val projectGroup = configuration.getNotNull(CommandLineProcessor.Keys.projectGroup)
+        val projectArtifact = configuration.getNotNull(CommandLineProcessor.Keys.projectArtifact)
+        val projectVersion = configuration.getNotNull(CommandLineProcessor.Keys.projectVersion)
+
+        val sourceSetName = configuration.getNotNull(CommandLineProcessor.Keys.sourceSetName)
+
+        FirExtensionRegistrarAdapter.registerExtension(
+            PluginRegistrar(
+                outputFile,
+                projectName,
+                ProjectCoordinates(projectGroup, projectArtifact, projectVersion),
+                sourceSetName
+            )
+        )
     }
 }

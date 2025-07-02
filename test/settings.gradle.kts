@@ -17,6 +17,6 @@ gradle.beforeProject {
 
 includeBuild("..")
 
-include(":produce", ":consume")
+include(":produce-a", ":produce-b", ":consume-a", ":consume-all")
 
-rootProject.name = "test"
+rootProject.name = "symbol-export-parent"

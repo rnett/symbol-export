@@ -2,6 +2,7 @@ package dev.rnett.symbolexport.import
 
 import dev.rnett.symbolexport.BuildConfig
 import dev.rnett.symbolexport.Shared
+import dev.rnett.symbolexport.generator.SymbolGenerator
 import dev.rnett.symbolexport.kotlinExtension
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
@@ -27,6 +28,7 @@ public class ImportPlugin : Plugin<Project> {
             generatedSymbolsPackage.convention(target.provider { target.group.toString() })
             autoAddSymbolsDependency.convention(true)
             symbolGenerationDirectory.convention(target.layout.buildDirectory.dir("generated/source/symbol-export"))
+            flattenDependencyProjects.convention(false)
         }
 
         val configuration = target.configurations.register("importSymbols") {
@@ -40,6 +42,7 @@ public class ImportPlugin : Plugin<Project> {
             it.symbolFiles.from(configuration.get())
             it.outputDirectory.convention(extension.symbolGenerationDirectory)
             it.packageName.convention(extension.generatedSymbolsPackage)
+            it.flattenProjects.convention(extension.flattenDependencyProjects)
         }
 
         target.pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
@@ -107,6 +110,9 @@ public open class ImportSymbolGenerationTask @Inject constructor(objectFactory: 
     @Input
     public val packageName: Property<String> = objectFactory.property(String::class.java)
 
+    @Input
+    public val flattenProjects: Property<Boolean> = objectFactory.property(Boolean::class.java)
+
     @OutputDirectory
     public val outputDirectory: DirectoryProperty = objectFactory.directoryProperty()
 
@@ -119,16 +125,18 @@ public open class ImportSymbolGenerationTask @Inject constructor(objectFactory: 
             return
         }
 
-        val outputFile = outputDirectory.asFile.get().resolve(packageName.get().replace('.', '/')).resolve("Symbols.kt")
-        outputFile.parentFile.mkdirs()
+        val outputDir = outputDirectory.asFile.get()
 
-        if (outputFile.exists()) {
-            outputFile.delete()
+        if (outputDir.exists()) {
+            outputDir.deleteRecursively()
         }
+        outputDir.mkdirs()
 
-        outputFile.createNewFile()
-
-        SymbolGenerator.generateSymbols(files, outputFile, packageName.get())
+        SymbolGenerator(
+            outputDir,
+            packageName.get(),
+            flattenProjects.get()
+        ).writeSymbols(files)
     }
 
 }
