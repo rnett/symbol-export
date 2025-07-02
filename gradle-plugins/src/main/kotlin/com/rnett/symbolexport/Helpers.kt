@@ -1,6 +1,7 @@
 package com.rnett.symbolexport
 
 import org.gradle.api.Project
+import org.gradle.api.provider.HasConfigurableValue
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 
 internal enum class KotlinPluginType {
@@ -23,3 +24,7 @@ internal fun Project.whenKotlinPlugin(block: (KotlinPluginType) -> Unit) {
 }
 
 internal val Project.kotlinExtension get() = extensions.getByType(KotlinBaseExtension::class.java)
+
+internal fun <T : HasConfigurableValue> T.withDisallowedChanges() = apply {
+    disallowChanges()
+}

@@ -1,8 +1,7 @@
-package rnett.test
+package com.rnett.test
 
 import com.rnett.symbolexport.symbol.NameSegments
 import com.rnett.symbolexport.symbol.Symbol
-import com.rnett.test.Symbols
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

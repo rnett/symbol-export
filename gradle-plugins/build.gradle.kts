@@ -56,13 +56,13 @@ buildConfig {
 gradlePlugin {
     plugins {
         create("SymbolExportExport") {
-            id = "com.rnett.symbol-exporter.export"
-            displayName = "Symbol export - exporter"
+            id = "com.rnett.symbol-export.export"
+            displayName = "Symbol export - export"
             description = "Allows the exporting of annotated symbols for reference by other modules."
             implementationClass = "com.rnett.symbolexport.export.ExportPlugin"
         }
         create("SymbolExportImport") {
-            id = "com.rnett.symbol-exporter.import"
+            id = "com.rnett.symbol-export.import"
             displayName = "Symbol export - import"
             description = "Allows a project to consume symbols exposed by com.rnett.symbol-exporter.export."
             implementationClass = "com.rnett.symbolexport.import.ImportPlugin"

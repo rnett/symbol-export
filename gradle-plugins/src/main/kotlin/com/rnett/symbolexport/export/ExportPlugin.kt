@@ -2,6 +2,7 @@ package com.rnett.symbolexport.export
 
 import com.rnett.symbolexport.BuildConfig
 import com.rnett.symbolexport.Shared
+import com.rnett.symbolexport.withDisallowedChanges
 import org.gradle.api.Project
 import org.gradle.api.attributes.Usage
 import org.gradle.api.provider.Provider
@@ -27,11 +28,6 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
             autoAddAnnotationDependency.convention(true)
             ignoreSourceSets.convention(emptySet())
             exportFromSourceSets.convention(emptySet())
-
-            autoAddAnnotationDependency.finalizeValueOnRead()
-            symbolExportOutputDirectory.finalizeValueOnRead()
-            exportFromSourceSets.finalizeValueOnRead()
-            ignoreSourceSets.finalizeValueOnRead()
         }
 
         val nameListConfiguration = target.configurations.register(CONFIGURATION_NAME) {
@@ -57,10 +53,13 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
 
         val sourceSetName = kotlinCompilation.defaultSourceSet.name
 
-        val exportFrom = kotlinCompilation.symbolExtension.exportFromSourceSets.orNull?.ifEmpty { null }
+        val exportFrom =
+            kotlinCompilation.symbolExtension.exportFromSourceSets.withDisallowedChanges().orNull?.ifEmpty { null }
         val inExport = exportFrom == null || sourceSetName in exportFrom
 
-        val doExport = inExport && sourceSetName !in kotlinCompilation.symbolExtension.ignoreSourceSets.get()
+        val doExport =
+            inExport && sourceSetName !in kotlinCompilation.symbolExtension.ignoreSourceSets.withDisallowedChanges()
+                .get()
         if (!doExport) {
             logger.info(
                 "Ignoring symbols from compilation {} @ {}",
@@ -103,13 +102,13 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
     override fun applyToCompilation(
         kotlinCompilation: KotlinCompilation<*>
     ): Provider<List<SubpluginOption>> {
-        logger.warn(
+        logger.info(
             "Applying symbol export plugin to compilation {} @ {}",
             kotlinCompilation.name,
             kotlinCompilation.target.name
         )
 
-        if (kotlinCompilation.symbolExtension.autoAddAnnotationDependency.getOrElse(false)) {
+        if (kotlinCompilation.symbolExtension.autoAddAnnotationDependency.withDisallowedChanges().getOrElse(false)) {
             kotlinCompilation.dependencies {
                 implementation(BuildConfig.ANNOTATIONS_LIBRARY_COORDINATES)
             }
@@ -118,6 +117,10 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
             }
         }
 
+        kotlinCompilation.symbolExtension.apply {
+            symbolExportOutputDirectory.disallowChanges()
+
+        }
         val file = kotlinCompilation.symbolExportFile
 
         kotlinCompilation.project.artifacts {

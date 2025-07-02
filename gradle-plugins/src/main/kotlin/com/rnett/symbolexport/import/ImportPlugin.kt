@@ -66,13 +66,32 @@ public class ImportPlugin : Plugin<Project> {
     ) {
         val kotlinExtension = target.kotlinExtension
         kotlinExtension.sourceSets.configureEach {
-            if (it.name in extension.attachToSourceSets.get()) {
-                it.kotlin.srcDir(task.flatMap { it.outputDirectory })
-                it.dependencies {
-                    if (extension.autoAddSymbolsDependency.getOrElse(false)) {
-                        implementation(BuildConfig.SYMBOLS_LIBRARY_COORDINATES)
-                    }
+            val sourceSetName = it.name
+            val isAttachedToSourceSet = extension.attachToSourceSets.map { sourceSetName in it }
+
+            // this is all a bit hacky - source sets appear to be resolved before the build script is ran, so resolving any properties in this block will cause errors
+
+            it.kotlin.srcDir(
+                isAttachedToSourceSet.flatMap {
+                    if (it)
+                        task.flatMap { it.outputDirectory }
+                    else
+                        target.layout.buildDirectory.dir("generated/source/non-existent-placeholder/")
                 }
+            )
+
+            it.dependencies {
+                implementation(
+                    extension.autoAddSymbolsDependency
+                        .flatMap { autoAdd ->
+                            extension.attachToSourceSets.apply { finalizeValueOnRead() }
+                                .map { autoAdd && sourceSetName in it.orEmpty() }
+                        }
+                        .map {
+                            @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+                            if (it) BuildConfig.SYMBOLS_LIBRARY_COORDINATES else null
+                        }
+                )
             }
         }
     }
