@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    id("build.kotlin-jvm")
     id("java-gradle-plugin")
     alias(libs.plugins.buildconfig)
 }
@@ -8,15 +8,6 @@ dependencies {
     implementation(project(":names-internal"))
     implementation(libs.kotlinx.serialization.json)
     implementation(kotlin("gradle-plugin-api"))
-    testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-kotlin {
-    explicitApi()
-    jvmToolchain(17)
 }
 
 fun libraryCoordinates(project: Project) = buildString {

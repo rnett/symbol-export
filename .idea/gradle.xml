@@ -4,20 +4,6 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/annotations" />
-            <option value="$PROJECT_DIR$/compiler-plugin" />
-            <option value="$PROJECT_DIR$/gradle-plugins" />
-            <option value="$PROJECT_DIR$/names-internal" />
-            <option value="$PROJECT_DIR$/symbols" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT">
             <builds>
@@ -29,6 +15,15 @@
                   <project path="$PROJECT_DIR$/gradle-plugins" />
                   <project path="$PROJECT_DIR$/names-internal" />
                   <project path="$PROJECT_DIR$/symbols" />
+                  <project path="$PROJECT_DIR$/symbols-kotlin-compiler" />
+                  <project path="$PROJECT_DIR$/symbols-kotlinpoet" />
+                  <project path="$PROJECT_DIR$/symbols-ksp" />
+                </projects>
+              </build>
+              <build path="$PROJECT_DIR$/gradle/build-logic" name="build-logic">
+                <projects>
+                  <project path="$PROJECT_DIR$/gradle/build-logic" />
+                  <project path="$PROJECT_DIR$/gradle/build-logic/kotlin-setup" />
                 </projects>
               </build>
             </builds>
@@ -41,8 +36,13 @@
             <option value="$PROJECT_DIR$/annotations" />
             <option value="$PROJECT_DIR$/compiler-plugin" />
             <option value="$PROJECT_DIR$/gradle-plugins" />
+            <option value="$PROJECT_DIR$/gradle/build-logic" />
+            <option value="$PROJECT_DIR$/gradle/build-logic/kotlin-setup" />
             <option value="$PROJECT_DIR$/names-internal" />
             <option value="$PROJECT_DIR$/symbols" />
+            <option value="$PROJECT_DIR$/symbols-kotlin-compiler" />
+            <option value="$PROJECT_DIR$/symbols-kotlinpoet" />
+            <option value="$PROJECT_DIR$/symbols-ksp" />
             <option value="$PROJECT_DIR$/test" />
             <option value="$PROJECT_DIR$/test/consume" />
             <option value="$PROJECT_DIR$/test/produce" />

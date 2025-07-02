@@ -14,10 +14,15 @@ gradle.beforeProject {
 
 include(
     ":symbols",
+    ":symbols-kotlin-compiler",
+    ":symbols-kotlinpoet",
+    ":symbols-ksp",
     ":names-internal",
     ":compiler-plugin",
     ":annotations",
     ":gradle-plugins"
 )
+
+includeBuild("gradle/build-logic")
 
 rootProject.name = "symbol-export"
