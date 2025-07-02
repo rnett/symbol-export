@@ -1,8 +1,14 @@
 ## Project structure
 
+- `gradle/build-logic` the build logic
 - `annotations` contains annotations that are shared between the compiler plugin and the runtime
 - `compiler-plugin` is the Kotlin compiler plugin
 - `gradle-plugin` is the Gradle plugin that applies the compiler plugin
+- `names-internasl` is the internal symbols objects used to pass serialized symbols between the compiler plugin and the
+  code generator
+- `symbols` is the public symbols API
+- `symbols-*` are symbol conversion extensions
+- `test` is a build that tests symbol export and import
 
 ## Kotlin compiler plugins
 
