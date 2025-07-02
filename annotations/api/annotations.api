@@ -1,0 +1,6 @@
+public abstract interface annotation class dev/rnett/symbolexport/ChildrenExported : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class dev/rnett/symbolexport/ExportSymbol : java/lang/annotation/Annotation {
+}
+

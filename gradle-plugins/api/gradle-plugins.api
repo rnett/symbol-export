@@ -1,0 +1,48 @@
+public abstract class dev/rnett/symbolexport/export/ExportExtension {
+	public fun <init> ()V
+	public abstract fun getAutoAddAnnotationDependency ()Lorg/gradle/api/provider/Property;
+	public abstract fun getExportFromSourceSets ()Lorg/gradle/api/provider/SetProperty;
+	public abstract fun getIgnoreSourceSets ()Lorg/gradle/api/provider/SetProperty;
+	public abstract fun getProjectName ()Lorg/gradle/api/provider/Property;
+	public abstract fun getSymbolExportOutputDirectory ()Lorg/gradle/api/file/DirectoryProperty;
+}
+
+public final class dev/rnett/symbolexport/export/ExportPlugin : org/jetbrains/kotlin/gradle/plugin/KotlinCompilerPluginSupportPlugin {
+	public fun <init> ()V
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+	public fun applyToCompilation (Lorg/jetbrains/kotlin/gradle/plugin/KotlinCompilation;)Lorg/gradle/api/provider/Provider;
+	public fun getCompilerPluginId ()Ljava/lang/String;
+	public fun getPluginArtifact ()Lorg/jetbrains/kotlin/gradle/plugin/SubpluginArtifact;
+	public fun getPluginArtifactForNative ()Lorg/jetbrains/kotlin/gradle/plugin/SubpluginArtifact;
+	public fun isApplicable (Lorg/jetbrains/kotlin/gradle/plugin/KotlinCompilation;)Z
+}
+
+public final class dev/rnett/symbolexport/export/ExportSourceSetExtensionKt {
+	public static final fun ignoreSymbols (Lorg/jetbrains/kotlin/gradle/plugin/KotlinSourceSet;)V
+}
+
+public abstract class dev/rnett/symbolexport/import/ImportExtension {
+	public fun <init> ()V
+	public abstract fun getAttachToSourceSets ()Lorg/gradle/api/provider/SetProperty;
+	public abstract fun getAutoAddSymbolsDependency ()Lorg/gradle/api/provider/Property;
+	public abstract fun getFlattenDependencyProjects ()Lorg/gradle/api/provider/Property;
+	public abstract fun getGeneratedSymbolsPackage ()Lorg/gradle/api/provider/Property;
+	public abstract fun getSymbolGenerationDirectory ()Lorg/gradle/api/file/DirectoryProperty;
+}
+
+public final class dev/rnett/symbolexport/import/ImportPlugin : org/gradle/api/Plugin {
+	public fun <init> ()V
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+}
+
+public abstract class dev/rnett/symbolexport/import/ImportSymbolGenerationTask : org/gradle/api/DefaultTask {
+	public fun <init> ()V
+	public final fun doGeneration ()V
+	public abstract fun getFlattenProjects ()Lorg/gradle/api/provider/Property;
+	public abstract fun getOutputDirectory ()Lorg/gradle/api/file/DirectoryProperty;
+	public abstract fun getPackageName ()Lorg/gradle/api/provider/Property;
+	public abstract fun getSymbolFiles ()Lorg/gradle/api/file/ConfigurableFileCollection;
+}
+

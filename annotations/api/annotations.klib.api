@@ -1,0 +1,15 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, wasmJs, wasmWasi]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <dev.rnett.symbol-export:annotations>
+open annotation class dev.rnett.symbolexport/ChildrenExported : kotlin/Annotation { // dev.rnett.symbolexport/ChildrenExported|null[0]
+    constructor <init>() // dev.rnett.symbolexport/ChildrenExported.<init>|<init>(){}[0]
+}
+
+open annotation class dev.rnett.symbolexport/ExportSymbol : kotlin/Annotation { // dev.rnett.symbolexport/ExportSymbol|null[0]
+    constructor <init>() // dev.rnett.symbolexport/ExportSymbol.<init>|<init>(){}[0]
+}

@@ -1,0 +1,7 @@
+public final class dev/rnett/symbolexport/symbol/ksp/KspMappersKt {
+	public static final fun asKsName (Ldev/rnett/symbolexport/symbol/NameLike;Lcom/google/devtools/ksp/processing/Resolver;)Lcom/google/devtools/ksp/symbol/KSName;
+	public static final fun eq (Lcom/google/devtools/ksp/symbol/KSName;Ldev/rnett/symbolexport/symbol/NameLike;)Z
+	public static final fun eq (Ldev/rnett/symbolexport/symbol/NameLike;Lcom/google/devtools/ksp/symbol/KSName;)Z
+	public static final fun getKsNameFromSymbol (Lcom/google/devtools/ksp/processing/Resolver;Ldev/rnett/symbolexport/symbol/NameLike;)Lcom/google/devtools/ksp/symbol/KSName;
+}
+

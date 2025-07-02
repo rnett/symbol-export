@@ -10,7 +10,6 @@ import org.gradle.api.Project
 import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -20,7 +19,6 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
-import javax.inject.Inject
 
 public class ImportPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -62,7 +60,7 @@ public class ImportPlugin : Plugin<Project> {
         }
     }
 
-    public fun makeKotlinDependOn(
+    private fun makeKotlinDependOn(
         target: Project,
         extension: ImportExtension,
         task: TaskProvider<ImportSymbolGenerationTask>
@@ -102,19 +100,19 @@ public class ImportPlugin : Plugin<Project> {
 }
 
 @CacheableTask
-public open class ImportSymbolGenerationTask @Inject constructor(objectFactory: ObjectFactory) : DefaultTask() {
-    @InputFiles
-    @PathSensitive(PathSensitivity.RELATIVE)
-    public val symbolFiles: ConfigurableFileCollection = objectFactory.fileCollection()
+public abstract class ImportSymbolGenerationTask : DefaultTask() {
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    public abstract val symbolFiles: ConfigurableFileCollection
 
-    @Input
-    public val packageName: Property<String> = objectFactory.property(String::class.java)
+    @get:Input
+    public abstract val packageName: Property<String>
 
-    @Input
-    public val flattenProjects: Property<Boolean> = objectFactory.property(Boolean::class.java)
+    @get:Input
+    public abstract val flattenProjects: Property<Boolean>
 
-    @OutputDirectory
-    public val outputDirectory: DirectoryProperty = objectFactory.directoryProperty()
+    @get:OutputDirectory
+    public abstract val outputDirectory: DirectoryProperty
 
     @TaskAction
     public fun doGeneration() {

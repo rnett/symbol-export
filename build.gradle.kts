@@ -5,6 +5,13 @@ plugins {
 
 /*
 TODO
- - integrations: kotlin compiler, kotlinpoet, KSP?
  - better tests
  */
+
+tasks.register("updateLegacyAbi") {
+    dependsOn(project.childProjects.values.map { it.tasks.named("updateLegacyAbi") })
+}
+
+tasks.register("checkLegacyAbi") {
+    dependsOn(project.childProjects.values.map { it.tasks.named("checkLegacyAbi") })
+}

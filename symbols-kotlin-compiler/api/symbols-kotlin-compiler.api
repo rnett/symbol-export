@@ -1,0 +1,6 @@
+public final class dev/rnett/symbolexport/symbol/compiler/CompilerMappersKt {
+	public static final fun asClassId (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;)Lorg/jetbrains/kotlin/name/ClassId;
+	public static final fun asFqName (Ldev/rnett/symbolexport/symbol/NameLike;)Lorg/jetbrains/kotlin/name/FqName;
+	public static final fun name (Ldev/rnett/symbolexport/symbol/Symbol$Member;)Lorg/jetbrains/kotlin/name/Name;
+}
+

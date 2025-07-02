@@ -1,0 +1,83 @@
+public abstract interface class dev/rnett/symbolexport/symbol/NameLike {
+	public abstract fun asString ()Ljava/lang/String;
+	public abstract fun getSegments ()Ljava/util/List;
+	public abstract fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+}
+
+public final class dev/rnett/symbolexport/symbol/NameLike$DefaultImpls {
+	public static fun plus (Ldev/rnett/symbolexport/symbol/NameLike;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun resolve (Ldev/rnett/symbolexport/symbol/NameLike;[Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+}
+
+public final class dev/rnett/symbolexport/symbol/NameSegments : dev/rnett/symbolexport/symbol/NameLike {
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Ljava/lang/String;)V
+	public fun asString ()Ljava/lang/String;
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/NameSegments;Ljava/util/List;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getSegments ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class dev/rnett/symbolexport/symbol/Symbol : dev/rnett/symbolexport/symbol/NameLike {
+	public synthetic fun <init> (Ldev/rnett/symbolexport/symbol/NameSegments;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun asString ()Ljava/lang/String;
+	public final fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun getSegments ()Ljava/util/List;
+	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$Classifier : dev/rnett/symbolexport/symbol/Symbol {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/NameSegments;Ldev/rnett/symbolexport/symbol/NameSegments;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public final fun component2 ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/NameSegments;Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ldev/rnett/symbolexport/symbol/NameSegments;Ldev/rnett/symbolexport/symbol/NameSegments;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClassNames ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public final fun getPackageName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$ClassifierMember : dev/rnett/symbolexport/symbol/Symbol$Member {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/Symbol$ClassifierMember;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$ClassifierMember;Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$ClassifierMember;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClassifier ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class dev/rnett/symbolexport/symbol/Symbol$Member : dev/rnett/symbolexport/symbol/Symbol {
+	public synthetic fun <init> (Ldev/rnett/symbolexport/symbol/NameSegments;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public abstract fun getName ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$TopLevelMember : dev/rnett/symbolexport/symbol/Symbol$Member {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/NameSegments;Ljava/lang/String;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/NameSegments;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/Symbol$TopLevelMember;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$TopLevelMember;Ldev/rnett/symbolexport/symbol/NameSegments;Ljava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$TopLevelMember;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getName ()Ljava/lang/String;
+	public final fun getPackageName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

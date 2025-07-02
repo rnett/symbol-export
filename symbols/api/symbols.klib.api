@@ -1,0 +1,100 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, wasmJs, wasmWasi]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <dev.rnett.symbol-export:symbols>
+abstract interface dev.rnett.symbolexport.symbol/NameLike { // dev.rnett.symbolexport.symbol/NameLike|null[0]
+    abstract val segments // dev.rnett.symbolexport.symbol/NameLike.segments|{}segments[0]
+        abstract fun <get-segments>(): kotlin.collections/List<kotlin/String> // dev.rnett.symbolexport.symbol/NameLike.segments.<get-segments>|<get-segments>(){}[0]
+
+    abstract fun asString(): kotlin/String // dev.rnett.symbolexport.symbol/NameLike.asString|asString(){}[0]
+    abstract fun plus(dev.rnett.symbolexport.symbol/NameSegments): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameLike.plus|plus(dev.rnett.symbolexport.symbol.NameSegments){}[0]
+    open fun plus(kotlin/String): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameLike.plus|plus(kotlin.String){}[0]
+    open fun resolve(kotlin/Array<out kotlin/String>...): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameLike.resolve|resolve(kotlin.Array<out|kotlin.String>...){}[0]
+}
+
+final class dev.rnett.symbolexport.symbol/NameSegments : dev.rnett.symbolexport.symbol/NameLike { // dev.rnett.symbolexport.symbol/NameSegments|null[0]
+    constructor <init>(kotlin.collections/List<kotlin/String>) // dev.rnett.symbolexport.symbol/NameSegments.<init>|<init>(kotlin.collections.List<kotlin.String>){}[0]
+    constructor <init>(kotlin/Array<out kotlin/String>...) // dev.rnett.symbolexport.symbol/NameSegments.<init>|<init>(kotlin.Array<out|kotlin.String>...){}[0]
+
+    final val segments // dev.rnett.symbolexport.symbol/NameSegments.segments|{}segments[0]
+        final fun <get-segments>(): kotlin.collections/List<kotlin/String> // dev.rnett.symbolexport.symbol/NameSegments.segments.<get-segments>|<get-segments>(){}[0]
+
+    final fun asString(): kotlin/String // dev.rnett.symbolexport.symbol/NameSegments.asString|asString(){}[0]
+    final fun component1(): kotlin.collections/List<kotlin/String> // dev.rnett.symbolexport.symbol/NameSegments.component1|component1(){}[0]
+    final fun copy(kotlin.collections/List<kotlin/String> = ...): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameSegments.copy|copy(kotlin.collections.List<kotlin.String>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/NameSegments.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/NameSegments.hashCode|hashCode(){}[0]
+    final fun plus(dev.rnett.symbolexport.symbol/NameSegments): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameSegments.plus|plus(dev.rnett.symbolexport.symbol.NameSegments){}[0]
+    final fun plus(kotlin/String): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameSegments.plus|plus(kotlin.String){}[0]
+    final fun resolve(kotlin/Array<out kotlin/String>...): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameSegments.resolve|resolve(kotlin.Array<out|kotlin.String>...){}[0]
+    final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/NameSegments.toString|toString(){}[0]
+}
+
+sealed class dev.rnett.symbolexport.symbol/Symbol : dev.rnett.symbolexport.symbol/NameLike { // dev.rnett.symbolexport.symbol/Symbol|null[0]
+    final val fullName // dev.rnett.symbolexport.symbol/Symbol.fullName|{}fullName[0]
+        final fun <get-fullName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.fullName.<get-fullName>|<get-fullName>(){}[0]
+    open val segments // dev.rnett.symbolexport.symbol/Symbol.segments|{}segments[0]
+        open fun <get-segments>(): kotlin.collections/List<kotlin/String> // dev.rnett.symbolexport.symbol/Symbol.segments.<get-segments>|<get-segments>(){}[0]
+
+    open fun asString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.asString|asString(){}[0]
+    open fun plus(dev.rnett.symbolexport.symbol/NameSegments): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.plus|plus(dev.rnett.symbolexport.symbol.NameSegments){}[0]
+    open fun plus(kotlin/String): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.plus|plus(kotlin.String){}[0]
+    open fun resolve(kotlin/Array<out kotlin/String>...): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.resolve|resolve(kotlin.Array<out|kotlin.String>...){}[0]
+
+    final class Classifier : dev.rnett.symbolexport.symbol/Symbol { // dev.rnett.symbolexport.symbol/Symbol.Classifier|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/NameSegments, dev.rnett.symbolexport.symbol/NameSegments) // dev.rnett.symbolexport.symbol/Symbol.Classifier.<init>|<init>(dev.rnett.symbolexport.symbol.NameSegments;dev.rnett.symbolexport.symbol.NameSegments){}[0]
+
+        final val classNames // dev.rnett.symbolexport.symbol/Symbol.Classifier.classNames|{}classNames[0]
+            final fun <get-classNames>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.Classifier.classNames.<get-classNames>|<get-classNames>(){}[0]
+        final val packageName // dev.rnett.symbolexport.symbol/Symbol.Classifier.packageName|{}packageName[0]
+            final fun <get-packageName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.Classifier.packageName.<get-packageName>|<get-packageName>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.Classifier.component1|component1(){}[0]
+        final fun component2(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.Classifier.component2|component2(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/NameSegments = ..., dev.rnett.symbolexport.symbol/NameSegments = ...): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol/Symbol.Classifier.copy|copy(dev.rnett.symbolexport.symbol.NameSegments;dev.rnett.symbolexport.symbol.NameSegments){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.Classifier.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.Classifier.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.Classifier.toString|toString(){}[0]
+    }
+
+    final class ClassifierMember : dev.rnett.symbolexport.symbol/Symbol.Member { // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Classifier, kotlin/String) // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Classifier;kotlin.String){}[0]
+
+        final val classifier // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.classifier|{}classifier[0]
+            final fun <get-classifier>(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.classifier.<get-classifier>|<get-classifier>(){}[0]
+        final val name // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.name|{}name[0]
+            final fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.name.<get-name>|<get-name>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.component1|component1(){}[0]
+        final fun component2(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.component2|component2(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/Symbol.Classifier = ..., kotlin/String = ...): dev.rnett.symbolexport.symbol/Symbol.ClassifierMember // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.copy|copy(dev.rnett.symbolexport.symbol.Symbol.Classifier;kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.toString|toString(){}[0]
+    }
+
+    final class TopLevelMember : dev.rnett.symbolexport.symbol/Symbol.Member { // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/NameSegments, kotlin/String) // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.<init>|<init>(dev.rnett.symbolexport.symbol.NameSegments;kotlin.String){}[0]
+
+        final val name // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.name|{}name[0]
+            final fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.name.<get-name>|<get-name>(){}[0]
+        final val packageName // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.packageName|{}packageName[0]
+            final fun <get-packageName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.packageName.<get-packageName>|<get-packageName>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.component1|component1(){}[0]
+        final fun component2(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.component2|component2(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/NameSegments = ..., kotlin/String = ...): dev.rnett.symbolexport.symbol/Symbol.TopLevelMember // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.copy|copy(dev.rnett.symbolexport.symbol.NameSegments;kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.toString|toString(){}[0]
+    }
+
+    sealed class Member : dev.rnett.symbolexport.symbol/Symbol { // dev.rnett.symbolexport.symbol/Symbol.Member|null[0]
+        abstract val name // dev.rnett.symbolexport.symbol/Symbol.Member.name|{}name[0]
+            abstract fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.Member.name.<get-name>|<get-name>(){}[0]
+    }
+}

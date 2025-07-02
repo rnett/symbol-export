@@ -1,5 +1,7 @@
 package build
 
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
+
 plugins {
     kotlin("multiplatform")
 }
@@ -34,6 +36,15 @@ kotlin {
     sourceSets.configureEach {
         explicitApi()
         languageSettings {
+        }
+    }
+
+    @OptIn(ExperimentalAbiValidation::class)
+    abiValidation {
+        enabled = true
+        klib {
+            enabled = true
+            keepUnsupportedTargets = true
         }
     }
 }

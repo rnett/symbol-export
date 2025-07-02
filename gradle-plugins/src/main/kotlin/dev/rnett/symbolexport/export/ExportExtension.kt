@@ -1,31 +1,30 @@
 package dev.rnett.symbolexport.export
 
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 
-public open class ExportExtension(objectFactory: ObjectFactory) {
+public abstract class ExportExtension {
 
     /**
      * Where the exported symbols should be stored. Has no real meaning, there is no reason to set it.
      */
-    public val symbolExportOutputDirectory: DirectoryProperty = objectFactory.directoryProperty()
+    public abstract val symbolExportOutputDirectory: DirectoryProperty
 
     /**
      * If true, the symbol export annotations dependency will automatically be added to any exported source sets.
      */
-    public val autoAddAnnotationDependency: Property<Boolean> = objectFactory.property(Boolean::class.java)
+    public abstract val autoAddAnnotationDependency: Property<Boolean>
 
     /**
      * The source sets to export from.  If unset or empty, exports from all, which is the default.
      */
-    public val exportFromSourceSets: SetProperty<String> = objectFactory.setProperty(String::class.java)
+    public abstract val exportFromSourceSets: SetProperty<String>
 
     /**
      * Do not export from these source sets.
      */
-    public val ignoreSourceSets: SetProperty<String> = objectFactory.setProperty(String::class.java)
+    public abstract val ignoreSourceSets: SetProperty<String>
 
     /**
      * The project name to use for the exported symbols.
@@ -33,5 +32,5 @@ public open class ExportExtension(objectFactory: ObjectFactory) {
      *
      * Defaults to the Gradle project name.
      */
-    public val projectName: Property<String> = objectFactory.property(String::class.java)
+    public abstract val projectName: Property<String>
 }

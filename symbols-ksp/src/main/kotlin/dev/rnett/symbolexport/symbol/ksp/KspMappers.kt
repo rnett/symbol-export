@@ -11,7 +11,7 @@ import dev.rnett.symbolexport.symbol.NameLike
  */
 @Suppress("DEPRECATION")
 @Deprecated("KSName does not implement equals, so equality checks will likely fail.")
-public fun NameLike.asKsName(resolver: Resolver) = resolver.getKsNameFromSymbol(this)
+public fun NameLike.asKsName(resolver: Resolver): KSName = resolver.getKsNameFromSymbol(this)
 
 /**
  * [KSName] does not implement equals, so equality checks will likely fail.

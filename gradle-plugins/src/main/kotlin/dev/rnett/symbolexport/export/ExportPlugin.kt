@@ -19,7 +19,7 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
     private val logger = LoggerFactory.getLogger(ExportPlugin::class.java)
 
     internal companion object {
-        const val CONFIGURATION_NAME = "exportedSymbols"
+        internal const val CONFIGURATION_NAME = "exportedSymbols"
     }
 
     private object PluginParameters {

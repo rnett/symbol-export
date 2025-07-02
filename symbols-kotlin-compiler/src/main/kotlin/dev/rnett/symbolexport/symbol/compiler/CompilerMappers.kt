@@ -8,6 +8,6 @@ import org.jetbrains.kotlin.name.Name
 
 public fun NameLike.asFqName(): FqName = FqName.fromSegments(this.segments)
 
-public fun Symbol.Classifier.asClassId() = ClassId(packageName.asFqName(), classNames.asFqName(), false)
+public fun Symbol.Classifier.asClassId(): ClassId = ClassId(packageName.asFqName(), classNames.asFqName(), false)
 
-public fun Symbol.Member.name() = Name.identifier(name)
+public fun Symbol.Member.name(): Name = Name.identifier(name)
