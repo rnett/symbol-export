@@ -8,7 +8,7 @@ dependencyResolutionManagement {
 }
 
 gradle.beforeProject {
-    group = "com.rnett.symbol-export"
+    group = "dev.rnett.symbol-export"
     version = "1.0-SNAPSHOT"
 }
 

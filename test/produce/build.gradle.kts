@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    id("com.rnett.symbol-export.export")
+    id("dev.rnett.symbol-export.export")
 }
 
 kotlin {

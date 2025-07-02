@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.version
-
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
@@ -13,7 +11,7 @@ dependencyResolutionManagement {
 }
 
 gradle.beforeProject {
-    group = "com.rnett.test"
+    group = "dev.rnett.test"
     version = "1.0-SNAPSHOT"
 }
 

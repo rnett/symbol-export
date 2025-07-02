@@ -1,4 +1,4 @@
-package com.rnett.test
+package dev.rnett.test
 
 fun test() {
 

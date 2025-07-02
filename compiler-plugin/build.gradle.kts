@@ -19,7 +19,7 @@ buildConfig {
         internalVisibility = true
     }
 
-    packageName("com.rnett.symbolexport")
+    packageName("dev.rnett.symbolexport")
     buildConfigField("String", "KOTLIN_PLUGIN_ID", "\"${rootProject.group}\"")
 }
 

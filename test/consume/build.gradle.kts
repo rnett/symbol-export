@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
-    id("com.rnett.symbol-export.import")
+    id("dev.rnett.symbol-export.import")
 }
 
 kotlin {
