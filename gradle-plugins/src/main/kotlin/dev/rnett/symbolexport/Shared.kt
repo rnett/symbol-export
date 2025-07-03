@@ -11,6 +11,5 @@ internal object Shared {
     }
 
     val USAGE_ATTRIBUTE_VALUE = SymbolExportUsage
-    val SYMBOLS_FILE_EXTENSION = ".symbols.json"
-    val SYMBOLS_FILE_PREFIX = "exported-symbols-"
+    val EXPORTED_SYMBOLS_FILENAME = "exported-symbols.jsonl"
 }

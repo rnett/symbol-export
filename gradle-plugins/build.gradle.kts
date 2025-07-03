@@ -6,7 +6,8 @@ plugins {
 }
 
 dependencies {
-    shadow(kotlin("gradle-plugin-api"))
+    compileOnly(kotlin("stdlib"))
+    compileOnly(kotlin("gradle-plugin-api"))
 
     implementation(project(":names-internal"))
     implementation(project(":generator"))
@@ -17,7 +18,6 @@ tasks.shadowJar {
         exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
     }
     relocate("kotlinx.serialization", "dev.rnett.symbolexport.kotlinx.serialization")
-    archiveClassifier = ""
 }
 
 fun libraryCoordinates(project: Project) = buildString {

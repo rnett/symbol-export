@@ -32,6 +32,7 @@ import org.jetbrains.kotlin.fir.declarations.utils.isActual
 import org.jetbrains.kotlin.fir.extensions.FirDeclarationPredicateRegistrar
 import org.jetbrains.kotlin.fir.extensions.predicate.DeclarationPredicate
 import org.jetbrains.kotlin.fir.packageFqName
+import org.jetbrains.kotlin.fir.resolve.transformers.publishedApiEffectiveVisibility
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassLikeSymbol
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
@@ -71,10 +72,6 @@ class SymbolExportCheckerExtension(session: FirSession, val reporter: NameReport
                 return
 
             if (declaration.isActual) {
-                reporter.reportOn(
-                    declaration.source,
-                    Errors.NLG_NO_ACTUAL
-                )
                 return
             }
 
@@ -97,11 +94,13 @@ class SymbolExportCheckerExtension(session: FirSession, val reporter: NameReport
                 return
             }
 
-            if (!declaration.effectiveVisibility.publicApi) {
+            val visibility = declaration.publishedApiEffectiveVisibility ?: declaration.effectiveVisibility
+
+            if (!visibility.publicApi) {
                 reporter.reportOn(
                     declaration.source,
                     Errors.NLG_MUST_BE_PUBLIC_OR_PUBLISHED_API,
-                    declaration.annotations.toString()
+                    declaration.effectiveVisibility.toString()
                 )
                 return
             }
@@ -174,7 +173,6 @@ class SymbolExportCheckerExtension(session: FirSession, val reporter: NameReport
         val NLG_PARENT_MUST_BE_EXPOSED by error0<KtDeclaration>()
         val NLG_NO_LOCAL_DECLARATIONS by error0<KtDeclaration>()
         val NLG_MUST_BE_PUBLIC_OR_PUBLISHED_API by error1<KtDeclaration, String>()
-        val NLG_NO_ACTUAL by error0<KtDeclaration>()
 
         override val MAP = KtDiagnosticFactoryToRendererMap("SymbolExport").apply {
             put(
@@ -187,7 +185,7 @@ class SymbolExportCheckerExtension(session: FirSession, val reporter: NameReport
             )
             put(
                 NLG_MUST_BE_PUBLIC_OR_PUBLISHED_API,
-                "'@ExportSymbol' declarations must be 'public' or '@PublishedApi internal' {0}.",
+                "'@ExportSymbol' declarations must be 'public' or '@PublishedApi internal', but was {0}.",
                 object : DiagnosticParameterRenderer<String> {
                     override fun render(
                         obj: String,
@@ -197,10 +195,6 @@ class SymbolExportCheckerExtension(session: FirSession, val reporter: NameReport
                     }
 
                 }
-            )
-            put(
-                NLG_NO_ACTUAL,
-                "'@ExportSymbol' on actual declarations is not supported, annotate the expect declaration instead."
             )
         }
 

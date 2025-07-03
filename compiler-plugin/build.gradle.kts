@@ -8,6 +8,7 @@ plugins {
 }
 
 dependencies {
+    compileOnly(kotlin("stdlib"))
     compileOnly(kotlin("compiler"))
 
     implementation(libs.kotlinx.serialization.json)
@@ -19,7 +20,6 @@ tasks.shadowJar {
         exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
     }
     relocate("kotlinx.serialization", "dev.rnett.symbolexport.kotlinx.serialization")
-    archiveClassifier = ""
 }
 
 buildConfig {

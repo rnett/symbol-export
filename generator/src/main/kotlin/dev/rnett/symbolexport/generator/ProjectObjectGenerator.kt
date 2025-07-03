@@ -117,7 +117,7 @@ internal class ProjectObjectGenerator(
         otherSymbols: Map<String, Set<InternalName>>
     ): String {
         return generateAllSymbolsProperty(
-            topLevelSymbols.map { "this@`$objectName`.`${it.fieldName()}`" }.toSet() +
+            topLevelSymbols.map { "`$objectName`.`${it.fieldName()}`" }.toSet() +
                     otherSymbols.flatMap {
                         val prefix = it.key.plus(".")
                         it.value.map { "$prefix`${it.fieldName()}`" }

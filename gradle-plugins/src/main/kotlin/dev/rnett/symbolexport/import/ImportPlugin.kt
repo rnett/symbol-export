@@ -2,6 +2,7 @@ package dev.rnett.symbolexport.import
 
 import dev.rnett.symbolexport.BuildConfig
 import dev.rnett.symbolexport.Shared
+import dev.rnett.symbolexport.Shared.EXPORTED_SYMBOLS_FILENAME
 import dev.rnett.symbolexport.generator.SymbolGenerator
 import dev.rnett.symbolexport.kotlinExtension
 import org.gradle.api.DefaultTask
@@ -117,7 +118,7 @@ public abstract class ImportSymbolGenerationTask : DefaultTask() {
     @TaskAction
     public fun doGeneration() {
         val files =
-            symbolFiles.files.filter { it.exists() && it.isFile && it.name.endsWith(Shared.SYMBOLS_FILE_EXTENSION) }
+            symbolFiles.files.filter { it.exists() && it.isFile && it.name == EXPORTED_SYMBOLS_FILENAME }
         if (files.isEmpty()) {
             didWork = false
             return

@@ -2,6 +2,7 @@ package dev.rnett.symbolexport.export
 
 import dev.rnett.symbolexport.BuildConfig
 import dev.rnett.symbolexport.Shared
+import dev.rnett.symbolexport.Shared.EXPORTED_SYMBOLS_FILENAME
 import dev.rnett.symbolexport.withDisallowedChanges
 import org.gradle.api.Project
 import org.gradle.api.attributes.Usage
@@ -53,8 +54,8 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
     private val KotlinCompilation<*>.symbolExtension
         get() = this.project.extensions.getByType(ExportExtension::class.java)
 
-    private val KotlinCompilation<*>.symbolExportFile: Provider<File>
-        get() = symbolExtension.symbolExportOutputDirectory.asFile.map { it.resolve("${Shared.SYMBOLS_FILE_PREFIX}${defaultSourceSet.name}${Shared.SYMBOLS_FILE_EXTENSION}") }
+    private val KotlinCompilation<*>.symbolExportDir: Provider<File>
+        get() = symbolExtension.symbolExportOutputDirectory.asFile.map { it.resolve("${defaultSourceSet.name}") }
 
     override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean {
         if ("test" in kotlinCompilation.name.lowercase()) {
@@ -94,12 +95,12 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
             kotlinCompilation.target.name
         )
 
-        val file = kotlinCompilation.symbolExportFile
+        val dir = kotlinCompilation.symbolExportDir
 
         kotlinCompilation.compileTaskProvider.configure {
-            it.outputs.file(file)
+            it.outputs.dir(dir)
                 .optional()
-                .withPropertyName("symbolExportOutputFile")
+                .withPropertyName("symbolExportOutputDirectory")
         }
     }
 
@@ -134,10 +135,10 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
             symbolExportOutputDirectory.disallowChanges()
 
         }
-        val file = kotlinCompilation.symbolExportFile
+        val dir = kotlinCompilation.symbolExportDir
 
         project.artifacts {
-            it.add(CONFIGURATION_NAME, kotlinCompilation.compileTaskProvider.flatMap { file }) {
+            it.add(CONFIGURATION_NAME, kotlinCompilation.compileTaskProvider.flatMap { dir }) {
                 it.builtBy(kotlinCompilation.compileTaskProvider)
             }
         }
@@ -146,7 +147,7 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
             listOf(
                 SubpluginOption(
                     PluginParameters.OUTPUT_FILE,
-                    file.get().absolutePath
+                    dir.get().resolve(EXPORTED_SYMBOLS_FILENAME).absolutePath
                 ),
                 SubpluginOption(
                     PluginParameters.PROJECT_NAME,
