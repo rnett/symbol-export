@@ -2,13 +2,22 @@ plugins {
     id("build.kotlin-jvm")
     id("java-gradle-plugin")
     alias(libs.plugins.buildconfig)
+    alias(libs.plugins.shadow)
 }
 
 dependencies {
+    shadow(kotlin("gradle-plugin-api"))
+
     implementation(project(":names-internal"))
     implementation(project(":generator"))
-    implementation(libs.kotlinx.serialization.json)
-    implementation(kotlin("gradle-plugin-api"))
+}
+
+tasks.shadowJar {
+    dependencies {
+        exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
+    }
+    relocate("kotlinx.serialization", "dev.rnett.symbolexport.kotlinx.serialization")
+    archiveClassifier = ""
 }
 
 fun libraryCoordinates(project: Project) = buildString {

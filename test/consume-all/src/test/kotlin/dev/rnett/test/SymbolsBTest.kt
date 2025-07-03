@@ -16,31 +16,31 @@ class SymbolsBTest {
 
         // Common symbols - Check both presence in ALL_SYMBOLS and correct value
         // Top-level function
-        assertTrue(Symbols.`produce-b`.dev_rnett_test_topLevelFunction in Symbols.`produce-b`.ALL_SYMBOLS)
+        assertTrue(Symbols.ProduceB.dev_rnett_test_topLevelFunction in Symbols.ProduceB.ALL_SYMBOLS)
         assertEquals(
             Symbol.TopLevelMember(packageName = NameSegments("dev", "rnett", "test"), name = "topLevelFunction"),
-            Symbols.`produce-b`.dev_rnett_test_topLevelFunction
+            Symbols.ProduceB.dev_rnett_test_topLevelFunction
         )
 
         // Top-level property
-        assertTrue(Symbols.`produce-b`.dev_rnett_test_topLevelProperty in Symbols.`produce-b`.ALL_SYMBOLS)
+        assertTrue(Symbols.ProduceB.dev_rnett_test_topLevelProperty in Symbols.ProduceB.ALL_SYMBOLS)
         assertEquals(
             Symbol.TopLevelMember(packageName = NameSegments("dev", "rnett", "test"), name = "topLevelProperty"),
-            Symbols.`produce-b`.dev_rnett_test_topLevelProperty
+            Symbols.ProduceB.dev_rnett_test_topLevelProperty
         )
 
         // Class
-        assertTrue(Symbols.`produce-b`.dev_rnett_test_ProducerBOnly in Symbols.`produce-b`.ALL_SYMBOLS)
+        assertTrue(Symbols.ProduceB.dev_rnett_test_ProducerBOnly in Symbols.ProduceB.ALL_SYMBOLS)
         assertEquals(
             Symbol.Classifier(
                 packageName = NameSegments("dev", "rnett", "test"),
                 classNames = NameSegments("ProducerBOnly")
             ),
-            Symbols.`produce-b`.dev_rnett_test_ProducerBOnly
+            Symbols.ProduceB.dev_rnett_test_ProducerBOnly
         )
 
         // Class method
-        assertTrue(Symbols.`produce-b`.dev_rnett_test_ProducerBOnly_test in Symbols.`produce-b`.ALL_SYMBOLS)
+        assertTrue(Symbols.ProduceB.dev_rnett_test_ProducerBOnly_test in Symbols.ProduceB.ALL_SYMBOLS)
         assertEquals(
             Symbol.ClassifierMember(
                 classifier = Symbol.Classifier(
@@ -49,14 +49,14 @@ class SymbolsBTest {
                 ),
                 name = "test"
             ),
-            Symbols.`produce-b`.dev_rnett_test_ProducerBOnly_test
+            Symbols.ProduceB.dev_rnett_test_ProducerBOnly_test
         )
 
         // JVM-specific symbol
-        assertTrue(Symbols.`produce-b`.JvmMain.dev_rnett_test_jvmOnly in Symbols.`produce-b`.ALL_SYMBOLS)
+        assertTrue(Symbols.ProduceB.JvmMain.dev_rnett_test_jvmOnly in Symbols.ProduceB.ALL_SYMBOLS)
         assertEquals(
             Symbol.TopLevelMember(packageName = NameSegments("dev", "rnett", "test"), name = "jvmOnly"),
-            Symbols.`produce-b`.JvmMain.dev_rnett_test_jvmOnly
+            Symbols.ProduceB.JvmMain.dev_rnett_test_jvmOnly
         )
     }
 
@@ -69,13 +69,13 @@ class SymbolsBTest {
             packageName = NameSegments("dev", "rnett", "test"),
             name = "notExposedFun"
         )
-        assertFalse(notExposedFun in Symbols.`produce-b`.ALL_SYMBOLS)
+        assertFalse(notExposedFun in Symbols.ProduceB.ALL_SYMBOLS)
 
         // Check non-exported top-level property
         val notExposedProperty = Symbol.TopLevelMember(
             packageName = NameSegments("dev", "rnett", "test"),
             name = "notExposedProperty"
         )
-        assertFalse(notExposedProperty in Symbols.`produce-b`.ALL_SYMBOLS)
+        assertFalse(notExposedProperty in Symbols.ProduceB.ALL_SYMBOLS)
     }
 }

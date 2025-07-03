@@ -78,12 +78,15 @@ internal class ProjectObjectGenerator(
                 appendLine()
             }
 
-            appendLine(
-                generateAllSymbols(
-                    commonMain.orEmpty(),
-                    otherPlatforms.mapKeys { it.key.objectName() }
-                ).replaceIndent("    ")
-            )
+            if (objectName != null) {
+                appendLine(
+                    generateAllSymbols(
+                        objectName,
+                        commonMain.orEmpty(),
+                        otherPlatforms.mapKeys { it.key.objectName() }
+                    ).replaceIndent("    ")
+                )
+            }
             appendLine()
             if (objectName != null) {
                 appendLine("}")
@@ -100,20 +103,27 @@ internal class ProjectObjectGenerator(
             appendLine()
             append(generateSingleString(objectName, sourceSet, symbols, javadocPrefix) {
                 appendLine()
-                appendLine(generateAllSymbols(symbols, emptyMap()).replaceIndent("    "))
-                appendLine()
+                if (objectName != null) {
+                    appendLine(generateAllSymbols(objectName, symbols, emptyMap()).replaceIndent("    "))
+                    appendLine()
+                }
             })
         }
     }
 
-    private fun generateAllSymbols(topLevelSymbols: Set<InternalName>, otherSymbols: Map<String, Set<InternalName>>) =
-        generateAllSymbolsProperty(
-            topLevelSymbols.map { it.fieldName() }.toSet() +
+    private fun generateAllSymbols(
+        objectName: String,
+        topLevelSymbols: Set<InternalName>,
+        otherSymbols: Map<String, Set<InternalName>>
+    ): String {
+        return generateAllSymbolsProperty(
+            topLevelSymbols.map { "this@`$objectName`.`${it.fieldName()}`" }.toSet() +
                     otherSymbols.flatMap {
                         val prefix = it.key.plus(".")
-                        it.value.map { prefix + it.fieldName() }
+                        it.value.map { "$prefix`${it.fieldName()}`" }
                     }.toSet()
         )
+    }
 
     companion object {
 
@@ -126,7 +136,7 @@ internal class ProjectObjectGenerator(
         ) = buildString {
             appendLine()
 
-            val commentString = "Generated from source set `${sourceSet.name}`"
+            val commentString = "Generated from the source set `${sourceSet.name}`"
 
             if (objectName != null) {
 

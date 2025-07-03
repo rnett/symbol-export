@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="produce-b-js-1.0-SNAPSHOT">
-    <output-path>$PROJECT_DIR$/test/produce-b/build/libs</output-path>
-    <root id="archive" name="produce-b-js-1.0-SNAPSHOT.jar" />
-  </artifact>
-</component>

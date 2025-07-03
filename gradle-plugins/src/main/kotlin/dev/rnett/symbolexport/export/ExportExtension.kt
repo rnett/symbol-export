@@ -32,5 +32,5 @@ public abstract class ExportExtension {
      *
      * Defaults to the Gradle project name.
      */
-    public abstract val projectName: Property<String>
+    public abstract val projectSymbolsName: Property<String>
 }

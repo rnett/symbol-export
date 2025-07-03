@@ -51,10 +51,6 @@ public class SymbolGenerator(
                 appendLine("// ${project.symbolsCommentString()}")
                 appendLine()
 
-                appendLine(javadocString(project.symbolsCommentString()))
-                appendLine("public val Symbols.`${project.projectName}`: `${project.projectName}` get() = `${project.projectName}`")
-                appendLine()
-
                 append(objectString)
             }
         })
@@ -111,6 +107,8 @@ public class SymbolGenerator(
     }
 
     private fun premable(packageName: String) = """
+        @file:Suppress("RemoveRedundantBackticks", "RedundantVisibilityModifier", "ClassName")
+        
         package $packageName
         
         import dev.rnett.symbolexport.symbol.Symbol.Classifier

@@ -39,7 +39,7 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
             autoAddAnnotationDependency.convention(true)
             ignoreSourceSets.convention(emptySet())
             exportFromSourceSets.convention(emptySet())
-            projectName.convention(target.provider { target.name })
+            projectSymbolsName.convention(target.provider { target.name })
         }
 
         val nameListConfiguration = target.configurations.register(CONFIGURATION_NAME) {
@@ -150,7 +150,7 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
                 ),
                 SubpluginOption(
                     PluginParameters.PROJECT_NAME,
-                    kotlinCompilation.symbolExtension.projectName.get()
+                    kotlinCompilation.symbolExtension.projectSymbolsName.get()
                 ),
                 SubpluginOption(
                     PluginParameters.PROJECT_GROUP,

@@ -14,3 +14,7 @@ kotlin {
     val commonMain by sourceSets.getting {
     }
 }
+
+symbolExport {
+    projectSymbolsName = "ProduceB"
+}

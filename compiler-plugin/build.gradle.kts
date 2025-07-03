@@ -4,15 +4,22 @@ import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 plugins {
     id("build.kotlin-jvm")
     alias(libs.plugins.buildconfig)
+    alias(libs.plugins.shadow)
 }
-
-
 
 dependencies {
     compileOnly(kotlin("compiler"))
 
     implementation(libs.kotlinx.serialization.json)
     implementation(project(":names-internal"))
+}
+
+tasks.shadowJar {
+    dependencies {
+        exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
+    }
+    relocate("kotlinx.serialization", "dev.rnett.symbolexport.kotlinx.serialization")
+    archiveClassifier = ""
 }
 
 buildConfig {
