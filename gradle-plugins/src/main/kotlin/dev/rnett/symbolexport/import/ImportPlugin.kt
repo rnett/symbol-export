@@ -33,7 +33,10 @@ public class ImportPlugin : Plugin<Project> {
         val configuration = target.configurations.register("importSymbols") {
             it.isCanBeConsumed = false
             it.attributes {
-                it.attribute(Usage.USAGE_ATTRIBUTE, Shared.USAGE_ATTRIBUTE_VALUE)
+                it.attribute(
+                    Usage.USAGE_ATTRIBUTE,
+                    target.objects.named(Usage::class.java, Shared.USAGE_ATTRIBUTE_VALUE)
+                )
             }
         }
 

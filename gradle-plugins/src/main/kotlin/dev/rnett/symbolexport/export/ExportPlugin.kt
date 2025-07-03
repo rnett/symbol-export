@@ -45,7 +45,10 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
 
         val nameListConfiguration = target.configurations.register(CONFIGURATION_NAME) {
             it.attributes {
-                it.attribute(Usage.USAGE_ATTRIBUTE, Shared.USAGE_ATTRIBUTE_VALUE)
+                it.attribute(
+                    Usage.USAGE_ATTRIBUTE,
+                    target.objects.named(Usage::class.java, Shared.USAGE_ATTRIBUTE_VALUE)
+                )
             }
             it.isCanBeResolved = false
         }
