@@ -138,10 +138,10 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
             symbolExportOutputDirectory.disallowChanges()
 
         }
-        val dir = kotlinCompilation.symbolExportDir
+        val file = kotlinCompilation.symbolExportDir.map { it.resolve(EXPORTED_SYMBOLS_FILENAME) }
 
         project.artifacts {
-            it.add(CONFIGURATION_NAME, kotlinCompilation.compileTaskProvider.flatMap { dir }) {
+            it.add(CONFIGURATION_NAME, kotlinCompilation.compileTaskProvider.flatMap { file }) {
                 it.builtBy(kotlinCompilation.compileTaskProvider)
             }
         }
@@ -150,7 +150,7 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
             listOf(
                 SubpluginOption(
                     PluginParameters.OUTPUT_FILE,
-                    dir.get().resolve(EXPORTED_SYMBOLS_FILENAME).absolutePath
+                    file.get().absolutePath
                 ),
                 SubpluginOption(
                     PluginParameters.PROJECT_NAME,

@@ -8,7 +8,7 @@ import kotlinx.serialization.json.Json
 import java.io.File
 
 
-public class SymbolGenerator(
+class SymbolGenerator(
     private val outputDirectory: File,
     private val packageName: String,
     private val flattenProjects: Boolean
@@ -17,7 +17,7 @@ public class SymbolGenerator(
         isLenient = true
     }
 
-    public fun writeSymbols(files: List<File>) {
+    fun writeSymbols(files: List<File>) {
         val entries = files.flatMap { readFile(it) }
         if (entries.isEmpty()) return
 
