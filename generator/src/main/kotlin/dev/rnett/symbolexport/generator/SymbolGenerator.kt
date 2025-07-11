@@ -30,7 +30,7 @@ class SymbolGenerator(
             writeFile(
                 "Symbols.kt", """
                 // symbols from multiple projects are present, and will be added to this object as extensions
-                object Symbols
+                internal object Symbols
             """.trimIndent()
             )
 
@@ -73,7 +73,7 @@ class SymbolGenerator(
     private fun writeSymbolsFile(content: String) {
         writeFile("Symbols.kt", buildString {
             appendLine(javadocString("Symbols from all projects"))
-            appendLine("object Symbols {")
+            appendLine("internal object Symbols {")
 
             appendLine(content.trimEnd().replaceIndent("    "))
 

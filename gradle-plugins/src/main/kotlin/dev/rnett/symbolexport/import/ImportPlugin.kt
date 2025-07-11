@@ -26,7 +26,7 @@ public class ImportPlugin : Plugin<Project> {
         val extension = target.extensions.create("symbolImport", ImportExtension::class.java).apply {
             generatedSymbolsPackage.convention(target.provider { target.group.toString() })
             autoAddSymbolsDependency.convention(true)
-            symbolGenerationDirectory.convention(target.layout.buildDirectory.dir("generated/source/symbol-export"))
+            symbolGenerationDirectory.convention(target.layout.buildDirectory.dir("generated/sources/symbol-export"))
             flattenDependencyProjects.convention(false)
         }
 
