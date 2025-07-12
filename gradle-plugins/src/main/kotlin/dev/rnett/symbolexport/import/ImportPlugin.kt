@@ -122,7 +122,7 @@ public abstract class ImportSymbolGenerationTask : DefaultTask() {
     public fun doGeneration() {
         val files =
             symbolFiles.files.filter { it.exists() && it.isFile && it.name == EXPORTED_SYMBOLS_FILENAME }
-        logger.warn("Files: {}", files)
+
         if (files.isEmpty()) {
             didWork = false
             return
