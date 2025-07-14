@@ -3,110 +3,304 @@ package dev.rnett.symbolexport.generator
 import dev.rnett.symbolexport.internal.InternalName
 import dev.rnett.symbolexport.internal.InternalNameEntry
 import dev.rnett.symbolexport.internal.ProjectCoordinates
-import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.io.File
-import kotlin.test.assertFalse
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class SymbolGeneratorTest {
 
-    private val json = Json {
-        isLenient = true
+    // Mock ProjectObjectGenerator for testing
+    private class MockProjectObjectGenerator : ProjectObjectGenerator {
+        var lastObjectName: String? = null
+        var lastNames: Set<NameFromSourceSet>? = null
+        var lastJavadocPrefix: String? = null
+        var returnValue: String? = "mock-generated-content"
+
+        override fun generate(objectName: String?, names: Set<NameFromSourceSet>, javadocPrefix: String?): String? {
+            lastObjectName = objectName
+            lastNames = names
+            lastJavadocPrefix = javadocPrefix
+            return returnValue
+        }
+
+        fun reset() {
+            lastObjectName = null
+            lastNames = null
+            lastJavadocPrefix = null
+            returnValue = "mock-generated-content"
+        }
     }
 
-    @TempDir
-    lateinit var tempDir: File
+    private fun createTestEntry(
+        projectName: String = "test-project",
+        group: String = "com.example",
+        artifact: String = "test-artifact",
+        version: String = "1.0.0",
+        sourceSetName: String = "commonMain",
+        name: InternalName = InternalName.Classifier(listOf("test"), listOf("TestClass"))
+    ) = InternalNameEntry(
+        projectName = projectName,
+        projectCoordinates = ProjectCoordinates(group, artifact, version),
+        sourceSetName = sourceSetName,
+        name = name
+    )
 
     @Test
-    fun `test writeSymbols with empty files list`() {
-        val outputDir = File(tempDir, "output")
-        val generator = SymbolGenerator(outputDir, "test.package", false)
+    fun testGenerateSymbolsFileWithEmptyEntries() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.test", false, mockGenerator)
 
-        generator.generateSymbolsFile(emptyList())
+        val result = symbolGenerator.generateSymbolsFile(emptyList())
 
-        // No files should be created
-        assertFalse(outputDir.exists())
-    }
-
-    @Test
-    fun `test writeSymbols with flattenProjects true`() {
-        val outputDir = File(tempDir, "output")
-        val generator = SymbolGenerator(outputDir, "test.package", true)
-
-        val inputFile = createInputFile()
-
-        generator.generateSymbolsFile(listOf(inputFile))
-
-        // Verify output file was created
-        val outputFile = File(outputDir, "test/package/Symbols.kt")
-        assertTrue(outputFile.exists())
-
-        // Verify content
-        val content = outputFile.readText()
-        assertTrue(content.contains("internal object Symbols {"))
-        assertTrue(content.contains("// Symbols from project `TestProject` with coordinates `com.example:test:1.0.0`"))
-        assertTrue(content.contains("val dev_rnett_test_topLevelFunction: TopLevelMember"))
-    }
-
-    @Test
-    fun `test writeSymbols with flattenProjects false`() {
-        val outputDir = File(tempDir, "output")
-        val generator = SymbolGenerator(outputDir, "test.package", false)
-
-        val inputFile = createInputFile()
-
-        generator.generateSymbolsFile(listOf(inputFile))
-
-        // Verify output file was created
-        val outputFile = File(outputDir, "test/package/Symbols.kt")
-        assertTrue(outputFile.exists())
-
-        // Verify content
-        val content = outputFile.readText()
-        assertTrue(content.contains("internal object Symbols {"))
-        assertTrue(content.contains("// Symbols from project `TestProject` with coordinates `com.example:test:1.0.0`"))
-        assertTrue(content.contains("object TestProject {"))
-        assertTrue(content.contains("val dev_rnett_test_topLevelFunction: TopLevelMember"))
+        // Empty entries should produce an empty symbols file, not null
+        assertTrue(result != null)
+        assertTrue(result.contains("package com.test"))
+        assertTrue(result.contains("internal object Symbols {"))
+        assertTrue(result.contains("}"))
     }
 
     @Test
-    fun `test writeSymbols with multiple projects`() {
-        val outputDir = File(tempDir, "output")
-        val generator = SymbolGenerator(outputDir, "test.package", false)
+    fun testGenerateSymbolsFileWithFlattenProjectsTrue() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.test", true, mockGenerator)
 
-        val inputFile1 = createInputFile("TestProject1")
-        val inputFile2 = createInputFile("TestProject2")
-
-        generator.generateSymbolsFile(listOf(inputFile1, inputFile2))
-
-        // Verify output file was created
-        val outputFile = File(outputDir, "test/package/Symbols.kt")
-        assertTrue(outputFile.exists())
-
-        // Verify content
-        val content = outputFile.readText()
-        assertTrue(content.contains("internal object Symbols {"))
-        assertTrue(content.contains("// Symbols from project `TestProject1` with coordinates `com.example:test:1.0.0`"))
-        assertTrue(content.contains("object TestProject1 {"))
-        assertTrue(content.contains("// Symbols from project `TestProject2` with coordinates `com.example:test:1.0.0`"))
-        assertTrue(content.contains("object TestProject2 {"))
-    }
-
-    private fun createInputFile(projectName: String = "TestProject"): File {
-        val entry = InternalNameEntry(
-            projectName = projectName,
-            projectCoordinates = ProjectCoordinates("com.example", "test", "1.0.0"),
-            sourceSetName = "commonMain",
-            name = InternalName.TopLevelMember(
-                packageName = listOf("dev", "rnett", "test"),
-                name = "topLevelFunction"
+        val entries = listOf(
+            createTestEntry(
+                projectName = "project-a",
+                name = InternalName.Classifier(listOf("com", "example"), listOf("ClassA"))
+            ),
+            createTestEntry(
+                projectName = "project-b",
+                name = InternalName.Classifier(listOf("com", "example"), listOf("ClassB"))
             )
         )
 
-        val file = File(tempDir, "$projectName.json")
-        file.writeText(json.encodeToString(entry))
-        return file
+        val result = symbolGenerator.generateSymbolsFile(entries)
+
+        assertTrue(result != null)
+        assertTrue(result.contains("package com.test"))
+        assertTrue(result.contains("internal object Symbols {"))
+        assertTrue(result.contains("Symbols from project `project-a`"))
+        assertTrue(result.contains("Symbols from project `project-b`"))
+        assertTrue(result.contains("mock-generated-content"))
+    }
+
+    @Test
+    fun testGenerateSymbolsFileWithFlattenProjectsFalse() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.test", false, mockGenerator)
+
+        val entries = listOf(
+            createTestEntry(
+                projectName = "project-a",
+                name = InternalName.Classifier(listOf("com", "example"), listOf("ClassA"))
+            )
+        )
+
+        val result = symbolGenerator.generateSymbolsFile(entries)
+
+        assertTrue(result != null)
+        assertTrue(result.contains("package com.test"))
+        assertTrue(result.contains("internal object Symbols {"))
+        assertTrue(result.contains("Symbols from project `project-a`"))
+        assertTrue(result.contains("mock-generated-content"))
+    }
+
+    @Test
+    fun testGenerateNestedProjectFile() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.test", false, mockGenerator)
+
+        val classifier = InternalName.Classifier(listOf("com", "example"), listOf("TestClass"))
+        val projects = mapOf(
+            NameProject("test-project", dev.rnett.symbolexport.generator.ProjectCoordinates("com.example", "test-artifact", "1.0.0")) to
+                    setOf(NameFromSourceSet("commonMain", classifier))
+        )
+
+        val result = symbolGenerator.generateNestedProjectFile(projects)
+
+        assertTrue(result != null)
+        assertTrue(result.contains("package com.test"))
+        assertTrue(result.contains("internal object Symbols {"))
+        assertTrue(result.contains("Symbols from project `test-project` with coordinates `com.example:test-artifact:1.0.0`"))
+        assertTrue(result.contains("mock-generated-content"))
+
+        // Verify the mock was called with correct parameters
+        assertEquals("test-project", mockGenerator.lastObjectName)
+        assertEquals(setOf(NameFromSourceSet("commonMain", classifier)), mockGenerator.lastNames)
+        assertEquals("Symbols from project `test-project` with coordinates `com.example:test-artifact:1.0.0`", mockGenerator.lastJavadocPrefix)
+    }
+
+    @Test
+    fun testGenerateFlatProjectFile() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.test", true, mockGenerator)
+
+        val classifier = InternalName.Classifier(listOf("com", "example"), listOf("TestClass"))
+        val projects = mapOf(
+            NameProject("test-project", dev.rnett.symbolexport.generator.ProjectCoordinates("com.example", "test-artifact", "1.0.0")) to
+                    setOf(NameFromSourceSet("commonMain", classifier))
+        )
+
+        val result = symbolGenerator.generateFlatProjectFile(projects)
+
+        assertTrue(result != null)
+        assertTrue(result.contains("package com.test"))
+        assertTrue(result.contains("internal object Symbols {"))
+        assertTrue(result.contains("Symbols from project `test-project` with coordinates `com.example:test-artifact:1.0.0`"))
+        assertTrue(result.contains("End `test-project`"))
+        assertTrue(result.contains("mock-generated-content"))
+
+        // Verify the mock was called with correct parameters
+        assertNull(mockGenerator.lastObjectName)
+        assertEquals(setOf(NameFromSourceSet("commonMain", classifier)), mockGenerator.lastNames)
+        assertNull(mockGenerator.lastJavadocPrefix)
+    }
+
+    @Test
+    fun testGenerateSymbolsObject() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.test", false, mockGenerator)
+
+        val classifier = InternalName.Classifier(listOf("com", "example"), listOf("TestClass"))
+        val names = setOf(NameFromSourceSet("commonMain", classifier))
+
+        val result = symbolGenerator.generateSymbolsObject("TestObject", names, "Test javadoc")
+
+        assertEquals("mock-generated-content", result)
+
+        // Verify the mock was called with correct parameters
+        assertEquals("TestObject", mockGenerator.lastObjectName)
+        assertEquals(names, mockGenerator.lastNames)
+        assertEquals("Test javadoc", mockGenerator.lastJavadocPrefix)
+    }
+
+    @Test
+    fun testGenerateSymbolsObjectWithNullObjectName() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.test", false, mockGenerator)
+
+        val classifier = InternalName.Classifier(listOf("com", "example"), listOf("TestClass"))
+        val names = setOf(NameFromSourceSet("commonMain", classifier))
+
+        val result = symbolGenerator.generateSymbolsObject(null, names, null)
+
+        assertEquals("mock-generated-content", result)
+
+        // Verify the mock was called with correct parameters
+        assertNull(mockGenerator.lastObjectName)
+        assertEquals(names, mockGenerator.lastNames)
+        assertNull(mockGenerator.lastJavadocPrefix)
+    }
+
+    @Test
+    fun testGenerateSymbolsFileWithNullContent() {
+        val mockGenerator = MockProjectObjectGenerator()
+        mockGenerator.returnValue = null
+        val symbolGenerator = SymbolGenerator("com.test", false, mockGenerator)
+
+        val entries = listOf(
+            createTestEntry(name = InternalName.Classifier(listOf("com", "example"), listOf("TestClass")))
+        )
+
+        val result = symbolGenerator.generateSymbolsFile(entries)
+
+        // When ProjectObjectGenerator returns null, it gets appended as "null" string
+        assertTrue(result != null)
+        assertTrue(result.contains("package com.test"))
+        assertTrue(result.contains("internal object Symbols {"))
+        assertTrue(result.contains("null"))
+    }
+
+    @Test
+    fun testGenerateSymbolsFileWithMultipleProjects() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.test", false, mockGenerator)
+
+        val entries = listOf(
+            createTestEntry(
+                projectName = "project-a",
+                group = "com.example.a",
+                artifact = "artifact-a",
+                version = "1.0.0",
+                name = InternalName.Classifier(listOf("com", "example", "a"), listOf("ClassA"))
+            ),
+            createTestEntry(
+                projectName = "project-b",
+                group = "com.example.b",
+                artifact = "artifact-b",
+                version = "2.0.0",
+                name = InternalName.Classifier(listOf("com", "example", "b"), listOf("ClassB"))
+            )
+        )
+
+        val result = symbolGenerator.generateSymbolsFile(entries)
+
+        assertTrue(result != null)
+        assertTrue(result.contains("Symbols from project `project-a` with coordinates `com.example.a:artifact-a:1.0.0`"))
+        assertTrue(result.contains("Symbols from project `project-b` with coordinates `com.example.b:artifact-b:2.0.0`"))
+    }
+
+    @Test
+    fun testGenerateSymbolsFileWithMultipleSourceSets() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.test", false, mockGenerator)
+
+        val entries = listOf(
+            createTestEntry(
+                sourceSetName = "commonMain",
+                name = InternalName.Classifier(listOf("com", "example"), listOf("CommonClass"))
+            ),
+            createTestEntry(
+                sourceSetName = "jvmMain",
+                name = InternalName.Classifier(listOf("com", "example"), listOf("JvmClass"))
+            )
+        )
+
+        val result = symbolGenerator.generateSymbolsFile(entries)
+
+        assertTrue(result != null)
+        assertTrue(result.contains("package com.test"))
+        assertTrue(result.contains("internal object Symbols {"))
+    }
+
+    @Test
+    fun testPreambleGeneration() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.custom.package", false, mockGenerator)
+
+        val entries = listOf(
+            createTestEntry(name = InternalName.Classifier(listOf("test"), listOf("TestClass")))
+        )
+
+        val result = symbolGenerator.generateSymbolsFile(entries)
+
+        assertTrue(result != null)
+        assertTrue(result.contains("package com.custom.package"))
+        assertTrue(result.contains("@file:Suppress(\"RemoveRedundantBackticks\", \"RedundantVisibilityModifier\", \"ClassName\")"))
+        assertTrue(result.contains("import dev.rnett.symbolexport.symbol.*"))
+        assertTrue(result.contains("import dev.rnett.symbolexport.symbol.Symbol.*"))
+    }
+
+    @Test
+    fun testSymbolsCommentString() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.test", false, mockGenerator)
+
+        val entries = listOf(
+            createTestEntry(
+                projectName = "my-project",
+                group = "org.example",
+                artifact = "my-artifact",
+                version = "3.1.4",
+                name = InternalName.Classifier(listOf("test"), listOf("TestClass"))
+            )
+        )
+
+        val result = symbolGenerator.generateSymbolsFile(entries)
+
+        assertTrue(result != null)
+        assertTrue(result.contains("Symbols from project `my-project` with coordinates `org.example:my-artifact:3.1.4`"))
     }
 }

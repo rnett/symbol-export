@@ -4,38 +4,23 @@ import dev.rnett.symbolexport.generator.Helpers.javadocString
 import dev.rnett.symbolexport.generator.NameFromSourceSet.Companion.toNameFromSourceSet
 import dev.rnett.symbolexport.generator.NameProject.Companion.toNameProject
 import dev.rnett.symbolexport.internal.InternalNameEntry
-import kotlinx.serialization.json.Json
-import java.io.File
 
 
-class SymbolGenerator(
-    private val outputDirectory: File,
+internal class SymbolGenerator(
     private val packageName: String,
-    private val flattenProjects: Boolean
+    private val flattenProjects: Boolean,
+    private val objectGenerator: ProjectObjectGenerator
 ) {
-    private val json = Json {
-        isLenient = true
-    }
 
-    fun writeSymbols(files: List<File>) {
-        val entries = files.flatMap { readFile(it) }
-        if (entries.isEmpty()) return
-
+    // this should be the only entrypoint used. Others are exposed for testing
+    fun generateSymbolsFile(entries: List<InternalNameEntry>): String? {
         val byProject =
             entries.groupBy({ it.toNameProject() }) { it.toNameFromSourceSet() }.mapValues { it.value.toSet() }
 
         if (flattenProjects) {
-            writeFlatProjectFile(byProject)
+            return generateFlatProjectFile(byProject)
         } else {
-            writeFile(
-                "Symbols.kt", """
-                // symbols from multiple projects are present, and will be added to this object as extensions
-                internal object Symbols
-            """.trimIndent()
-            )
-
-            writeNestedProjectFile(byProject)
-
+            return generateNestedProjectFile(byProject)
         }
     }
 
@@ -43,8 +28,8 @@ class SymbolGenerator(
         "Symbols from project `$projectName` with coordinates `${projectCoordinates.group}:${projectCoordinates.artifact}:${projectCoordinates.version}`"
 
 
-    private fun writeNestedProjectFile(projects: Map<NameProject, Set<NameFromSourceSet>>) {
-        writeSymbolsFile(buildString {
+    fun generateNestedProjectFile(projects: Map<NameProject, Set<NameFromSourceSet>>): String? {
+        return generateSymbolsFile(buildString {
             projects.forEach { (project, names) ->
                 val objectString =
                     generateSymbolsObject(project.projectName, names, javadocPrefix = project.symbolsCommentString())
@@ -56,22 +41,22 @@ class SymbolGenerator(
         })
     }
 
-    private fun writeFlatProjectFile(projects: Map<NameProject, Set<NameFromSourceSet>>) {
-        writeSymbolsFile(buildString {
+    fun generateFlatProjectFile(projects: Map<NameProject, Set<NameFromSourceSet>>): String? {
+        return generateSymbolsFile(buildString {
             projects.forEach { (project, names) ->
                 appendLine()
                 appendLine("// ${project.symbolsCommentString()}")
                 appendLine()
 
-                appendLine(ProjectObjectGenerator(null, names).generate(null))
+                appendLine(objectGenerator.generate(null, names, null))
 
                 appendLine("// End `${project.projectName}`")
             }
         })
     }
 
-    private fun writeSymbolsFile(content: String) {
-        writeFile("Symbols.kt", buildString {
+    fun generateSymbolsFile(content: String): String? {
+        return generateFile(buildString {
             appendLine(javadocString("Symbols from all projects"))
             appendLine("internal object Symbols {")
 
@@ -82,27 +67,21 @@ class SymbolGenerator(
         })
     }
 
-    private fun generateSymbolsObject(
+    fun generateSymbolsObject(
         objectName: String?,
         names: Set<NameFromSourceSet>,
         javadocPrefix: String? = null
     ): String? =
-        ProjectObjectGenerator(objectName, names).generate(javadocPrefix)
+        objectGenerator.generate(objectName, names, javadocPrefix)
 
-    private fun readFile(file: File): Set<InternalNameEntry> {
-        return file.readLines().map { json.decodeFromString<InternalNameEntry>(it) }.toSet()
-    }
+    private fun generateFile(content: String?): String? {
+        if (content == null) return null
 
-    private fun writeFile(name: String, content: String?) {
-        if (content == null) return
-
-        createFile(name).writeText(
-            buildString {
-                append(premable(packageName))
-                appendLine()
-                append(content)
-            }
-        )
+        return buildString {
+            append(premable(packageName))
+            appendLine()
+            append(content)
+        }
 
     }
 
@@ -116,13 +95,6 @@ class SymbolGenerator(
         
     """.trimIndent()
 
-
-    private fun createFile(name: String): File {
-        return outputDirectory.resolve(packageName.replace(".", "/")).resolve(name).also {
-            it.parentFile.mkdirs()
-            it.createNewFile()
-        }
-    }
 
 }
 

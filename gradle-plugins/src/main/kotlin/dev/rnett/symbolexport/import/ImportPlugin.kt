@@ -3,7 +3,7 @@ package dev.rnett.symbolexport.import
 import dev.rnett.symbolexport.BuildConfig
 import dev.rnett.symbolexport.Shared
 import dev.rnett.symbolexport.Shared.EXPORTED_SYMBOLS_FILENAME
-import dev.rnett.symbolexport.generator.SymbolGenerator
+import dev.rnett.symbolexport.generator.SymbolFileWriter
 import dev.rnett.symbolexport.kotlinExtension
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
@@ -12,14 +12,7 @@ import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.CacheableTask
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.TaskAction
-import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.tasks.*
 
 public class ImportPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -135,11 +128,12 @@ public abstract class ImportSymbolGenerationTask : DefaultTask() {
         }
         outputDir.mkdirs()
 
-        SymbolGenerator(
+        SymbolFileWriter.generateAndWriteSymbolFiles(
+            files,
             outputDir,
             packageName.get(),
             flattenProjects.get()
-        ).writeSymbols(files)
+        )
     }
 
 }

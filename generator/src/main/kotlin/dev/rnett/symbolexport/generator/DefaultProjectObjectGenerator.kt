@@ -6,10 +6,20 @@ import dev.rnett.symbolexport.internal.InternalName.IndexedParameter.Type.VALUE
 import dev.rnett.symbolexport.internal.InternalName.ReceiverParameter.Type.DISPATCH
 import dev.rnett.symbolexport.internal.InternalName.ReceiverParameter.Type.EXTENSION
 
-internal class ProjectObjectGenerator(
+internal fun interface ProjectObjectGenerator {
+    fun generate(objectName: String?, names: Set<NameFromSourceSet>, javadocPrefix: String?): String?
+}
+
+internal class DefaultProjectObjectGenerator(
     val objectName: String?,
     names: Set<NameFromSourceSet>
 ) {
+
+    object Generator : ProjectObjectGenerator {
+        override fun generate(objectName: String?, names: Set<NameFromSourceSet>, javadocPrefix: String?): String? {
+            return DefaultProjectObjectGenerator(objectName, names).generate(javadocPrefix)
+        }
+    }
 
     val symbols = names.groupBy({ NameSourceSet(it.sourceSet) }) { it.name }.mapValues { it.value.toSet() }
 
@@ -32,7 +42,7 @@ internal class ProjectObjectGenerator(
 
     private fun String.indentForObject() = indentForObject(objectName)
 
-    private fun generateMultiplePlatforms(
+    fun generateMultiplePlatforms(
         commonMain: Set<InternalName>? = null,
         otherPlatforms: Map<NameSourceSet, Set<InternalName>>,
         javadocPrefix: String?
@@ -96,7 +106,7 @@ internal class ProjectObjectGenerator(
         }
     }
 
-    private fun generateSingle(
+    fun generateSingle(
         sourceSet: NameSourceSet,
         symbols: Set<InternalName>,
         javadocPrefix: String?
@@ -111,7 +121,7 @@ internal class ProjectObjectGenerator(
         }
     }
 
-    private fun generateAllSymbols(
+    fun generateAllSymbols(
         objectName: String?,
         topLevelSymbols: Set<InternalName>,
         otherSymbols: Map<String, Set<InternalName>>
@@ -128,7 +138,7 @@ internal class ProjectObjectGenerator(
 
     companion object {
 
-        private fun generateSingleString(
+        fun generateSingleString(
             objectName: String?,
             sourceSet: NameSourceSet,
             symbols: Set<InternalName>,
@@ -192,15 +202,19 @@ internal class ProjectObjectGenerator(
         }
 
 
-        private fun generateProperties(symbols: Set<InternalName>): String = buildString {
+        fun generateProperties(symbols: Set<InternalName>): String = buildString {
             symbols.forEach {
-                appendLine()
-                appendLine(Helpers.javadocString("Generated from `${it.allParts().joinToString(".")}`"))
-                appendLine("public val `${it.fieldName()}`: ${it.type()} = ${it.constructor()}")
+                append(generateProperty(it))
             }
         }
 
-        private fun InternalName.constructor(): String = when (this) {
+        fun generateProperty(name: InternalName): String = buildString {
+            appendLine()
+            appendLine(Helpers.javadocString("Generated from `${name.allParts().joinToString(".")}`"))
+            appendLine("public val `${name.fieldName()}`: ${name.type()} = ${name.constructor()}")
+        }
+
+        fun InternalName.constructor(): String = when (this) {
             is InternalName.Classifier -> "Classifier(packageName = ${nameSegmentsOf(packageName)}, classNames = ${
                 nameSegmentsOf(
                     classNames
@@ -236,10 +250,10 @@ internal class ProjectObjectGenerator(
             }
         }
 
-        private fun nameSegmentsOf(segments: List<String>): String =
+        fun nameSegmentsOf(segments: List<String>): String =
             "NameSegments(${segments.joinToString(", ") { "\"$it\"" }})"
 
-        private fun InternalName.allParts(): List<String> = when (this) {
+        fun InternalName.allParts(): List<String> = when (this) {
             is InternalName.Classifier -> packageName + classNames
             is InternalName.ClassifierMember -> classifier.allParts() + name
             is InternalName.TopLevelMember -> packageName + name
@@ -250,7 +264,7 @@ internal class ProjectObjectGenerator(
             is InternalName.TypeParameter -> owner.allParts() + name
         }
 
-        private fun InternalName.type(): String = when (this) {
+        fun InternalName.type(): String = when (this) {
             is InternalName.Classifier -> "Classifier"
             is InternalName.ClassifierMember -> "ClassifierMember"
             is InternalName.TopLevelMember -> "TopLevelMember"
@@ -268,6 +282,6 @@ internal class ProjectObjectGenerator(
             }
         }
 
-        private fun InternalName.fieldName() = allParts().joinToString("_") { it.replace("<", "").replace(">", "") }
+        fun InternalName.fieldName() = allParts().joinToString("_") { it.replace("<", "").replace(">", "") }
     }
 }
