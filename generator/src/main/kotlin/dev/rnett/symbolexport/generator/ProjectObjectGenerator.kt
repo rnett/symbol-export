@@ -1,6 +1,10 @@
 package dev.rnett.symbolexport.generator
 
 import dev.rnett.symbolexport.internal.InternalName
+import dev.rnett.symbolexport.internal.InternalName.IndexedParameter.Type.CONTEXT
+import dev.rnett.symbolexport.internal.InternalName.IndexedParameter.Type.VALUE
+import dev.rnett.symbolexport.internal.InternalName.ReceiverParameter.Type.DISPATCH
+import dev.rnett.symbolexport.internal.InternalName.ReceiverParameter.Type.EXTENSION
 
 internal class ProjectObjectGenerator(
     val objectName: String?,
@@ -78,15 +82,13 @@ internal class ProjectObjectGenerator(
                 appendLine()
             }
 
-            if (objectName != null) {
-                appendLine(
-                    generateAllSymbols(
-                        objectName,
-                        commonMain.orEmpty(),
-                        otherPlatforms.mapKeys { it.key.objectName() }
-                    ).replaceIndent("    ")
-                )
-            }
+            appendLine(
+                generateAllSymbols(
+                    objectName,
+                    commonMain.orEmpty(),
+                    otherPlatforms.mapKeys { it.key.objectName() }
+                ).replaceIndent("    ")
+            )
             appendLine()
             if (objectName != null) {
                 appendLine("}")
@@ -103,21 +105,20 @@ internal class ProjectObjectGenerator(
             appendLine()
             append(generateSingleString(objectName, sourceSet, symbols, javadocPrefix) {
                 appendLine()
-                if (objectName != null) {
-                    appendLine(generateAllSymbols(objectName, symbols, emptyMap()).replaceIndent("    "))
-                    appendLine()
-                }
+                appendLine(generateAllSymbols(objectName, symbols, emptyMap()).replaceIndent("    "))
+                appendLine()
             })
         }
     }
 
     private fun generateAllSymbols(
-        objectName: String,
+        objectName: String?,
         topLevelSymbols: Set<InternalName>,
         otherSymbols: Map<String, Set<InternalName>>
     ): String {
+        val realObjectName = objectName ?: "Symbols"
         return generateAllSymbolsProperty(
-            topLevelSymbols.map { "`$objectName`.`${it.fieldName()}`" }.toSet() +
+            topLevelSymbols.map { "`$realObjectName`.`${it.fieldName()}`" }.toSet() +
                     otherSymbols.flatMap {
                         val prefix = it.key.plus(".")
                         it.value.map { "$prefix`${it.fieldName()}`" }
@@ -209,6 +210,30 @@ internal class ProjectObjectGenerator(
             is InternalName.ClassifierMember -> "ClassifierMember(classifier = ${classifier.constructor()}, name = \"$name\")"
 
             is InternalName.TopLevelMember -> "TopLevelMember(packageName = ${nameSegmentsOf(packageName)}, name = \"$name\")"
+            is InternalName.EnumEntry -> "EnumEntry(enumClass = ${owner.constructor()}, entryName = \"$name\", entryOrdinal = $ordinal)"
+            is InternalName.Constructor -> "Constructor(classifier = ${classifier.constructor()}, name = \"$name\")"
+            is InternalName.TypeParameter -> "TypeParameter(owner=${owner.constructor()}, index=$index, name=\"$name\")"
+            is InternalName.IndexedParameter -> {
+                val ctorName = when (type) {
+                    VALUE -> "ValueParameter"
+                    CONTEXT -> "ContextParameter"
+                }
+
+                val indexParam = when (type) {
+                    VALUE -> "indexInValueParameters"
+                    CONTEXT -> "indexInContextParameters"
+                }
+
+                "$ctorName(owner=${owner.constructor()}, index=$index, $indexParam=$indexInList, name=\"$name\")"
+            }
+
+            is InternalName.ReceiverParameter -> {
+                val ctorName = when (type) {
+                    EXTENSION -> "ExtensionReceiverParameter"
+                    DISPATCH -> "DispatchReceiverParameter"
+                }
+                "$ctorName(owner=${owner.constructor()}, index=$index, name=\"$name\")"
+            }
         }
 
         private fun nameSegmentsOf(segments: List<String>): String =
@@ -218,14 +243,31 @@ internal class ProjectObjectGenerator(
             is InternalName.Classifier -> packageName + classNames
             is InternalName.ClassifierMember -> classifier.allParts() + name
             is InternalName.TopLevelMember -> packageName + name
+            is InternalName.EnumEntry -> owner.allParts() + name
+            is InternalName.IndexedParameter -> owner.allParts() + name
+            is InternalName.Constructor -> classifier.allParts() + name
+            is InternalName.ReceiverParameter -> owner.allParts() + name
+            is InternalName.TypeParameter -> owner.allParts() + name
         }
 
         private fun InternalName.type(): String = when (this) {
             is InternalName.Classifier -> "Classifier"
             is InternalName.ClassifierMember -> "ClassifierMember"
             is InternalName.TopLevelMember -> "TopLevelMember"
+            is InternalName.EnumEntry -> "EnumEntry"
+            is InternalName.Constructor -> "Constructor"
+            is InternalName.TypeParameter -> "TypeParameter"
+            is InternalName.IndexedParameter -> when (type) {
+                VALUE -> "ValueParameter"
+                CONTEXT -> "ContextParameter"
+            }
+
+            is InternalName.ReceiverParameter -> when (type) {
+                EXTENSION -> "ExtensionReceiverParameter"
+                DISPATCH -> "DispatchReceiverParameter"
+            }
         }
 
-        private fun InternalName.fieldName() = allParts().joinToString("_")
+        private fun InternalName.fieldName() = allParts().joinToString("_") { it.replace("<", "").replace(">", "") }
     }
 }

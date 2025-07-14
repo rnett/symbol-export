@@ -111,11 +111,8 @@ class SymbolGenerator(
         
         package $packageName
         
-        import dev.rnett.symbolexport.symbol.Symbol.Classifier
-        import dev.rnett.symbolexport.symbol.Symbol.ClassifierMember
-        import dev.rnett.symbolexport.symbol.Symbol.TopLevelMember
-        import dev.rnett.symbolexport.symbol.NameSegments
-        import dev.rnett.symbolexport.symbol.Symbol
+        import dev.rnett.symbolexport.symbol.*
+        import dev.rnett.symbolexport.symbol.Symbol.*
         
     """.trimIndent()
 

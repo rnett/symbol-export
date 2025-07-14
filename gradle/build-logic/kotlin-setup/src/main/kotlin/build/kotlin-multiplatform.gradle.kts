@@ -50,5 +50,5 @@ kotlin {
 }
 
 tasks.withType<Test>().configureEach {
-    useJUnitPlatform()
+    Shared.configureTestTask(this)
 }

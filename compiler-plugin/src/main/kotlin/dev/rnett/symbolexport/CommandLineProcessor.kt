@@ -21,6 +21,7 @@ class CommandLineProcessor : CommandLineProcessor {
         val projectArtifact = CompilerConfigurationKey.create<String>("The artifact of the gradle project")
         val projectVersion = CompilerConfigurationKey.create<String>("The version of the gradle project")
         val sourceSetName = CompilerConfigurationKey.create<String>("The source set name")
+        val warnOnExported = CompilerConfigurationKey.create<Boolean>("Whether to add a warning diagnostic on exported symbols")
     }
 
     object Options {
@@ -66,6 +67,12 @@ class CommandLineProcessor : CommandLineProcessor {
             "<string>",
             "The source set name",
         )
+        val warnOnExported = CliOption(
+            "warnOnExported",
+            "<true|false>",
+            "Whether to add a warning diagnostic on exported symbols",
+            required = false
+        )
     }
 
     override val pluginId: String = BuildConfig.KOTLIN_PLUGIN_ID
@@ -87,6 +94,7 @@ class CommandLineProcessor : CommandLineProcessor {
             Options.projectArtifact -> configuration.put(Keys.projectArtifact, value)
             Options.projectVersion -> configuration.put(Keys.projectVersion, value)
             Options.sourceSetName -> configuration.put(Keys.sourceSetName, value)
+            Options.warnOnExported -> configuration.put(Keys.warnOnExported, value.toBoolean())
             else -> error("Unexpected config option: '${option.optionName}'")
         }
     }

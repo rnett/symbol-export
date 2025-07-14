@@ -16,10 +16,10 @@ kotlin {
     }
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-
 dependencies {
     testImplementation(kotlin("test"))
+}
+
+tasks.withType<Test>().configureEach {
+    Shared.configureTestTask(this)
 }

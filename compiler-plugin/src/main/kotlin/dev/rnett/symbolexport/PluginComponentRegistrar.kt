@@ -20,12 +20,17 @@ class PluginComponentRegistrar : CompilerPluginRegistrar() {
 
         val sourceSetName = configuration.getNotNull(CommandLineProcessor.Keys.sourceSetName)
 
+        val warnOnExported = configuration.get(CommandLineProcessor.Keys.warnOnExported, false)
+
         FirExtensionRegistrarAdapter.registerExtension(
             PluginRegistrar(
-                outputFile,
-                projectName,
-                ProjectCoordinates(projectGroup, projectArtifact, projectVersion),
-                sourceSetName
+                ExportWriteSpec(
+                    outputFile,
+                    projectName,
+                    ProjectCoordinates(projectGroup, projectArtifact, projectVersion),
+                    sourceSetName,
+                ),
+                warnOnExported
             )
         )
     }

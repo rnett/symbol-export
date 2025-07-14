@@ -11,9 +11,10 @@ public fun NameLike.asFqName(): FqName = FqName.fromSegments(this.segments)
 
 public fun Symbol.Classifier.asClassId(): ClassId = ClassId(packageName.asFqName(), classNames.asFqName(), false)
 
-public fun Symbol.Member.name(): Name = Name.identifier(name)
+public fun Symbol.Member.name(): Name = Name.identifierIfValid(name) ?: Name.special(name)
 
 public fun Symbol.Member.asCallableId(): CallableId = when (this) {
     is Symbol.ClassifierMember -> CallableId(classifier.asClassId(), name())
     is Symbol.TopLevelMember -> CallableId(packageName.asFqName(), name())
+    is Symbol.Constructor -> CallableId(classifier.asClassId(), name())
 }
