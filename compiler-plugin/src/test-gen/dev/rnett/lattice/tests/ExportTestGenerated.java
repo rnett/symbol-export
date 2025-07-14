@@ -21,6 +21,12 @@ public class ExportTestGenerated extends BaseDiagnosticCompilerTest {
   }
 
   @Test
+  @TestMetadata("Annotation.kt")
+  public void testAnnotation() {
+    runTest("compiler-plugin/src/testData/export/Annotation.kt");
+  }
+
+  @Test
   @TestMetadata("Class.kt")
   public void testClass() {
     runTest("compiler-plugin/src/testData/export/Class.kt");

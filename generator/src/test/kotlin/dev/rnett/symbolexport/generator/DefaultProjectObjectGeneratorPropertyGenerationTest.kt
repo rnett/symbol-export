@@ -9,29 +9,29 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 /**
- * Test wrapper for DefaultProjectObjectGenerator.Companion methods
- * This class provides access to the internal methods for testing purposes
+ * Test wrapper for utility methods
+ * This class provides access to the utility methods for testing purposes
  */
 class DefaultProjectObjectGeneratorTestWrapper {
     companion object {
-        // Expose the methods from DefaultProjectObjectGenerator.Companion
+        // Expose the methods from utility classes
         fun generateProperty(name: InternalName): String =
-            DefaultProjectObjectGenerator.Companion.generateProperty(name)
+            CodeFormatter.generateProperty(name)
 
         fun nameSegmentsOf(segments: List<String>): String =
-            DefaultProjectObjectGenerator.Companion.nameSegmentsOf(segments)
+            InternalNameHandler.nameSegmentsOf(segments)
 
         fun InternalName.constructor(): String =
-            DefaultProjectObjectGenerator.Companion.run { this@constructor.constructor() }
+            InternalNameHandler.generateConstructor(this)
 
         fun InternalName.allParts(): List<String> =
-            DefaultProjectObjectGenerator.Companion.run { this@allParts.allParts() }
+            InternalNameHandler.getAllParts(this)
 
         fun InternalName.type(): String =
-            DefaultProjectObjectGenerator.Companion.run { this@type.type() }
+            InternalNameHandler.getType(this)
 
         fun InternalName.fieldName(): String =
-            DefaultProjectObjectGenerator.Companion.run { this@fieldName.fieldName() }
+            InternalNameHandler.getFieldName(this)
     }
 }
 

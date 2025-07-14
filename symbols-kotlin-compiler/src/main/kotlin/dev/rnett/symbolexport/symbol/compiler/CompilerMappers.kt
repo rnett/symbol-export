@@ -7,11 +7,11 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
-public fun NameLike.asFqName(): FqName = FqName.fromSegments(this.segments)
+public fun NameLike.asFqName(): FqName = FqName.fromSegments(this.nameSegments)
 
 public fun Symbol.Classifier.asClassId(): ClassId = ClassId(packageName.asFqName(), classNames.asFqName(), false)
 
-public fun Symbol.Member.name(): Name = Name.identifierIfValid(name) ?: Name.special(name)
+public fun Symbol.NamedSymbol.name(): Name = Name.identifierIfValid(name) ?: Name.special(name)
 
 public fun Symbol.Member.asCallableId(): CallableId = when (this) {
     is Symbol.ClassifierMember -> CallableId(classifier.asClassId(), name())

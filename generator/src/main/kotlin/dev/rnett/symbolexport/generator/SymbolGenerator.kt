@@ -1,6 +1,6 @@
 package dev.rnett.symbolexport.generator
 
-import dev.rnett.symbolexport.generator.Helpers.javadocString
+import dev.rnett.symbolexport.generator.CodeFormatter.javadocString
 import dev.rnett.symbolexport.generator.NameFromSourceSet.Companion.toNameFromSourceSet
 import dev.rnett.symbolexport.generator.NameProject.Companion.toNameProject
 import dev.rnett.symbolexport.internal.InternalNameEntry

@@ -37,16 +37,24 @@ public sealed interface Symbol : NameLike {
 
     public sealed interface TypeParamHost : Symbol
 
+    public sealed interface NamedSymbol : Symbol {
+        /**
+         * The simple name of this symbol. Usually the last segment in its fully qualified name.
+         */
+        public val name: String
+    }
+
     /**
      * A class, interface, object, etc.
      */
     public data class Classifier(val packageName: NameSegments, val classNames: NameSegments) :
-        Symbol, TypeParamHost {
+        Symbol, TypeParamHost, NamedSymbol {
         override val fullName: NameSegments = packageName + classNames
+        override val name: String = classNames.nameSegments.last()
     }
 
-    public sealed interface Member : Symbol, TypeParamHost {
-        public val name: String
+    public sealed interface Member : Symbol, TypeParamHost, NamedSymbol {
+        public override val name: String
     }
 
     public data class ClassifierMember(val classifier: Classifier, override val name: String) : Member {
@@ -61,12 +69,12 @@ public sealed interface Symbol : NameLike {
         override val fullName: NameSegments = packageName + name
     }
 
-    public data class TypeParameter(val owner: TypeParamHost, val index: Int, val name: String) : Symbol {
+    public data class TypeParameter(val owner: TypeParamHost, val index: Int, override val name: String) : Symbol, NamedSymbol {
         override val fullName: NameSegments = owner + name
     }
 
-    public sealed class Parameter(public val kind: ParameterKind) : Symbol {
-        public abstract val name: String
+    public sealed class Parameter(public val kind: ParameterKind) : Symbol, NamedSymbol {
+        public abstract override val name: String
         public abstract val owner: Member
         override val fullName: NameSegments by lazy { owner + name }
 
@@ -102,7 +110,8 @@ public sealed interface Symbol : NameLike {
         override val name: String
     ) : Parameter(ParameterKind.DISPATCH_RECEIVER)
 
-    public data class EnumEntry(val enumClass: Classifier, val entryName: String, val entryOrdinal: Int) : Symbol {
+    public data class EnumEntry(val enumClass: Classifier, val entryName: String, val entryOrdinal: Int) : Symbol, NamedSymbol {
         override val fullName: NameSegments = enumClass + entryName
+        override val name: String = entryName
     }
 }
