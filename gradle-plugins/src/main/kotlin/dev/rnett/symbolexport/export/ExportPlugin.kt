@@ -7,10 +7,7 @@ import dev.rnett.symbolexport.withDisallowedChanges
 import org.gradle.api.Project
 import org.gradle.api.attributes.Usage
 import org.gradle.api.provider.Provider
-import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
-import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
-import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
-import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
+import org.jetbrains.kotlin.gradle.plugin.*
 import org.slf4j.LoggerFactory
 import java.io.File
 
@@ -148,9 +145,10 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
 
         return project.provider {
             listOf(
-                SubpluginOption(
+                FilesSubpluginOption(
                     PluginParameters.OUTPUT_FILE,
-                    file.get().absolutePath
+                    listOf(file.get()),
+                    kind = FilesOptionKind.INTERNAL, // the only available option for now, see https://youtrack.jetbrains.com/issue/KT-41711/Allow-FilesSubpluginOption-to-treat-files-as-inputs-in-Gradle-subplugins
                 ),
                 SubpluginOption(
                     PluginParameters.PROJECT_NAME,
