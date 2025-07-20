@@ -2,6 +2,9 @@ package dev.rnett.symbolexport.symbol.compiler
 
 import dev.rnett.symbolexport.symbol.NameLike
 import dev.rnett.symbolexport.symbol.Symbol
+import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrMemberAccessExpression
+import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
@@ -17,4 +20,16 @@ public fun Symbol.Member.asCallableId(): CallableId = when (this) {
     is Symbol.ClassifierMember -> CallableId(classifier.asClassId(), name())
     is Symbol.TopLevelMember -> CallableId(packageName.asFqName(), name())
     is Symbol.Constructor -> CallableId(classifier.asClassId(), name())
+}
+
+public operator fun IrMemberAccessExpression<*>.ValueArgumentsList.get(param: Symbol.Parameter): IrExpression? {
+    return get(param.index)
+}
+
+public operator fun IrMemberAccessExpression<*>.ValueArgumentsList.set(param: Symbol.Parameter, value: IrExpression?) {
+    set(param.index, value)
+}
+
+public fun IrMemberAccessExpression<*>.setTypeArgument(param: Symbol.TypeParameter, value: IrType?) {
+    typeArguments[param.index] = value
 }
