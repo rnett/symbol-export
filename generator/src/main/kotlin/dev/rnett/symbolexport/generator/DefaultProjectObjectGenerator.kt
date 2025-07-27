@@ -1,5 +1,6 @@
 package dev.rnett.symbolexport.generator
 
+import dev.rnett.symbolexport.generator.CodeFormatter.INDENT
 import dev.rnett.symbolexport.internal.InternalName
 
 internal fun interface ProjectObjectGenerator {
@@ -76,7 +77,7 @@ internal class DefaultProjectObjectGenerator(
                     objectName,
                     commonMain.orEmpty(),
                     otherPlatforms.mapKeys { it.key.objectName() }
-                ).replaceIndent("    ")
+                ).replaceIndent(INDENT)
             )
             appendLine()
 
@@ -96,7 +97,7 @@ internal class DefaultProjectObjectGenerator(
             appendLine()
             append(generateSingleString(objectName, sourceSet, symbols, javadocPrefix) {
                 appendLine()
-                appendLine(generateAllSymbolsProperty(objectName, symbols, emptyMap()).replaceIndent("    "))
+                appendLine(generateAllSymbolsProperty(objectName, symbols, emptyMap()).replaceIndent(INDENT))
                 appendLine()
             })
         }
@@ -109,10 +110,10 @@ internal class DefaultProjectObjectGenerator(
     ): String {
         val realObjectName = objectName ?: "Symbols"
         return CodeFormatter.generateAllSymbolsProperty(
-            topLevelSymbols.map { "`$realObjectName`.`${InternalNameHandler.getFieldName(it)}`" }.toSet() +
+            topLevelSymbols.map { "`$realObjectName`.`${InternalNameGenerationHandler.getFieldName(it)}`" }.toSet() +
                     otherSymbols.flatMap {
                         val prefix = it.key.plus(".")
-                        it.value.map { "$prefix`${InternalNameHandler.getFieldName(it)}`" }
+                        it.value.map { "$prefix`${InternalNameGenerationHandler.getFieldName(it)}`" }
                     }.toSet()
         )
     }
@@ -132,7 +133,7 @@ internal class DefaultProjectObjectGenerator(
             append(CodeFormatter.generateObjectHeader(objectName, javadocPrefix, commentString))
             appendLine()
 
-            append(CodeFormatter.indentForObject(CodeFormatter.generateProperties(symbols), objectName))
+            append(CodeFormatter.indentForObject(CodeFormatter.generateSymbol(symbols), objectName))
             appendLine()
 
             if (objectName == null) {

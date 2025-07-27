@@ -9,13 +9,11 @@ import dev.rnett.symbolexport.internal.InternalName.ReceiverParameter.Type.EXTEN
 /**
  * Handles InternalName processing and code generation
  */
-internal object InternalNameHandler {
+internal object InternalNameGenerationHandler {
 
-    private fun generateConstructorOrReference(name: InternalName, referencable: Set<InternalName>): String {
-        return if (name in referencable)
-            getFieldName(name)
-        else
-            generateConstructor(name, referencable)
+    fun generateClass(name: InternalName, referencable: Set<InternalName>): String? = when (name) {
+        is InternalName.Annotation -> AnnotationGenerator.generateClass(name)
+        else -> null
     }
 
     fun generateConstructor(name: InternalName, referencable: Set<InternalName>): String = when (name) {
@@ -50,6 +48,15 @@ internal object InternalNameHandler {
             }
             "$ctorName(owner=${generateConstructorOrReference(name.owner, referencable)}, index=${name.index}, name=\"${name.name}\")"
         }
+
+        is InternalName.Annotation -> AnnotationGenerator.annotationClassName(name) + "()"
+    }
+
+    private fun generateConstructorOrReference(name: InternalName, referencable: Set<InternalName>): String {
+        return if (name in referencable)
+            getFieldName(name)
+        else
+            generateConstructor(name, referencable)
     }
 
     fun nameSegmentsOf(segments: List<String>): String =
@@ -64,6 +71,7 @@ internal object InternalNameHandler {
         is InternalName.Constructor -> getAllParts(name.classifier) + name.name
         is InternalName.ReceiverParameter -> getAllParts(name.owner) + name.name
         is InternalName.TypeParameter -> getAllParts(name.owner) + name.name
+        is InternalName.Annotation -> name.packageName + name.classNames
     }
 
     fun getType(name: InternalName): String = when (name) {
@@ -82,6 +90,8 @@ internal object InternalNameHandler {
             EXTENSION -> "ExtensionReceiverParameter"
             DISPATCH -> "DispatchReceiverParameter"
         }
+
+        is InternalName.Annotation -> AnnotationGenerator.annotationClassName(name)
     }
 
     fun getFieldName(name: InternalName): String =

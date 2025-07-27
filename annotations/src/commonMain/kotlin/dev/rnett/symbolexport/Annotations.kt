@@ -18,6 +18,8 @@ public annotation class ChildrenExported
 /**
  * Generates a symbol entry for the annotated target.
  * All parents of the target must be marked with either [ExportSymbol] or [ChildrenExported].
+ *
+ * Annotation classes may use [ExportAnnotation] in addition or instead of this annotation to also export their schema.
  */
 @Target(
     AnnotationTarget.ANNOTATION_CLASS,
@@ -42,3 +44,14 @@ public annotation class ExportSymbol
 )
 @Retention(AnnotationRetention.SOURCE)
 public annotation class ExportReceivers(val dispatch: Boolean = true, val extension: Boolean = true)
+
+/**
+ * Implies [ExportSymbol], and also exports the annotations parameters in a way that allows annotations to be easily read or created by users of the symbols.
+ *
+ * Requires any referenced annotation types to also use [ExportAnnotation], and any referenced enum types to use [ExportSymbol].
+ */
+@Target(
+    AnnotationTarget.ANNOTATION_CLASS,
+)
+@Retention(AnnotationRetention.SOURCE)
+public annotation class ExportAnnotation

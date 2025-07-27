@@ -1,5 +1,6 @@
 package dev.rnett.symbolexport.generator
 
+import dev.rnett.symbolexport.internal.AnnotationParameterType
 import dev.rnett.symbolexport.internal.InternalName
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -106,5 +107,37 @@ class DefaultProjectObjectGeneratorAllSymbolsTest {
             """.trimIndent(),
             result.trimIndent()
         )
+    }
+
+    @Test
+    fun testGenerateAllSymbolsWithAnnotation() {
+        val objectName = "TestSymbols"
+        val classifier = InternalName.Classifier(
+            packageName = listOf("test", "package"),
+            classNames = listOf("TestClass")
+        )
+
+        // Create an annotation
+        val annotation = InternalName.Annotation(
+            packageName = listOf("test", "package"),
+            classNames = listOf("TestAnnotation"),
+            parameters = mapOf(
+                "stringParam" to AnnotationParameterType.Primitive.STRING,
+                "intParam" to AnnotationParameterType.Primitive.INT
+            )
+        )
+
+        val topLevelSymbols = setOf(classifier, annotation)
+        val otherSymbols = emptyMap<String, Set<InternalName>>()
+
+        val generator = DefaultProjectObjectGenerator(objectName, emptySet())
+        val result = generator.generateAllSymbolsProperty(objectName, topLevelSymbols, otherSymbols)
+
+        // Check that the ALL_SYMBOLS property is generated
+        assertTrue(result.contains("val ALL_SYMBOLS: Set<Symbol> = setOf("))
+
+        // Check that both the classifier and annotation symbols are included
+        assertTrue(result.contains("`TestSymbols`.`test_package_TestClass`"))
+        assertTrue(result.contains("`TestSymbols`.`test_package_TestAnnotation`"))
     }
 }

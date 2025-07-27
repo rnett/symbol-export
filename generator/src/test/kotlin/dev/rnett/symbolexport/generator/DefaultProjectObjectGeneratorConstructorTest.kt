@@ -28,7 +28,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             name = "testMethod"
         )
 
-        val result = InternalNameHandler.generateConstructor(classifierMember, referencableSet)
+        val result = InternalNameGenerationHandler.generateConstructor(classifierMember, referencableSet)
 
         // The classifier should be referenced by field name instead of being constructed
         assertEquals(
@@ -53,7 +53,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
         // Create a set with the classifier as a referencable symbol
         val referencableSet = setOf(classifier)
 
-        val result = InternalNameHandler.generateConstructor(enumEntry, referencableSet)
+        val result = InternalNameGenerationHandler.generateConstructor(enumEntry, referencableSet)
 
         // The classifier should be referenced by field name instead of being constructed
         assertEquals(
@@ -86,7 +86,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
         val referencableSet = setOf(classifier, topLevelMember)
 
         // Test with a constructor that references topLevelMember
-        val result = InternalNameHandler.generateConstructor(valueParameter, referencableSet)
+        val result = InternalNameGenerationHandler.generateConstructor(valueParameter, referencableSet)
 
         // The topLevelMember should be referenced by field name instead of being constructed
         assertEquals(
@@ -102,7 +102,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             classNames = listOf("TestClass")
         )
 
-        val result = InternalNameHandler.generateConstructor(classifier, referencable)
+        val result = InternalNameGenerationHandler.generateConstructor(classifier, referencable)
 
         assertEquals(
             "Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestClass\"))",
@@ -121,7 +121,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             name = "testMethod"
         )
 
-        val result = InternalNameHandler.generateConstructor(classifierMember, referencable)
+        val result = InternalNameGenerationHandler.generateConstructor(classifierMember, referencable)
 
         assertEquals(
             "ClassifierMember(classifier = Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestClass\")), name = \"testMethod\")",
@@ -136,7 +136,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             name = "testFunction"
         )
 
-        val result = InternalNameHandler.generateConstructor(topLevelMember, referencable)
+        val result = InternalNameGenerationHandler.generateConstructor(topLevelMember, referencable)
 
         assertEquals(
             "TopLevelMember(packageName = NameSegments(\"test\", \"package\"), name = \"testFunction\")",
@@ -156,7 +156,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             ordinal = 0
         )
 
-        val result = InternalNameHandler.generateConstructor(enumEntry, referencable)
+        val result = InternalNameGenerationHandler.generateConstructor(enumEntry, referencable)
 
         assertEquals(
             "EnumEntry(enumClass = Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestEnum\")), entryName = \"ENTRY_ONE\", entryOrdinal = 0)",
@@ -175,7 +175,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             name = "<init>"
         )
 
-        val result = InternalNameHandler.generateConstructor(constructor, referencable)
+        val result = InternalNameGenerationHandler.generateConstructor(constructor, referencable)
 
         assertEquals(
             "Constructor(classifier = Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestClass\")), name = \"<init>\")",
@@ -195,7 +195,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             index = 0
         )
 
-        val result = InternalNameHandler.generateConstructor(typeParameter, referencable)
+        val result = InternalNameGenerationHandler.generateConstructor(typeParameter, referencable)
 
         assertEquals(
             "TypeParameter(owner=Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestClass\")), index=0, name=\"T\")",
@@ -217,7 +217,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             type = VALUE
         )
 
-        val result = InternalNameHandler.generateConstructor(valueParameter, referencable)
+        val result = InternalNameGenerationHandler.generateConstructor(valueParameter, referencable)
 
         assertEquals(
             "ValueParameter(owner=TopLevelMember(packageName = NameSegments(\"test\", \"package\"), name = \"testFunction\"), index=0, indexInValueParameters=0, name=\"param1\")",
@@ -239,7 +239,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             type = CONTEXT
         )
 
-        val result = InternalNameHandler.generateConstructor(contextParameter, referencable)
+        val result = InternalNameGenerationHandler.generateConstructor(contextParameter, referencable)
 
         assertEquals(
             "ContextParameter(owner=TopLevelMember(packageName = NameSegments(\"test\", \"package\"), name = \"testFunction\"), index=0, indexInContextParameters=0, name=\"context\")",
@@ -260,7 +260,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             type = EXTENSION
         )
 
-        val result = InternalNameHandler.generateConstructor(extensionReceiver, referencable)
+        val result = InternalNameGenerationHandler.generateConstructor(extensionReceiver, referencable)
 
         assertEquals(
             "ExtensionReceiverParameter(owner=TopLevelMember(packageName = NameSegments(\"test\", \"package\"), name = \"testFunction\"), index=0, name=\"this\")",
@@ -281,7 +281,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             type = DISPATCH
         )
 
-        val result = InternalNameHandler.generateConstructor(dispatchReceiver, referencable)
+        val result = InternalNameGenerationHandler.generateConstructor(dispatchReceiver, referencable)
 
         assertEquals(
             "DispatchReceiverParameter(owner=TopLevelMember(packageName = NameSegments(\"test\", \"package\"), name = \"testFunction\"), index=0, name=\"this\")",

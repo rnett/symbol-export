@@ -19,7 +19,7 @@ internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
             classNames = listOf("TestClass")
         )
 
-        val result = CodeFormatter.generateProperty(classifier, referencable)
+        val result = CodeFormatter.generateSymbol(classifier, referencable)
 
         assertEquals(
             """
@@ -43,7 +43,7 @@ internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
             name = "testMethod"
         )
 
-        val result = CodeFormatter.generateProperty(classifierMember, referencable)
+        val result = CodeFormatter.generateSymbol(classifierMember, referencable)
 
         assertEquals(
             """
@@ -63,7 +63,7 @@ internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
             name = "testFunction"
         )
 
-        val result = CodeFormatter.generateProperty(topLevelMember, referencable)
+        val result = CodeFormatter.generateSymbol(topLevelMember, referencable)
 
         assertEquals(
             """
@@ -88,7 +88,7 @@ internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
             ordinal = 0
         )
 
-        val result = CodeFormatter.generateProperty(enumEntry, referencable)
+        val result = CodeFormatter.generateSymbol(enumEntry, referencable)
 
         assertEquals(
             """
@@ -112,7 +112,7 @@ internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
             name = "<init>"
         )
 
-        val result = CodeFormatter.generateProperty(constructor, referencable)
+        val result = CodeFormatter.generateSymbol(constructor, referencable)
 
         assertEquals(
             """
@@ -137,7 +137,7 @@ internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
             index = 0
         )
 
-        val result = CodeFormatter.generateProperty(typeParameter, referencable)
+        val result = CodeFormatter.generateSymbol(typeParameter, referencable)
 
         assertEquals(
             """
@@ -164,7 +164,7 @@ internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
             type = VALUE
         )
 
-        val result = CodeFormatter.generateProperty(valueParameter, referencable)
+        val result = CodeFormatter.generateSymbol(valueParameter, referencable)
 
         assertEquals(
             """
@@ -191,7 +191,7 @@ internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
             type = CONTEXT
         )
 
-        val result = CodeFormatter.generateProperty(contextParameter, referencable)
+        val result = CodeFormatter.generateSymbol(contextParameter, referencable)
 
         assertEquals(
             """
@@ -217,7 +217,7 @@ internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
             type = EXTENSION
         )
 
-        val result = CodeFormatter.generateProperty(extensionReceiver, referencable)
+        val result = CodeFormatter.generateSymbol(extensionReceiver, referencable)
 
         assertEquals(
             """
@@ -243,7 +243,7 @@ internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
             type = DISPATCH
         )
 
-        val result = CodeFormatter.generateProperty(dispatchReceiver, referencable)
+        val result = CodeFormatter.generateSymbol(dispatchReceiver, referencable)
 
         assertEquals(
             """

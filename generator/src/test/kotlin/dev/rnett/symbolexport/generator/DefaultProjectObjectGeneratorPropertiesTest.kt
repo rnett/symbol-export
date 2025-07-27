@@ -61,7 +61,7 @@ class DefaultProjectObjectGeneratorPropertiesTest {
 
         val symbols = setOf(classifier, classifierMember, topLevelMember)
 
-        val result = CodeFormatter.generateProperties(symbols)
+        val result = CodeFormatter.generateSymbol(symbols)
 
         // Check that each symbol's property is generated
         assertTrue(result.contains("public val `test_package_TestClass`: Classifier"))
@@ -78,7 +78,7 @@ class DefaultProjectObjectGeneratorPropertiesTest {
     fun testGeneratePropertiesEmpty() {
         val symbols = emptySet<InternalName>()
 
-        val result = CodeFormatter.generateProperties(symbols)
+        val result = CodeFormatter.generateSymbol(symbols)
 
         assertEquals("", result)
     }

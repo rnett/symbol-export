@@ -1,5 +1,6 @@
 package dev.rnett.symbolexport.generator
 
+import dev.rnett.symbolexport.internal.AnnotationParameterType
 import dev.rnett.symbolexport.internal.InternalName
 import org.junit.jupiter.api.Test
 import kotlin.test.assertNull
@@ -167,5 +168,80 @@ class DefaultProjectObjectGeneratorGenerateTest {
         val jvmSectionEnd = result.indexOf("}", jvmSectionStart)
         val jvmSection = result.substring(jvmSectionStart, jvmSectionEnd)
         assertTrue(!jvmSection.contains("public val `test_package_CommonClass`: Classifier"))
+    }
+
+    @Test
+    fun testGenerateWithAnnotation() {
+        val objectName = "TestSymbols"
+
+        // Create an annotation
+        val annotation = InternalName.Annotation(
+            packageName = listOf("test", "package"),
+            classNames = listOf("TestAnnotation"),
+            parameters = mapOf(
+                "stringParam" to AnnotationParameterType.Primitive.STRING,
+                "intParam" to AnnotationParameterType.Primitive.INT
+            )
+        )
+
+        val names = setOf(
+            NameFromSourceSet("commonMain", annotation)
+        )
+
+        val generator = DefaultProjectObjectGenerator(objectName, names)
+        val result = generator.generate("Test javadoc prefix")
+
+        // Should call generateSingle
+        assertTrue(result != null)
+        assertTrue(result.contains("public object `TestSymbols` {"))
+        assertTrue(result.contains("Test javadoc prefix"))
+        assertTrue(result.contains("Generated from the source set `commonMain`"))
+
+        // Check that annotation is generated
+        assertTrue(result.contains("public val `test_package_TestAnnotation`: test_package_TestAnnotation_Spec"))
+
+        // Check that ALL_SYMBOLS includes the annotation
+        assertTrue(result.contains("val ALL_SYMBOLS: Set<Symbol> = setOf("))
+        assertTrue(result.contains("`TestSymbols`.`test_package_TestAnnotation`"))
+    }
+
+    @Test
+    fun testGenerateWithMixedSymbolsAndAnnotations() {
+        val objectName = "TestSymbols"
+        val classifier = InternalName.Classifier(
+            packageName = listOf("test", "package"),
+            classNames = listOf("TestClass")
+        )
+
+        // Create an annotation
+        val annotation = InternalName.Annotation(
+            packageName = listOf("test", "package"),
+            classNames = listOf("TestAnnotation"),
+            parameters = mapOf(
+                "stringParam" to AnnotationParameterType.Primitive.STRING,
+                "intParam" to AnnotationParameterType.Primitive.INT
+            )
+        )
+
+        val names = setOf(
+            NameFromSourceSet("commonMain", classifier),
+            NameFromSourceSet("commonMain", annotation)
+        )
+
+        val generator = DefaultProjectObjectGenerator(objectName, names)
+        val result = generator.generate("Test javadoc prefix")
+
+        // Should call generateSingle
+        assertTrue(result != null)
+        assertTrue(result.contains("public object `TestSymbols` {"))
+
+        // Check that both classifier and annotation are generated
+        assertTrue(result.contains("public val `test_package_TestClass`: Classifier"))
+        assertTrue(result.contains("public val `test_package_TestAnnotation`: test_package_TestAnnotation_Spec"))
+
+        // Check that ALL_SYMBOLS includes both symbols
+        assertTrue(result.contains("val ALL_SYMBOLS: Set<Symbol> = setOf("))
+        assertTrue(result.contains("`TestSymbols`.`test_package_TestClass`"))
+        assertTrue(result.contains("`TestSymbols`.`test_package_TestAnnotation`"))
     }
 }

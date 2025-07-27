@@ -1,5 +1,6 @@
 package dev.rnett.symbolexport.generator
 
+import dev.rnett.symbolexport.internal.AnnotationParameterType
 import dev.rnett.symbolexport.internal.InternalName
 import dev.rnett.symbolexport.internal.InternalNameEntry
 import dev.rnett.symbolexport.internal.ProjectCoordinates
@@ -302,5 +303,80 @@ class SymbolGeneratorTest {
 
         assertTrue(result != null)
         assertTrue(result.contains("Symbols from project `my-project` with coordinates `org.example:my-artifact:3.1.4`"))
+    }
+
+    @Test
+    fun testGenerateSymbolsFileWithAnnotation() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.test", false, mockGenerator)
+
+        // Create an annotation
+        val annotation = InternalName.Annotation(
+            packageName = listOf("test", "package"),
+            classNames = listOf("TestAnnotation"),
+            parameters = mapOf(
+                "stringParam" to AnnotationParameterType.Primitive.STRING,
+                "intParam" to AnnotationParameterType.Primitive.INT
+            )
+        )
+
+        val entries = listOf(
+            createTestEntry(
+                name = annotation
+            )
+        )
+
+        val result = symbolGenerator.generateSymbolsFile(entries)
+
+        assertTrue(result != null)
+        assertTrue(result.contains("package com.test"))
+        assertTrue(result.contains("internal object Symbols {"))
+        assertTrue(result.contains("mock-generated-content"))
+
+        // Verify the mock was called with annotation
+        assertEquals(setOf(NameFromSourceSet("commonMain", annotation)), mockGenerator.lastNames)
+    }
+
+    @Test
+    fun testGenerateSymbolsFileWithMixedSymbolsAndAnnotations() {
+        val mockGenerator = MockProjectObjectGenerator()
+        val symbolGenerator = SymbolGenerator("com.test", false, mockGenerator)
+
+        val classifier = InternalName.Classifier(listOf("com", "example"), listOf("TestClass"))
+
+        // Create an annotation
+        val annotation = InternalName.Annotation(
+            packageName = listOf("test", "package"),
+            classNames = listOf("TestAnnotation"),
+            parameters = mapOf(
+                "stringParam" to AnnotationParameterType.Primitive.STRING,
+                "intParam" to AnnotationParameterType.Primitive.INT
+            )
+        )
+
+        val entries = listOf(
+            createTestEntry(
+                sourceSetName = "commonMain",
+                name = classifier
+            ),
+            createTestEntry(
+                sourceSetName = "commonMain",
+                name = annotation
+            )
+        )
+
+        val result = symbolGenerator.generateSymbolsFile(entries)
+
+        assertTrue(result != null)
+        assertTrue(result.contains("package com.test"))
+        assertTrue(result.contains("internal object Symbols {"))
+        assertTrue(result.contains("mock-generated-content"))
+
+        // Verify the mock was called with both classifier and annotation
+        val expectedNames = setOf(
+            NameFromSourceSet("commonMain", classifier),
+            NameFromSourceSet("commonMain", annotation)
+        )
+        assertEquals(expectedNames, mockGenerator.lastNames)
     }
 }

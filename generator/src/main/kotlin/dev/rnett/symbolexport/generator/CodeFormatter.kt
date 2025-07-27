@@ -6,9 +6,10 @@ import dev.rnett.symbolexport.internal.InternalName
  * Handles code formatting, indentation, and string generation utilities
  */
 internal object CodeFormatter {
+    const val INDENT = "    "
 
     fun indentForObject(content: String, objectName: String?): String =
-        if (objectName == null) content.trimIndent() else content.replaceIndent("    ")
+        if (objectName == null) content.trimIndent() else content.replaceIndent(INDENT)
 
     fun generateJavadocComment(javadocPrefix: String?, additionalComment: String): String {
         return javadocString(buildString {
@@ -36,22 +37,28 @@ internal object CodeFormatter {
         return if (objectName != null) "}" else ""
     }
 
-    fun generateProperty(name: InternalName, referencable: Set<InternalName>): String = buildString {
+    fun generateSymbol(name: InternalName, referencable: Set<InternalName>): String = buildString {
+        val cls = InternalNameGenerationHandler.generateClass(name, referencable)
+        if (cls != null) {
+            appendLine()
+            appendLine(javadocString("Generated from `${InternalNameGenerationHandler.getAllParts(name).joinToString(".")}`"))
+            appendLine("public ${cls.removePrefix("public")}")
+        }
         appendLine()
-        appendLine(javadocString("Generated from `${InternalNameHandler.getAllParts(name).joinToString(".")}`"))
-        appendLine("public val `${InternalNameHandler.getFieldName(name)}`: ${InternalNameHandler.getType(name)} = ${InternalNameHandler.generateConstructor(name, referencable)}")
+        appendLine(javadocString("Generated from `${InternalNameGenerationHandler.getAllParts(name).joinToString(".")}`"))
+        appendLine("public val `${InternalNameGenerationHandler.getFieldName(name)}`: ${InternalNameGenerationHandler.getType(name)} = ${InternalNameGenerationHandler.generateConstructor(name, referencable)}")
     }
 
-    fun generateProperties(symbols: Set<InternalName>): String = buildString {
+    fun generateSymbol(symbols: Set<InternalName>): String = buildString {
         symbols.forEach {
-            append(generateProperty(it, symbols))
+            append(generateSymbol(it, symbols))
         }
     }
 
     fun generateAllSymbolsProperty(fields: Set<String>): String = buildString {
         appendLine("val ALL_SYMBOLS: Set<Symbol> = setOf(")
         fields.forEach {
-            append("    ")
+            append(INDENT)
             append(it)
             appendLine(",")
         }

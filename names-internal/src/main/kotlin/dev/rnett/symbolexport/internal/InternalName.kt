@@ -75,4 +75,11 @@ public sealed interface InternalName {
 
     @Serializable
     public data class EnumEntry(val owner: Classifier, val name: String, val ordinal: Int) : InternalName
+
+    @Serializable
+    public data class Annotation(
+        val packageName: List<String>,
+        val classNames: List<String>,
+        val parameters: Map<String, AnnotationParameterType>
+    ) : InternalName
 }

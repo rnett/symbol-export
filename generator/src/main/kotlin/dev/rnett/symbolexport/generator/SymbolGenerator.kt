@@ -1,5 +1,6 @@
 package dev.rnett.symbolexport.generator
 
+import dev.rnett.symbolexport.generator.CodeFormatter.INDENT
 import dev.rnett.symbolexport.generator.CodeFormatter.javadocString
 import dev.rnett.symbolexport.generator.NameFromSourceSet.Companion.toNameFromSourceSet
 import dev.rnett.symbolexport.generator.NameProject.Companion.toNameProject
@@ -60,7 +61,7 @@ internal class SymbolGenerator(
             appendLine(javadocString("Symbols from all projects"))
             appendLine("internal object Symbols {")
 
-            appendLine(content.trimEnd().replaceIndent("    "))
+            appendLine(content.trimEnd().replaceIndent(INDENT))
 
             appendLine()
             appendLine("}")
@@ -92,6 +93,7 @@ internal class SymbolGenerator(
         
         import dev.rnett.symbolexport.symbol.*
         import dev.rnett.symbolexport.symbol.Symbol.*
+        import dev.rnett.symbolexport.symbol.annotation.*
         
     """.trimIndent()
 

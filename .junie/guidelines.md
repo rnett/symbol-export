@@ -40,13 +40,13 @@ The `symbols` module defines the structure of exported symbols.
 
 ## General Guidelines
 
-Use the JetBrains MCP (Machine Coding Protocol) whenever possible, e.g., for things like searching for symbols or running builds.
+Use the JetBrains MCP (Machine Coding Protocol) whenever possible except for running tests, e.g., for things like searching for symbols or running builds.
 
 ## Test Running Instructions
 
 When running multiple tests, run the Gradle `test` task (or the particular test task needed) once, rather than running it multiple times for individual tests.
 
-Always run tests using the `Run-Tests` interaction, not using Gradle via the command line.
+Always run tests using the `Run-Tests` interaction, not using Gradle via the command line or using the jetbrains MCP.
 
 ## Kotlin Compiler Plugin Development
 

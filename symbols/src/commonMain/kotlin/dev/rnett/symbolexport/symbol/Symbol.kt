@@ -1,5 +1,7 @@
 package dev.rnett.symbolexport.symbol
 
+import dev.rnett.symbolexport.symbol.annotation.AnnotationArgumentProducer
+
 public interface NameLike {
     public val nameSegments: List<String>
     public fun asString(): String = nameSegments.joinToString(".")
@@ -45,12 +47,23 @@ public sealed interface Symbol : NameLike {
     }
 
     /**
-     * A class, interface, object, etc.
+     * A [Classifier] or [Annotation]. May include type aliases someday.
      */
-    public data class Classifier(val packageName: NameSegments, val classNames: NameSegments) :
-        Symbol, TypeParamHost, NamedSymbol {
-        override val fullName: NameSegments = packageName + classNames
-        override val name: String = classNames.nameSegments.last()
+    public sealed interface ClassLike : Symbol, NamedSymbol {
+        public val packageName: NameSegments
+        public val classNames: NameSegments
+
+        override val fullName: NameSegments get() = packageName + classNames
+
+        override val name: String get() = classNames.nameSegments.last()
+    }
+
+    /**
+     * A class, interface, object, etc.
+     * Annotations may either be exported as a classifier (if `@ExportSymbol` is used) or as an [Annotation] (if `@ExportAnnotation` is used).
+     */
+    public data class Classifier(override val packageName: NameSegments, override val classNames: NameSegments) :
+        ClassLike, TypeParamHost {
     }
 
     public sealed interface Member : Symbol, TypeParamHost, NamedSymbol {
@@ -113,5 +126,16 @@ public sealed interface Symbol : NameLike {
     public data class EnumEntry(val enumClass: Classifier, val entryName: String, val entryOrdinal: Int) : Symbol, NamedSymbol {
         override val fullName: NameSegments = enumClass + entryName
         override val name: String = entryName
+    }
+
+    public abstract class Annotation<S : Annotation<S, A>, A : Annotation.Arguments<A, S>>(
+        override val packageName: NameSegments,
+        override val classNames: NameSegments
+    ) : ClassLike {
+        public interface Arguments<A : Arguments<A, S>, S : Annotation<S, A>> {
+            public val annotation: S
+        }
+
+        public abstract fun produceArguments(producer: AnnotationArgumentProducer): A
     }
 }
