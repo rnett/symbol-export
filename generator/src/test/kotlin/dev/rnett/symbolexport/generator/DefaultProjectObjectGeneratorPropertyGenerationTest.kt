@@ -8,36 +8,9 @@ import dev.rnett.symbolexport.internal.InternalName.ReceiverParameter.Type.EXTEN
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-/**
- * Test wrapper for utility methods
- * This class provides access to the utility methods for testing purposes
- */
-class DefaultProjectObjectGeneratorTestWrapper {
-    companion object {
-        // Expose the methods from utility classes
-        fun generateProperty(name: InternalName): String =
-            CodeFormatter.generateProperty(name)
-
-        fun nameSegmentsOf(segments: List<String>): String =
-            InternalNameHandler.nameSegmentsOf(segments)
-
-        fun InternalName.constructor(): String =
-            InternalNameHandler.generateConstructor(this)
-
-        fun InternalName.allParts(): List<String> =
-            InternalNameHandler.getAllParts(this)
-
-        fun InternalName.type(): String =
-            InternalNameHandler.getType(this)
-
-        fun InternalName.fieldName(): String =
-            InternalNameHandler.getFieldName(this)
-    }
-}
-
-class DefaultProjectObjectGeneratorPropertyGenerationTest {
-    // Use the test wrapper to access the methods
-    private val testWrapper = DefaultProjectObjectGeneratorTestWrapper.Companion
+internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
+    // Empty set of referencable symbols for most tests
+    private val referencable = emptySet<InternalName>()
 
     @Test
     fun testGeneratePropertyClassifier() {
@@ -46,7 +19,7 @@ class DefaultProjectObjectGeneratorPropertyGenerationTest {
             classNames = listOf("TestClass")
         )
 
-        val result = testWrapper.generateProperty(classifier)
+        val result = CodeFormatter.generateProperty(classifier, referencable)
 
         assertEquals(
             """
@@ -70,7 +43,7 @@ class DefaultProjectObjectGeneratorPropertyGenerationTest {
             name = "testMethod"
         )
 
-        val result = testWrapper.generateProperty(classifierMember)
+        val result = CodeFormatter.generateProperty(classifierMember, referencable)
 
         assertEquals(
             """
@@ -90,7 +63,7 @@ class DefaultProjectObjectGeneratorPropertyGenerationTest {
             name = "testFunction"
         )
 
-        val result = testWrapper.generateProperty(topLevelMember)
+        val result = CodeFormatter.generateProperty(topLevelMember, referencable)
 
         assertEquals(
             """
@@ -115,7 +88,7 @@ class DefaultProjectObjectGeneratorPropertyGenerationTest {
             ordinal = 0
         )
 
-        val result = testWrapper.generateProperty(enumEntry)
+        val result = CodeFormatter.generateProperty(enumEntry, referencable)
 
         assertEquals(
             """
@@ -139,7 +112,7 @@ class DefaultProjectObjectGeneratorPropertyGenerationTest {
             name = "<init>"
         )
 
-        val result = testWrapper.generateProperty(constructor)
+        val result = CodeFormatter.generateProperty(constructor, referencable)
 
         assertEquals(
             """
@@ -164,7 +137,7 @@ class DefaultProjectObjectGeneratorPropertyGenerationTest {
             index = 0
         )
 
-        val result = testWrapper.generateProperty(typeParameter)
+        val result = CodeFormatter.generateProperty(typeParameter, referencable)
 
         assertEquals(
             """
@@ -191,7 +164,7 @@ class DefaultProjectObjectGeneratorPropertyGenerationTest {
             type = VALUE
         )
 
-        val result = testWrapper.generateProperty(valueParameter)
+        val result = CodeFormatter.generateProperty(valueParameter, referencable)
 
         assertEquals(
             """
@@ -218,7 +191,7 @@ class DefaultProjectObjectGeneratorPropertyGenerationTest {
             type = CONTEXT
         )
 
-        val result = testWrapper.generateProperty(contextParameter)
+        val result = CodeFormatter.generateProperty(contextParameter, referencable)
 
         assertEquals(
             """
@@ -244,7 +217,7 @@ class DefaultProjectObjectGeneratorPropertyGenerationTest {
             type = EXTENSION
         )
 
-        val result = testWrapper.generateProperty(extensionReceiver)
+        val result = CodeFormatter.generateProperty(extensionReceiver, referencable)
 
         assertEquals(
             """
@@ -270,7 +243,7 @@ class DefaultProjectObjectGeneratorPropertyGenerationTest {
             type = DISPATCH
         )
 
-        val result = testWrapper.generateProperty(dispatchReceiver)
+        val result = CodeFormatter.generateProperty(dispatchReceiver, referencable)
 
         assertEquals(
             """

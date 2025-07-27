@@ -4,14 +4,11 @@ import dev.rnett.symbolexport.internal.InternalName
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-class DefaultProjectObjectGeneratorHelperMethodsTest {
-    // Use the test wrapper to access the methods
-    private val testWrapper = DefaultProjectObjectGeneratorTestWrapper.Companion
-
+internal class DefaultProjectObjectGeneratorHelperMethodsTest {
     @Test
     fun testNameSegmentsOf() {
         val segments = listOf("test", "package", "Class")
-        val result = testWrapper.nameSegmentsOf(segments)
+        val result = InternalNameHandler.nameSegmentsOf(segments)
 
         assertEquals("NameSegments(\"test\", \"package\", \"Class\")", result)
     }
@@ -23,7 +20,7 @@ class DefaultProjectObjectGeneratorHelperMethodsTest {
             classNames = listOf("TestClass")
         )
 
-        val result = testWrapper.run { classifier.allParts() }
+        val result = InternalNameHandler.getAllParts(classifier)
 
         assertEquals(listOf("test", "package", "TestClass"), result)
     }
@@ -39,7 +36,7 @@ class DefaultProjectObjectGeneratorHelperMethodsTest {
             name = "testMethod"
         )
 
-        val result = testWrapper.run { classifierMember.allParts() }
+        val result = InternalNameHandler.getAllParts(classifierMember)
 
         assertEquals(listOf("test", "package", "TestClass", "testMethod"), result)
     }
@@ -51,7 +48,7 @@ class DefaultProjectObjectGeneratorHelperMethodsTest {
             name = "testFunction"
         )
 
-        val result = testWrapper.run { topLevelMember.allParts() }
+        val result = InternalNameHandler.getAllParts(topLevelMember)
 
         assertEquals(listOf("test", "package", "testFunction"), result)
     }
@@ -63,7 +60,7 @@ class DefaultProjectObjectGeneratorHelperMethodsTest {
             classNames = listOf("TestClass")
         )
 
-        val result = testWrapper.run { classifier.type() }
+        val result = InternalNameHandler.getType(classifier)
 
         assertEquals("Classifier", result)
     }
@@ -79,7 +76,7 @@ class DefaultProjectObjectGeneratorHelperMethodsTest {
             name = "testMethod"
         )
 
-        val result = testWrapper.run { classifierMember.type() }
+        val result = InternalNameHandler.getType(classifierMember)
 
         assertEquals("ClassifierMember", result)
     }
@@ -91,7 +88,7 @@ class DefaultProjectObjectGeneratorHelperMethodsTest {
             classNames = listOf("TestClass")
         )
 
-        val result = testWrapper.run { classifier.fieldName() }
+        val result = InternalNameHandler.getFieldName(classifier)
 
         assertEquals("test_package_TestClass", result)
     }
@@ -106,7 +103,7 @@ class DefaultProjectObjectGeneratorHelperMethodsTest {
             name = "<init>"
         )
 
-        val result = testWrapper.run { constructor.fieldName() }
+        val result = InternalNameHandler.getFieldName(constructor)
 
         assertEquals("test_package_TestClass_init", result)
     }

@@ -22,7 +22,7 @@ class DefaultProjectObjectGeneratorAllSymbolsTest {
         val otherSymbols = emptyMap<String, Set<InternalName>>()
 
         val generator = DefaultProjectObjectGenerator(objectName, emptySet())
-        val result = generator.generateAllSymbols(objectName, topLevelSymbols, otherSymbols)
+        val result = generator.generateAllSymbolsProperty(objectName, topLevelSymbols, otherSymbols)
 
         // Check that the ALL_SYMBOLS property is generated
         assertTrue(result.contains("val ALL_SYMBOLS: Set<Symbol> = setOf("))
@@ -43,7 +43,7 @@ class DefaultProjectObjectGeneratorAllSymbolsTest {
         val otherSymbols = emptyMap<String, Set<InternalName>>()
 
         val generator = DefaultProjectObjectGenerator(objectName, emptySet())
-        val result = generator.generateAllSymbols(objectName, topLevelSymbols, otherSymbols)
+        val result = generator.generateAllSymbolsProperty(objectName, topLevelSymbols, otherSymbols)
 
         // Check that the ALL_SYMBOLS property is generated
         assertTrue(result.contains("val ALL_SYMBOLS: Set<Symbol> = setOf("))
@@ -76,7 +76,7 @@ class DefaultProjectObjectGeneratorAllSymbolsTest {
         )
 
         val generator = DefaultProjectObjectGenerator(objectName, emptySet())
-        val result = generator.generateAllSymbols(objectName, topLevelSymbols, otherSymbols)
+        val result = generator.generateAllSymbolsProperty(objectName, topLevelSymbols, otherSymbols)
 
         // Check that the ALL_SYMBOLS property is generated
         assertTrue(result.contains("val ALL_SYMBOLS: Set<Symbol> = setOf("))
@@ -96,7 +96,7 @@ class DefaultProjectObjectGeneratorAllSymbolsTest {
         val otherSymbols = emptyMap<String, Set<InternalName>>()
 
         val generator = DefaultProjectObjectGenerator(objectName, emptySet())
-        val result = generator.generateAllSymbols(objectName, topLevelSymbols, otherSymbols)
+        val result = generator.generateAllSymbolsProperty(objectName, topLevelSymbols, otherSymbols)
 
         // Check that the ALL_SYMBOLS property is generated with an empty set
         assertEquals(

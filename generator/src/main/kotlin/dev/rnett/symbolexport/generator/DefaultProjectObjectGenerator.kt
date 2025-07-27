@@ -72,7 +72,7 @@ internal class DefaultProjectObjectGenerator(
             }
 
             appendLine(
-                generateAllSymbols(
+                generateAllSymbolsProperty(
                     objectName,
                     commonMain.orEmpty(),
                     otherPlatforms.mapKeys { it.key.objectName() }
@@ -96,13 +96,13 @@ internal class DefaultProjectObjectGenerator(
             appendLine()
             append(generateSingleString(objectName, sourceSet, symbols, javadocPrefix) {
                 appendLine()
-                appendLine(generateAllSymbols(objectName, symbols, emptyMap()).replaceIndent("    "))
+                appendLine(generateAllSymbolsProperty(objectName, symbols, emptyMap()).replaceIndent("    "))
                 appendLine()
             })
         }
     }
 
-    fun generateAllSymbols(
+    fun generateAllSymbolsProperty(
         objectName: String?,
         topLevelSymbols: Set<InternalName>,
         otherSymbols: Map<String, Set<InternalName>>

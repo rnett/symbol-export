@@ -9,8 +9,91 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class DefaultProjectObjectGeneratorConstructorTest {
-    // Use the test wrapper to access the methods
-    private val testWrapper = DefaultProjectObjectGeneratorTestWrapper.Companion
+    // Empty set of referencable symbols for most tests
+    private val referencable = emptySet<InternalName>()
+
+    // Tests for referencing existing fields in constructors
+    @Test
+    fun testConstructorWithReferencableClassifier() {
+        val classifier = InternalName.Classifier(
+            packageName = listOf("test", "package"),
+            classNames = listOf("TestClass")
+        )
+
+        // Create a set with the classifier as a referencable symbol
+        val referencableSet = setOf(classifier)
+
+        val classifierMember = InternalName.ClassifierMember(
+            classifier = classifier,
+            name = "testMethod"
+        )
+
+        val result = InternalNameHandler.generateConstructor(classifierMember, referencableSet)
+
+        // The classifier should be referenced by field name instead of being constructed
+        assertEquals(
+            "ClassifierMember(classifier = test_package_TestClass, name = \"testMethod\")",
+            result
+        )
+    }
+
+    @Test
+    fun testConstructorWithReferencableOwner() {
+        val classifier = InternalName.Classifier(
+            packageName = listOf("test", "package"),
+            classNames = listOf("TestClass")
+        )
+
+        val enumEntry = InternalName.EnumEntry(
+            owner = classifier,
+            name = "ENTRY_ONE",
+            ordinal = 0
+        )
+
+        // Create a set with the classifier as a referencable symbol
+        val referencableSet = setOf(classifier)
+
+        val result = InternalNameHandler.generateConstructor(enumEntry, referencableSet)
+
+        // The classifier should be referenced by field name instead of being constructed
+        assertEquals(
+            "EnumEntry(enumClass = test_package_TestClass, entryName = \"ENTRY_ONE\", entryOrdinal = 0)",
+            result
+        )
+    }
+
+    @Test
+    fun testConstructorWithMultipleReferencableSymbols() {
+        val classifier = InternalName.Classifier(
+            packageName = listOf("test", "package"),
+            classNames = listOf("TestClass")
+        )
+
+        val topLevelMember = InternalName.TopLevelMember(
+            packageName = listOf("test", "package"),
+            name = "testFunction"
+        )
+
+        val valueParameter = InternalName.IndexedParameter(
+            owner = topLevelMember,
+            name = "param1",
+            index = 0,
+            indexInList = 0,
+            type = VALUE
+        )
+
+        // Create a set with both symbols as referencable
+        val referencableSet = setOf(classifier, topLevelMember)
+
+        // Test with a constructor that references topLevelMember
+        val result = InternalNameHandler.generateConstructor(valueParameter, referencableSet)
+
+        // The topLevelMember should be referenced by field name instead of being constructed
+        assertEquals(
+            "ValueParameter(owner=test_package_testFunction, index=0, indexInValueParameters=0, name=\"param1\")",
+            result
+        )
+    }
 
     @Test
     fun testConstructorClassifier() {
@@ -19,7 +102,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             classNames = listOf("TestClass")
         )
 
-        val result = testWrapper.run { classifier.constructor() }
+        val result = InternalNameHandler.generateConstructor(classifier, referencable)
 
         assertEquals(
             "Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestClass\"))",
@@ -38,7 +121,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             name = "testMethod"
         )
 
-        val result = testWrapper.run { classifierMember.constructor() }
+        val result = InternalNameHandler.generateConstructor(classifierMember, referencable)
 
         assertEquals(
             "ClassifierMember(classifier = Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestClass\")), name = \"testMethod\")",
@@ -53,7 +136,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             name = "testFunction"
         )
 
-        val result = testWrapper.run { topLevelMember.constructor() }
+        val result = InternalNameHandler.generateConstructor(topLevelMember, referencable)
 
         assertEquals(
             "TopLevelMember(packageName = NameSegments(\"test\", \"package\"), name = \"testFunction\")",
@@ -73,7 +156,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             ordinal = 0
         )
 
-        val result = testWrapper.run { enumEntry.constructor() }
+        val result = InternalNameHandler.generateConstructor(enumEntry, referencable)
 
         assertEquals(
             "EnumEntry(enumClass = Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestEnum\")), entryName = \"ENTRY_ONE\", entryOrdinal = 0)",
@@ -92,7 +175,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             name = "<init>"
         )
 
-        val result = testWrapper.run { constructor.constructor() }
+        val result = InternalNameHandler.generateConstructor(constructor, referencable)
 
         assertEquals(
             "Constructor(classifier = Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestClass\")), name = \"<init>\")",
@@ -112,7 +195,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             index = 0
         )
 
-        val result = testWrapper.run { typeParameter.constructor() }
+        val result = InternalNameHandler.generateConstructor(typeParameter, referencable)
 
         assertEquals(
             "TypeParameter(owner=Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestClass\")), index=0, name=\"T\")",
@@ -134,7 +217,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             type = VALUE
         )
 
-        val result = testWrapper.run { valueParameter.constructor() }
+        val result = InternalNameHandler.generateConstructor(valueParameter, referencable)
 
         assertEquals(
             "ValueParameter(owner=TopLevelMember(packageName = NameSegments(\"test\", \"package\"), name = \"testFunction\"), index=0, indexInValueParameters=0, name=\"param1\")",
@@ -156,7 +239,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             type = CONTEXT
         )
 
-        val result = testWrapper.run { contextParameter.constructor() }
+        val result = InternalNameHandler.generateConstructor(contextParameter, referencable)
 
         assertEquals(
             "ContextParameter(owner=TopLevelMember(packageName = NameSegments(\"test\", \"package\"), name = \"testFunction\"), index=0, indexInContextParameters=0, name=\"context\")",
@@ -177,7 +260,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             type = EXTENSION
         )
 
-        val result = testWrapper.run { extensionReceiver.constructor() }
+        val result = InternalNameHandler.generateConstructor(extensionReceiver, referencable)
 
         assertEquals(
             "ExtensionReceiverParameter(owner=TopLevelMember(packageName = NameSegments(\"test\", \"package\"), name = \"testFunction\"), index=0, name=\"this\")",
@@ -198,7 +281,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
             type = DISPATCH
         )
 
-        val result = testWrapper.run { dispatchReceiver.constructor() }
+        val result = InternalNameHandler.generateConstructor(dispatchReceiver, referencable)
 
         assertEquals(
             "DispatchReceiverParameter(owner=TopLevelMember(packageName = NameSegments(\"test\", \"package\"), name = \"testFunction\"), index=0, name=\"this\")",

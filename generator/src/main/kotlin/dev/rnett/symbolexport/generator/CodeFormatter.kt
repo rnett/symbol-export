@@ -36,15 +36,15 @@ internal object CodeFormatter {
         return if (objectName != null) "}" else ""
     }
 
-    fun generateProperty(name: InternalName): String = buildString {
+    fun generateProperty(name: InternalName, referencable: Set<InternalName>): String = buildString {
         appendLine()
         appendLine(javadocString("Generated from `${InternalNameHandler.getAllParts(name).joinToString(".")}`"))
-        appendLine("public val `${InternalNameHandler.getFieldName(name)}`: ${InternalNameHandler.getType(name)} = ${InternalNameHandler.generateConstructor(name)}")
+        appendLine("public val `${InternalNameHandler.getFieldName(name)}`: ${InternalNameHandler.getType(name)} = ${InternalNameHandler.generateConstructor(name, referencable)}")
     }
 
     fun generateProperties(symbols: Set<InternalName>): String = buildString {
         symbols.forEach {
-            append(generateProperty(it))
+            append(generateProperty(it, symbols))
         }
     }
 

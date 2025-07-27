@@ -11,17 +11,24 @@ import dev.rnett.symbolexport.internal.InternalName.ReceiverParameter.Type.EXTEN
  */
 internal object InternalNameHandler {
 
-    fun generateConstructor(name: InternalName): String = when (name) {
+    private fun generateConstructorOrReference(name: InternalName, referencable: Set<InternalName>): String {
+        return if (name in referencable)
+            getFieldName(name)
+        else
+            generateConstructor(name, referencable)
+    }
+
+    fun generateConstructor(name: InternalName, referencable: Set<InternalName>): String = when (name) {
         is InternalName.Classifier -> "Classifier(packageName = ${nameSegmentsOf(name.packageName)}, classNames = ${
             nameSegmentsOf(name.classNames)
         })"
 
-        is InternalName.ClassifierMember -> "ClassifierMember(classifier = ${generateConstructor(name.classifier)}, name = \"${name.name}\")"
+        is InternalName.ClassifierMember -> "ClassifierMember(classifier = ${generateConstructorOrReference(name.classifier, referencable)}, name = \"${name.name}\")"
 
         is InternalName.TopLevelMember -> "TopLevelMember(packageName = ${nameSegmentsOf(name.packageName)}, name = \"${name.name}\")"
-        is InternalName.EnumEntry -> "EnumEntry(enumClass = ${generateConstructor(name.owner)}, entryName = \"${name.name}\", entryOrdinal = ${name.ordinal})"
-        is InternalName.Constructor -> "Constructor(classifier = ${generateConstructor(name.classifier)}, name = \"${name.name}\")"
-        is InternalName.TypeParameter -> "TypeParameter(owner=${generateConstructor(name.owner)}, index=${name.index}, name=\"${name.name}\")"
+        is InternalName.EnumEntry -> "EnumEntry(enumClass = ${generateConstructorOrReference(name.owner, referencable)}, entryName = \"${name.name}\", entryOrdinal = ${name.ordinal})"
+        is InternalName.Constructor -> "Constructor(classifier = ${generateConstructorOrReference(name.classifier, referencable)}, name = \"${name.name}\")"
+        is InternalName.TypeParameter -> "TypeParameter(owner=${generateConstructorOrReference(name.owner, referencable)}, index=${name.index}, name=\"${name.name}\")"
         is InternalName.IndexedParameter -> {
             val ctorName = when (name.type) {
                 VALUE -> "ValueParameter"
@@ -33,7 +40,7 @@ internal object InternalNameHandler {
                 CONTEXT -> "indexInContextParameters"
             }
 
-            "$ctorName(owner=${generateConstructor(name.owner)}, index=${name.index}, $indexParam=${name.indexInList}, name=\"${name.name}\")"
+            "$ctorName(owner=${generateConstructorOrReference(name.owner, referencable)}, index=${name.index}, $indexParam=${name.indexInList}, name=\"${name.name}\")"
         }
 
         is InternalName.ReceiverParameter -> {
@@ -41,7 +48,7 @@ internal object InternalNameHandler {
                 EXTENSION -> "ExtensionReceiverParameter"
                 DISPATCH -> "DispatchReceiverParameter"
             }
-            "$ctorName(owner=${generateConstructor(name.owner)}, index=${name.index}, name=\"${name.name}\")"
+            "$ctorName(owner=${generateConstructorOrReference(name.owner, referencable)}, index=${name.index}, name=\"${name.name}\")"
         }
     }
 

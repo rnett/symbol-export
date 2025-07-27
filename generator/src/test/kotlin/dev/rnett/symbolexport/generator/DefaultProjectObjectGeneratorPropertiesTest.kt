@@ -6,8 +6,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class DefaultProjectObjectGeneratorPropertiesTest {
-    // Use the test wrapper to access the methods
-    private val testWrapper = DefaultProjectObjectGeneratorTestWrapper.Companion
 
     @Test
     fun testGenerateAllSymbolsProperty() {
