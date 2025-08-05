@@ -1,6 +1,7 @@
 package dev.rnett.symbolexport.fir
 
 import dev.rnett.symbolexport.NameReporter
+import dev.rnett.symbolexport.fir.exporter.AnnotationExporter
 import dev.rnett.symbolexport.fir.exporter.ClassExporter
 import dev.rnett.symbolexport.fir.exporter.DispatchReceiverExporter
 import dev.rnett.symbolexport.fir.exporter.EnumEntryExporter
@@ -22,9 +23,10 @@ class SymbolExportCheckerExtension(session: FirSession, val warnOnExported: Bool
 
     override fun FirDeclarationPredicateRegistrar.registerPredicates() {
         register(
-            Predicates.exportPredicate,
-            Predicates.childrenExportedPredicate,
-            Predicates.annotatedWithExport
+            Predicates.export,
+            Predicates.childrenExported,
+            Predicates.annotationExport,
+            Predicates.parentAnnotationExport
         )
     }
 
@@ -36,29 +38,30 @@ class SymbolExportCheckerExtension(session: FirSession, val warnOnExported: Bool
 
     override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
         private val illegalUseChecker = IllegalUseCheckerImpl(session)
-        private val extensionReceiverChecker = ExtensionReceiverExporter(illegalUseChecker, session)
+        private val extensionReceiverChecker = ExtensionReceiverExporter(session, illegalUseChecker)
 
         override val basicDeclarationCheckers = setOf(
             illegalUseChecker
         )
 
         override val classCheckers = exportCheckersOf(
-            ClassExporter(illegalUseChecker, session)
+            ClassExporter(session, illegalUseChecker),
+            AnnotationExporter(session, illegalUseChecker),
         )
         override val callableDeclarationCheckers = exportCheckersOf(
-            MemberExporter(illegalUseChecker, session),
-            DispatchReceiverExporter(illegalUseChecker, session),
-            MemberExtensionReceiverExporter(extensionReceiverChecker, session)
+            MemberExporter(session, illegalUseChecker),
+            DispatchReceiverExporter(session, illegalUseChecker),
+            MemberExtensionReceiverExporter(extensionReceiverChecker)
         )
 
         override val valueParameterCheckers = exportCheckersOf(
-            ValueParameterExporter(illegalUseChecker, session)
+            ValueParameterExporter(session, illegalUseChecker)
         )
         override val typeParameterCheckers = exportCheckersOf(
-            TypeParameterExporter(illegalUseChecker, session)
+            TypeParameterExporter(session, illegalUseChecker)
         )
         override val enumEntryCheckers = exportCheckersOf(
-            EnumEntryExporter(illegalUseChecker, session)
+            EnumEntryExporter(session, illegalUseChecker)
         )
         //TODO this never gets called. Switch to it once it works
 //        override val receiverParameterCheckers: Set<FirReceiverParameterChecker> = setOf(ExtensionReceiverChecker())

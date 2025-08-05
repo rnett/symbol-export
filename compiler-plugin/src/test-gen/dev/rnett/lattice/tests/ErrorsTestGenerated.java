@@ -21,6 +21,24 @@ public class ErrorsTestGenerated extends BaseDiagnosticCompilerTest {
   }
 
   @Test
+  @TestMetadata("AnnotationExportDuplicates.kt")
+  public void testAnnotationExportDuplicates() {
+    runTest("compiler-plugin/src/testData/errors/AnnotationExportDuplicates.kt");
+  }
+
+  @Test
+  @TestMetadata("AnnotationExportNonAnnotation.kt")
+  public void testAnnotationExportNonAnnotation() {
+    runTest("compiler-plugin/src/testData/errors/AnnotationExportNonAnnotation.kt");
+  }
+
+  @Test
+  @TestMetadata("AnnotationExportNonExportedParam.kt")
+  public void testAnnotationExportNonExportedParam() {
+    runTest("compiler-plugin/src/testData/errors/AnnotationExportNonExportedParam.kt");
+  }
+
+  @Test
   @TestMetadata("InternalDeclarations.kt")
   public void testInternalDeclarations() {
     runTest("compiler-plugin/src/testData/errors/InternalDeclarations.kt");

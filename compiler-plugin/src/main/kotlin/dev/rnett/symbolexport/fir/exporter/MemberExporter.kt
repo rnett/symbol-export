@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFr
 import org.jetbrains.kotlin.fir.extensions.predicateBasedProvider
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 
-class MemberExporter<T : FirCallableDeclaration>(illegalUseChecker: IllegalUseCheckerImpl, session: FirSession) : BaseSymbolExporter<T>(illegalUseChecker, session) {
+class MemberExporter<T : FirCallableDeclaration>(session: FirSession, illegalUseChecker: IllegalUseCheckerImpl) : BaseSymbolExporter<T>(session, illegalUseChecker) {
     override fun getParent(declaration: T): FirBasedSymbol<*>? = declaration.getContainingClassSymbol()
 
     context(context: CheckerContext)
@@ -25,11 +25,15 @@ class MemberExporter<T : FirCallableDeclaration>(illegalUseChecker: IllegalUseCh
         // do not include enum entries, fields, params, etc
         if (declaration !is FirProperty && declaration !is FirFunction) return false
 
+        if (session.predicateBasedProvider.matches(Predicates.parentAnnotationExport, declaration)) {
+            return false
+        }
+
         if (hasExportAnnotation) return true
 
         if (declaration is FirProperty) {
             val valueParam = declaration.correspondingValueParameterFromPrimaryConstructor ?: return false
-            return context.session.predicateBasedProvider.matches(Predicates.exportPredicate, valueParam)
+            return context.session.predicateBasedProvider.matches(Predicates.export, valueParam)
         }
         return false
     }

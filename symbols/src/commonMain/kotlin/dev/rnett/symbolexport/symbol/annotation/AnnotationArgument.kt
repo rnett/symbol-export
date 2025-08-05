@@ -2,39 +2,40 @@ package dev.rnett.symbolexport.symbol.annotation
 
 import dev.rnett.symbolexport.symbol.Symbol
 
-public data class AnnotationParameter(val name: String, val type: AnnotationParameterType)
+public data class AnnotationParameter<P : AnnotationParameterType<*>>(val name: String, val type: P)
 
-public fun interface AnnotationArgumentProducer {
-    public fun getArgument(parameter: AnnotationParameter): AnnotationArgument?
+public interface AnnotationArgumentProducer {
+    public fun <T : AnnotationArgument, P : AnnotationParameterType<T>> getArgument(parameter: AnnotationParameter<P>): T?
 }
 
-public sealed interface AnnotationParameterType {
-    public data object KClass : AnnotationParameterType
-    public data class Enum(val enumClass: Symbol.Classifier) : AnnotationParameterType
-    public data class Annotation<T : Symbol.Annotation<T, *>>(val annotationClass: T) : AnnotationParameterType
-    public data class Array(val elementType: AnnotationParameterType) : AnnotationParameterType
+public sealed interface AnnotationParameterType<V : AnnotationArgument> {
 
-    public sealed class Primitive<T : Any>(public val kClass: kotlin.reflect.KClass<T>) : AnnotationParameterType
+    public data object KClass : AnnotationParameterType<AnnotationArgument.KClass>
+    public data class Enum(val enumClass: Symbol.Classifier) : AnnotationParameterType<AnnotationArgument.EnumEntry>
+    public data class Annotation<S : Symbol.Annotation<S, T>, T : Symbol.Annotation.Arguments<S, T>>(val annotationClass: S) : AnnotationParameterType<AnnotationArgument.Annotation<S, T>>
+    public data class Array<T : AnnotationParameterType<E>, E : AnnotationArgument>(val elementType: T) : AnnotationParameterType<AnnotationArgument.Array<E>>
 
-    public data object String : Primitive<kotlin.String>(kotlin.String::class)
-    public data object Boolean : Primitive<kotlin.Boolean>(kotlin.Boolean::class)
-    public data object Int : Primitive<kotlin.Int>(kotlin.Int::class)
-    public data object Float : Primitive<kotlin.Float>(kotlin.Float::class)
-    public data object Long : Primitive<kotlin.Long>(kotlin.Long::class)
-    public data object Double : Primitive<kotlin.Double>(kotlin.Double::class)
-    public data object Char : Primitive<kotlin.Char>(kotlin.Char::class)
-    public data object Byte : Primitive<kotlin.Byte>(kotlin.Byte::class)
-    public data object Short : Primitive<kotlin.Short>(kotlin.Short::class)
+    public sealed class Primitive<T : Any, A : AnnotationArgument.Primitive<T>>(public val kClass: kotlin.reflect.KClass<T>) : AnnotationParameterType<A>
+
+    public data object String : Primitive<kotlin.String, AnnotationArgument.String>(kotlin.String::class)
+    public data object Boolean : Primitive<kotlin.Boolean, AnnotationArgument.Boolean>(kotlin.Boolean::class)
+    public data object Int : Primitive<kotlin.Int, AnnotationArgument.Int>(kotlin.Int::class)
+    public data object Float : Primitive<kotlin.Float, AnnotationArgument.Float>(kotlin.Float::class)
+    public data object Long : Primitive<kotlin.Long, AnnotationArgument.Long>(kotlin.Long::class)
+    public data object Double : Primitive<kotlin.Double, AnnotationArgument.Double>(kotlin.Double::class)
+    public data object Char : Primitive<kotlin.Char, AnnotationArgument.Char>(kotlin.Char::class)
+    public data object Byte : Primitive<kotlin.Byte, AnnotationArgument.Byte>(kotlin.Byte::class)
+    public data object Short : Primitive<kotlin.Short, AnnotationArgument.Short>(kotlin.Short::class)
 }
 
-public sealed class AnnotationArgument(public open val type: AnnotationParameterType) {
+public sealed class AnnotationArgument(public open val type: AnnotationParameterType<*>) {
 
-    public data class Array<T : AnnotationArgument>(val values: List<T>, val elementType: AnnotationParameterType) : AnnotationArgument(AnnotationParameterType.Array(elementType)), List<T> by values
-    public data class EnumEntry(val enum: Symbol.EnumEntry) : AnnotationArgument(AnnotationParameterType.Enum(enum.enumClass))
+    public data class Array<T : AnnotationArgument>(val values: List<T>, val elementType: AnnotationParameterType<*>) : AnnotationArgument(AnnotationParameterType.Array(elementType)), List<T> by values
+    public data class EnumEntry(val enumClass: Symbol.Classifier, val enumName: kotlin.String) : AnnotationArgument(AnnotationParameterType.Enum(enumClass))
     public data class KClass(val classSymbol: Symbol.Classifier) : AnnotationArgument(AnnotationParameterType.KClass)
-    public data class Annotation<T : Symbol.Annotation.Arguments<T, S>, S : Symbol.Annotation<S, T>>(val annotationArguments: T) : AnnotationArgument(AnnotationParameterType.Annotation(annotationArguments.annotation))
+    public data class Annotation<S : Symbol.Annotation<S, T>, T : Symbol.Annotation.Arguments<S, T>>(val annotationArguments: T) : AnnotationArgument(AnnotationParameterType.Annotation(annotationArguments.annotation))
 
-    public sealed class Primitive<T : Any>(override val type: AnnotationParameterType.Primitive<T>) : AnnotationArgument(type) {
+    public sealed class Primitive<T : Any>(override val type: AnnotationParameterType.Primitive<T, *>) : AnnotationArgument(type) {
         public abstract val value: T
     }
 
@@ -49,3 +50,5 @@ public sealed class AnnotationArgument(public open val type: AnnotationParameter
     public data class Short(override val value: kotlin.Short) : Primitive<kotlin.Short>(AnnotationParameterType.Short)
 
 }
+
+public fun Symbol.EnumEntry.asAnnotationArgument(): AnnotationArgument.EnumEntry = AnnotationArgument.EnumEntry(enumClass, name)

@@ -1,6 +1,7 @@
 package dev.rnett.symbolexport.symbol.compiler
 
 import dev.rnett.symbolexport.symbol.NameLike
+import dev.rnett.symbolexport.symbol.NameSegments
 import dev.rnett.symbolexport.symbol.Symbol
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrMemberAccessExpression
@@ -12,7 +13,7 @@ import org.jetbrains.kotlin.name.Name
 
 public fun NameLike.asFqName(): FqName = FqName.fromSegments(this.nameSegments)
 
-public fun Symbol.Classifier.asClassId(): ClassId = ClassId(packageName.asFqName(), classNames.asFqName(), false)
+public fun Symbol.ClassLike.asClassId(): ClassId = ClassId(packageName.asFqName(), classNames.asFqName(), false)
 
 public fun Symbol.NamedSymbol.name(): Name = Name.identifierIfValid(name) ?: Name.special(name)
 
@@ -33,3 +34,8 @@ public operator fun IrMemberAccessExpression<*>.ValueArgumentsList.set(param: Sy
 public fun IrMemberAccessExpression<*>.setTypeArgument(param: Symbol.TypeParameter, value: IrType?) {
     typeArguments[param.index] = value
 }
+
+internal fun ClassId.toClassifier() = Symbol.Classifier(
+    NameSegments(packageFqName.pathSegments().map { it.asString() }),
+    NameSegments(relativeClassName.pathSegments().map { it.asString() })
+)

@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.fir.declarations.collectEnumEntries
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
 
-class EnumEntryExporter(illegalUseChecker: IllegalUseCheckerImpl, session: FirSession) : BaseSymbolExporter<FirEnumEntry>(illegalUseChecker, session) {
+class EnumEntryExporter(session: FirSession, illegalUseChecker: IllegalUseCheckerImpl) : BaseSymbolExporter<FirEnumEntry>(session, illegalUseChecker) {
     override fun getParent(declaration: FirEnumEntry): FirBasedSymbol<*>? =
         declaration.getContainingClassSymbol()
 

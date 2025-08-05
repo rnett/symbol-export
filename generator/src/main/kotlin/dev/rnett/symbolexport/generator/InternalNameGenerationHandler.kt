@@ -12,7 +12,7 @@ import dev.rnett.symbolexport.internal.InternalName.ReceiverParameter.Type.EXTEN
 internal object InternalNameGenerationHandler {
 
     fun generateClass(name: InternalName, referencable: Set<InternalName>): String? = when (name) {
-        is InternalName.Annotation -> AnnotationGenerator.generateClass(name)
+        is InternalName.Annotation -> AnnotationGenerator.generateClass(name, referencable)
         else -> null
     }
 
@@ -52,7 +52,7 @@ internal object InternalNameGenerationHandler {
         is InternalName.Annotation -> AnnotationGenerator.annotationClassName(name) + "()"
     }
 
-    private fun generateConstructorOrReference(name: InternalName, referencable: Set<InternalName>): String {
+    fun generateConstructorOrReference(name: InternalName, referencable: Set<InternalName>): String {
         return if (name in referencable)
             getFieldName(name)
         else

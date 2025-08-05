@@ -2,9 +2,11 @@ package dev.rnett.test
 
 import dev.rnett.symbolexport.symbol.NameSegments
 import dev.rnett.symbolexport.symbol.Symbol
+import dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 class SymbolsTest {
@@ -385,6 +387,8 @@ class SymbolsTest {
             Symbols.dev_rnett_test_ExposedClass_withDispatch_this,
             Symbols.dev_rnett_test_WithValueParams_T,
             Symbols.dev_rnett_test_TestEnum_A,
+            Symbols.dev_rnett_test_TestAnnotation,
+            Symbols.dev_rnett_test_TestAnnotation_TestChildAnnotation,
             Symbols.JvmMain.dev_rnett_test_jvmOnly
         )
 
@@ -428,5 +432,79 @@ class SymbolsTest {
             name = "notExposedProperty"
         )
         assertFalse(notExposedNestedProperty in Symbols.ALL_SYMBOLS)
+    }
+
+    @Test
+    fun testTestAnnotation() {
+        assertTrue(Symbols.dev_rnett_test_TestAnnotation in Symbols.ALL_SYMBOLS)
+        assertEquals(
+            Symbol.Annotation::class.java,
+            Symbols.dev_rnett_test_TestAnnotation::class.java.superclass
+        )
+        assertEquals(
+            NameSegments("dev", "rnett", "test"),
+            Symbols.dev_rnett_test_TestAnnotation.packageName
+        )
+        assertEquals(
+            NameSegments("TestAnnotation"),
+            Symbols.dev_rnett_test_TestAnnotation.classNames
+        )
+
+        // Verify annotation parameter names
+        assertEquals("value", Symbols.dev_rnett_test_TestAnnotation.value.name)
+        assertEquals("other", Symbols.dev_rnett_test_TestAnnotation.other.name)
+        assertEquals("enu", Symbols.dev_rnett_test_TestAnnotation.enu.name)
+        assertEquals("arr", Symbols.dev_rnett_test_TestAnnotation.arr.name)
+        assertEquals("child", Symbols.dev_rnett_test_TestAnnotation.child.name)
+
+        // Verify annotation parameter types
+        assertEquals(AnnotationParameterType.String, Symbols.dev_rnett_test_TestAnnotation.value.type)
+        assertEquals(AnnotationParameterType.Int, Symbols.dev_rnett_test_TestAnnotation.other.type)
+
+        // For enum type, verify the enum class reference
+        assertIs<AnnotationParameterType.Enum>(Symbols.dev_rnett_test_TestAnnotation.enu.type)
+        val enumType = Symbols.dev_rnett_test_TestAnnotation.enu.type
+        assertEquals(
+            Symbol.Classifier(
+                packageName = NameSegments("dev", "rnett", "test"),
+                classNames = NameSegments("TestEnum")
+            ),
+            enumType.enumClass
+        )
+
+        // For array type, verify the element type
+        assertIs<AnnotationParameterType.Array<*, *>>(Symbols.dev_rnett_test_TestAnnotation.arr.type)
+        val arrayType = Symbols.dev_rnett_test_TestAnnotation.arr.type
+        assertIs<AnnotationParameterType.String>(arrayType.elementType)
+
+        // For annotation type, verify the annotation class reference
+        assertIs<AnnotationParameterType.Annotation<*, *>>(Symbols.dev_rnett_test_TestAnnotation.child.type)
+        val annotationType = Symbols.dev_rnett_test_TestAnnotation.child.type
+        assertEquals(Symbols.dev_rnett_test_TestAnnotation_TestChildAnnotation, annotationType.annotationClass)
+    }
+
+    @Test
+    fun testTestChildAnnotation() {
+        assertTrue(Symbols.dev_rnett_test_TestAnnotation_TestChildAnnotation in Symbols.ALL_SYMBOLS)
+        assertEquals(
+            Symbol.Annotation::class.java,
+            Symbols.dev_rnett_test_TestAnnotation_TestChildAnnotation::class.java.superclass
+        )
+        assertEquals(
+            NameSegments("dev", "rnett", "test"),
+            Symbols.dev_rnett_test_TestAnnotation_TestChildAnnotation.packageName
+        )
+        assertEquals(
+            NameSegments("TestAnnotation", "TestChildAnnotation"),
+            Symbols.dev_rnett_test_TestAnnotation_TestChildAnnotation.classNames
+        )
+
+        // Verify annotation parameter names
+        assertEquals(Symbols.dev_rnett_test_TestAnnotation_TestChildAnnotation.test.name, "test")
+        assertEquals(Symbols.dev_rnett_test_TestAnnotation_TestChildAnnotation.cls.name, "cls")
+
+        // Verify annotation parameter types
+        assertEquals(Symbols.dev_rnett_test_TestAnnotation_TestChildAnnotation.test.type, AnnotationParameterType.String)
+        assertEquals(Symbols.dev_rnett_test_TestAnnotation_TestChildAnnotation.cls.type, AnnotationParameterType.KClass)
     }
 }

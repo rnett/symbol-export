@@ -1,8 +1,10 @@
 package dev.rnett.test
 
 import dev.rnett.symbolexport.ChildrenExported
+import dev.rnett.symbolexport.ExportAnnotation
 import dev.rnett.symbolexport.ExportReceivers
 import dev.rnett.symbolexport.ExportSymbol
+import kotlin.reflect.KClass
 
 
 @ExportSymbol
@@ -77,4 +79,17 @@ enum class TestEnum {
     @ExportSymbol
     A,
     B;
+}
+
+@ExportAnnotation
+annotation class TestAnnotation(
+    val value: String,
+    val other: Int = 3,
+    val enu: TestEnum = TestEnum.A,
+    val arr: Array<String> = [],
+    val child: TestChildAnnotation
+) {
+
+    @ExportAnnotation
+    annotation class TestChildAnnotation(val test: String, val cls: KClass<*>)
 }

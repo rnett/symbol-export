@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.fir.types.customAnnotations
 import org.jetbrains.kotlin.fir.types.typeAnnotations
 import org.jetbrains.kotlin.name.SpecialNames
 
-class DispatchReceiverExporter<T : FirCallableDeclaration>(illegalUseChecker: IllegalUseCheckerImpl, session: FirSession) : BaseSymbolExporter<T>(illegalUseChecker, session) {
+class DispatchReceiverExporter<T : FirCallableDeclaration>(session: FirSession, illegalUseChecker: IllegalUseCheckerImpl) : BaseSymbolExporter<T>(session, illegalUseChecker) {
     // we're exporting a child
     override fun getParent(declaration: T): FirBasedSymbol<*>? = declaration.symbol
 

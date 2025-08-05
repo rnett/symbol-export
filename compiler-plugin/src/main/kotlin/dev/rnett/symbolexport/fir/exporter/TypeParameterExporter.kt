@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
 
-class TypeParameterExporter(illegalUseChecker: IllegalUseCheckerImpl, session: FirSession) : BaseSymbolExporter<FirTypeParameter>(illegalUseChecker, session) {
+class TypeParameterExporter(session: FirSession, illegalUseChecker: IllegalUseCheckerImpl) : BaseSymbolExporter<FirTypeParameter>(session, illegalUseChecker) {
     context(context: CheckerContext)
     override fun shouldExportFrom(hasExportAnnotation: Boolean, declaration: FirTypeParameter): Boolean {
         return hasExportAnnotation || declaration.hasAnnotation(Names.EXPORT_ANNOTATION_CLASSID, session)

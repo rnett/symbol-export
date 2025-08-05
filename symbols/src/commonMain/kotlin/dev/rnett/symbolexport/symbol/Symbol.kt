@@ -11,6 +11,16 @@ public interface NameLike {
     public fun resolve(vararg segments: String): NameSegments = plus(NameSegments(*segments))
 }
 
+internal object Test {
+    object a : Any() {
+        class Inner : Any() {
+            fun test() = InnerInner()
+
+            inner class InnerInner : Any()
+        }
+    }
+}
+
 public data class NameSegments(override val nameSegments: List<String>) : NameLike {
     public constructor(vararg segments: String) : this(segments.toList())
 
@@ -128,11 +138,11 @@ public sealed interface Symbol : NameLike {
         override val name: String = entryName
     }
 
-    public abstract class Annotation<S : Annotation<S, A>, A : Annotation.Arguments<A, S>>(
+    public abstract class Annotation<S : Annotation<S, A>, A : Annotation.Arguments<S, A>>(
         override val packageName: NameSegments,
         override val classNames: NameSegments
     ) : ClassLike {
-        public interface Arguments<A : Arguments<A, S>, S : Annotation<S, A>> {
+        public interface Arguments<S : Annotation<S, A>, A : Arguments<S, A>> {
             public val annotation: S
         }
 

@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 
-class ValueParameterExporter(illegalUseChecker: IllegalUseCheckerImpl, session: FirSession) : BaseSymbolExporter<FirValueParameter>(illegalUseChecker, session) {
+class ValueParameterExporter(session: FirSession, illegalUseChecker: IllegalUseCheckerImpl) : BaseSymbolExporter<FirValueParameter>(session, illegalUseChecker) {
     override fun getParent(declaration: FirValueParameter): FirBasedSymbol<*>? =
         declaration.containingDeclarationSymbol
 

@@ -18,7 +18,6 @@ dependencies {
     compileOnly(kotlin("stdlib"))
     compileOnly(kotlin("compiler"))
 
-    implementation(libs.kotlinx.serialization.json)
     implementation(project(":names-internal"))
 
     compilerTestRuntimeClasspath(project(":annotations"))

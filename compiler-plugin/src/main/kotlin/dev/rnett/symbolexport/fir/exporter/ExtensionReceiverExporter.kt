@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.name.SpecialNames
 
-class ExtensionReceiverExporter(illegalUseChecker: IllegalUseCheckerImpl, session: FirSession) : BaseSymbolExporter<FirReceiverParameter>(illegalUseChecker, session) {
+class ExtensionReceiverExporter(session: FirSession, illegalUseChecker: IllegalUseCheckerImpl) : BaseSymbolExporter<FirReceiverParameter>(session, illegalUseChecker) {
     override fun getParent(declaration: FirReceiverParameter): FirBasedSymbol<*>? =
         declaration.containingDeclarationSymbol
 

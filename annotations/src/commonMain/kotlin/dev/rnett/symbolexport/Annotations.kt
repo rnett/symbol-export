@@ -48,7 +48,7 @@ public annotation class ExportReceivers(val dispatch: Boolean = true, val extens
 /**
  * Implies [ExportSymbol], and also exports the annotations parameters in a way that allows annotations to be easily read or created by users of the symbols.
  *
- * Requires any referenced annotation types to also use [ExportAnnotation], and any referenced enum types to use [ExportSymbol].
+ * Requires any referenced annotation types to also use [ExportAnnotation].
  */
 @Target(
     AnnotationTarget.ANNOTATION_CLASS,

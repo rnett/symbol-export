@@ -3,12 +3,18 @@ package dev.rnett.symbolexport
 import dev.rnett.symbolexport.fir.SymbolExportCheckerExtension
 import dev.rnett.symbolexport.internal.InternalName
 import dev.rnett.symbolexport.internal.InternalNameEntry
+import dev.rnett.symbolexport.internal.InternalNameSerializer
 import dev.rnett.symbolexport.internal.ProjectCoordinates
-import kotlinx.serialization.json.Json
 import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
 import java.nio.file.Path
-import kotlin.io.path.*
+import kotlin.io.path.appendText
+import kotlin.io.path.createFile
+import kotlin.io.path.createParentDirectories
+import kotlin.io.path.deleteExisting
+import kotlin.io.path.exists
+import kotlin.io.path.isDirectory
+import kotlin.io.path.writeText
 
 data class ExportWriteSpec(
     val outputFile: Path,
@@ -22,7 +28,6 @@ class PluginRegistrar(
     val warnOnExported: Boolean,
 ) :
     FirExtensionRegistrar() {
-    val json = Json {}
 
     init {
         writeSpec?.apply {
@@ -44,7 +49,7 @@ class PluginRegistrar(
         synchronized(this) {
             writeSpec?.apply {
                 outputFile.appendText(
-                    json.encodeToString(
+                    InternalNameSerializer.serializeEntry(
                         InternalNameEntry(
                             projectName,
                             projectCoordinates,
