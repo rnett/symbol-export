@@ -1,6 +1,7 @@
 package dev.rnett.symbolexport.symbol.annotation
 
 import dev.rnett.symbolexport.symbol.Symbol
+import dev.rnett.symbolexport.symbol.annotation.AnnotationArgument.EnumEntry
 
 public data class AnnotationParameter<P : AnnotationParameterType<*>>(val name: String, val type: P)
 
@@ -30,8 +31,22 @@ public sealed interface AnnotationParameterType<V : AnnotationArgument> {
 
 public sealed class AnnotationArgument(public open val type: AnnotationParameterType<*>) {
 
-    public data class Array<T : AnnotationArgument>(val values: List<T>, val elementType: AnnotationParameterType<*>) : AnnotationArgument(AnnotationParameterType.Array(elementType)), List<T> by values
-    public data class EnumEntry(val enumClass: Symbol.Classifier, val enumName: kotlin.String) : AnnotationArgument(AnnotationParameterType.Enum(enumClass))
+    public data class Array<T : AnnotationArgument>(val values: List<T>, val elementType: AnnotationParameterType<*>) : AnnotationArgument(AnnotationParameterType.Array(elementType)), List<T> by values {
+        public constructor(values: List<T>) : this(values.toList(), Unit.run {
+            require(values.isNotEmpty()) { "Element type must be specified when creating an empty array" }
+            val types = values.mapTo(mutableSetOf()) { it.type }
+            require(types.size == 1) { "All elements of an array must have the same type, but got $types" }
+            types.single()
+        })
+    }
+
+    public data class EnumEntry(val enumClass: Symbol.Classifier, val enumName: kotlin.String) : AnnotationArgument(AnnotationParameterType.Enum(enumClass)) {
+        public constructor(enumEntry: Symbol.EnumEntry) : this(
+            enumEntry.enumClass,
+            enumEntry.name
+        )
+    }
+
     public data class KClass(val classSymbol: Symbol.Classifier) : AnnotationArgument(AnnotationParameterType.KClass)
     public data class Annotation<S : Symbol.Annotation<S, T>, T : Symbol.Annotation.Arguments<S, T>>(val annotationArguments: T) : AnnotationArgument(AnnotationParameterType.Annotation(annotationArguments.annotation))
 
@@ -49,6 +64,33 @@ public sealed class AnnotationArgument(public open val type: AnnotationParameter
     public data class Byte(override val value: kotlin.Byte) : Primitive<kotlin.Byte>(AnnotationParameterType.Byte)
     public data class Short(override val value: kotlin.Short) : Primitive<kotlin.Short>(AnnotationParameterType.Short)
 
+    public companion object {
+        public fun kClass(value: Symbol.Classifier): KClass = KClass(value)
+
+        public fun <T : AnnotationArgument> array(value: List<T>, elementType: AnnotationParameterType<*>): Array<T> = Array(value, elementType)
+        public fun <T : AnnotationArgument> nonEmptyArray(value: List<T>): Array<T> = Array(value)
+        public fun <T : AnnotationArgument> array(first: T, vararg values: T): Array<T> = Array(buildList {
+            add(first)
+            addAll(values)
+        })
+
+        public fun enum(value: Symbol.EnumEntry): EnumEntry = EnumEntry(value)
+        public fun enum(value: Symbol.Classifier, name: kotlin.String): EnumEntry = EnumEntry(value, name)
+
+        public fun <S : Symbol.Annotation<S, T>, T : Symbol.Annotation.Arguments<S, T>> annotation(value: T): Annotation<S, T> = Annotation(value)
+
+        public fun of(value: kotlin.String): String = String(value)
+        public fun of(value: kotlin.Boolean): Boolean = Boolean(value)
+        public fun of(value: kotlin.Int): Int = Int(value)
+        public fun of(value: kotlin.Float): Float = Float(value)
+        public fun of(value: kotlin.Long): Long = Long(value)
+        public fun of(value: kotlin.Double): Double = Double(value)
+        public fun of(value: kotlin.Char): Char = Char(value)
+        public fun of(value: kotlin.Byte): Byte = Byte(value)
+        public fun of(value: kotlin.Short): Short = Short(value)
+    }
 }
 
-public fun Symbol.EnumEntry.asAnnotationArgument(): AnnotationArgument.EnumEntry = AnnotationArgument.EnumEntry(enumClass, name)
+
+public fun Symbol.EnumEntry.asAnnotationArgument(): EnumEntry = EnumEntry(enumClass, name)
+

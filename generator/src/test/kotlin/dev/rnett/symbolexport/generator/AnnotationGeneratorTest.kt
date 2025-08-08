@@ -35,10 +35,13 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     packageName = NameSegments("test", "package"),
     classNames = NameSegments("TestAnnotation"),
 ) {
-    public inner class Arguments(producer: AnnotationArgumentProducer) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
+    public inner class Arguments() : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
     }
-    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(producer)
+    
+    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments()
+    
+    public fun createArguments(): test_package_TestAnnotation_Spec.Arguments = Arguments()
 }
 
         """.trimIndent(),
@@ -67,20 +70,41 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     packageName = NameSegments("test", "package"),
     classNames = NameSegments("TestAnnotation"),
 ) {
-    public val stringParam: AnnotationParameter<AnnotationParameterType.String> by lazy { AnnotationParameter("stringParam", AnnotationParameterType.String) }
-    
-    public val intParam: AnnotationParameter<AnnotationParameterType.Int> by lazy { AnnotationParameter("intParam", AnnotationParameterType.Int) }
-    
-    public val booleanParam: AnnotationParameter<AnnotationParameterType.Boolean> by lazy { AnnotationParameter("booleanParam", AnnotationParameterType.Boolean) }
-    
-    public inner class Arguments(producer: AnnotationArgumentProducer) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
-        override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
-        
-        public val stringParam: AnnotationArgument.String? = producer.getArgument(this@test_package_TestAnnotation_Spec.stringParam)
-        public val intParam: AnnotationArgument.Int? = producer.getArgument(this@test_package_TestAnnotation_Spec.intParam)
-        public val booleanParam: AnnotationArgument.Boolean? = producer.getArgument(this@test_package_TestAnnotation_Spec.booleanParam)
+    public val stringParam: AnnotationParameter<AnnotationParameterType.String> by lazy {
+        AnnotationParameter("stringParam", AnnotationParameterType.String)
     }
-    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(producer)
+    
+    public val intParam: AnnotationParameter<AnnotationParameterType.Int> by lazy {
+        AnnotationParameter("intParam", AnnotationParameterType.Int)
+    }
+    
+    public val booleanParam: AnnotationParameter<AnnotationParameterType.Boolean> by lazy {
+        AnnotationParameter("booleanParam", AnnotationParameterType.Boolean)
+    }
+    
+    public inner class Arguments(
+        public val stringParam: AnnotationArgument.String?,
+        public val intParam: AnnotationArgument.Int?,
+        public val booleanParam: AnnotationArgument.Boolean?,
+    ) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
+        override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
+    }
+    
+    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(
+        producer.getArgument(this@test_package_TestAnnotation_Spec.stringParam),
+        producer.getArgument(this@test_package_TestAnnotation_Spec.intParam),
+        producer.getArgument(this@test_package_TestAnnotation_Spec.booleanParam),
+    )
+    
+    public fun createArguments(
+        stringParam: AnnotationArgument.String?,
+        intParam: AnnotationArgument.Int?,
+        booleanParam: AnnotationArgument.Boolean?,
+    ): test_package_TestAnnotation_Spec.Arguments = Arguments(
+        stringParam,
+        intParam,
+        booleanParam,
+    )
 }
 
         """.trimIndent(),
@@ -107,14 +131,25 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     packageName = NameSegments("test", "package"),
     classNames = NameSegments("TestAnnotation"),
 ) {
-    public val stringArray: AnnotationParameter<AnnotationParameterType.Array<AnnotationParameterType.String, AnnotationArgument.String>> by lazy { AnnotationParameter("stringArray", AnnotationParameterType.Array(elementType = AnnotationParameterType.String)) }
-    
-    public inner class Arguments(producer: AnnotationArgumentProducer) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
-        override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
-        
-        public val stringArray: AnnotationArgument.Array<AnnotationArgument.String>? = producer.getArgument(this@test_package_TestAnnotation_Spec.stringArray)
+    public val stringArray: AnnotationParameter<AnnotationParameterType.Array<AnnotationParameterType.String, AnnotationArgument.String>> by lazy {
+        AnnotationParameter("stringArray", AnnotationParameterType.Array(elementType = AnnotationParameterType.String))
     }
-    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(producer)
+    
+    public inner class Arguments(
+        public val stringArray: AnnotationArgument.Array<AnnotationArgument.String>?,
+    ) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
+        override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
+    }
+    
+    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(
+        producer.getArgument(this@test_package_TestAnnotation_Spec.stringArray),
+    )
+    
+    public fun createArguments(
+        stringArray: AnnotationArgument.Array<AnnotationArgument.String>?,
+    ): test_package_TestAnnotation_Spec.Arguments = Arguments(
+        stringArray,
+    )
 }
 
         """.trimIndent(),
@@ -146,14 +181,25 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     packageName = NameSegments("test", "package"),
     classNames = NameSegments("TestAnnotation"),
 ) {
-    public val enumParam: AnnotationParameter<AnnotationParameterType.Enum> by lazy { AnnotationParameter("enumParam", AnnotationParameterType.Enum(enumClass = Classifier(packageName = NameSegments("test", "package"), classNames = NameSegments("TestEnum")))) }
-    
-    public inner class Arguments(producer: AnnotationArgumentProducer) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
-        override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
-        
-        public val enumParam: AnnotationArgument.EnumEntry? = producer.getArgument(this@test_package_TestAnnotation_Spec.enumParam)
+    public val enumParam: AnnotationParameter<AnnotationParameterType.Enum> by lazy {
+        AnnotationParameter("enumParam", AnnotationParameterType.Enum(enumClass = Classifier(packageName = NameSegments("test", "package"), classNames = NameSegments("TestEnum"))))
     }
-    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(producer)
+    
+    public inner class Arguments(
+        public val enumParam: AnnotationArgument.EnumEntry?,
+    ) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
+        override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
+    }
+    
+    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(
+        producer.getArgument(this@test_package_TestAnnotation_Spec.enumParam),
+    )
+    
+    public fun createArguments(
+        enumParam: AnnotationArgument.EnumEntry?,
+    ): test_package_TestAnnotation_Spec.Arguments = Arguments(
+        enumParam,
+    )
 }
 
         """.trimIndent(),
@@ -180,14 +226,25 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     packageName = NameSegments("test", "package"),
     classNames = NameSegments("TestAnnotation"),
 ) {
-    public val classParam: AnnotationParameter<AnnotationParameterType.KClass> by lazy { AnnotationParameter("classParam", AnnotationParameterType.KClass) }
-    
-    public inner class Arguments(producer: AnnotationArgumentProducer) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
-        override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
-        
-        public val classParam: AnnotationArgument.KClass? = producer.getArgument(this@test_package_TestAnnotation_Spec.classParam)
+    public val classParam: AnnotationParameter<AnnotationParameterType.KClass> by lazy {
+        AnnotationParameter("classParam", AnnotationParameterType.KClass)
     }
-    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(producer)
+    
+    public inner class Arguments(
+        public val classParam: AnnotationArgument.KClass?,
+    ) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
+        override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
+    }
+    
+    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(
+        producer.getArgument(this@test_package_TestAnnotation_Spec.classParam),
+    )
+    
+    public fun createArguments(
+        classParam: AnnotationArgument.KClass?,
+    ): test_package_TestAnnotation_Spec.Arguments = Arguments(
+        classParam,
+    )
 }
 
         """.trimIndent(),
@@ -219,14 +276,25 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     packageName = NameSegments("test", "package"),
     classNames = NameSegments("TestAnnotation"),
 ) {
-    public val nestedAnnotation: AnnotationParameter<AnnotationParameterType.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>> by lazy { AnnotationParameter("nestedAnnotation", AnnotationParameterType.Annotation(annotationClass = test_package_NestedAnnotation)) }
-    
-    public inner class Arguments(producer: AnnotationArgumentProducer) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
-        override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
-        
-        public val nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>? = producer.getArgument(this@test_package_TestAnnotation_Spec.nestedAnnotation)
+    public val nestedAnnotation: AnnotationParameter<AnnotationParameterType.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>> by lazy {
+        AnnotationParameter("nestedAnnotation", AnnotationParameterType.Annotation(annotationClass = test_package_NestedAnnotation))
     }
-    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(producer)
+    
+    public inner class Arguments(
+        public val nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>?,
+    ) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
+        override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
+    }
+    
+    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(
+        producer.getArgument(this@test_package_TestAnnotation_Spec.nestedAnnotation),
+    )
+    
+    public fun createArguments(
+        nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>?,
+    ): test_package_TestAnnotation_Spec.Arguments = Arguments(
+        nestedAnnotation,
+    )
 }
 
         """.trimIndent(),
@@ -317,32 +385,73 @@ class test_package_ComplexAnnotation_Spec() : Symbol.Annotation<test_package_Com
     packageName = NameSegments("test", "package"),
     classNames = NameSegments("ComplexAnnotation"),
 ) {
-    public val stringParam: AnnotationParameter<AnnotationParameterType.String> by lazy { AnnotationParameter("stringParam", AnnotationParameterType.String) }
-    
-    public val intParam: AnnotationParameter<AnnotationParameterType.Int> by lazy { AnnotationParameter("intParam", AnnotationParameterType.Int) }
-    
-    public val booleanParam: AnnotationParameter<AnnotationParameterType.Boolean> by lazy { AnnotationParameter("booleanParam", AnnotationParameterType.Boolean) }
-    
-    public val stringArray: AnnotationParameter<AnnotationParameterType.Array<AnnotationParameterType.String, AnnotationArgument.String>> by lazy { AnnotationParameter("stringArray", AnnotationParameterType.Array(elementType = AnnotationParameterType.String)) }
-    
-    public val enumParam: AnnotationParameter<AnnotationParameterType.Enum> by lazy { AnnotationParameter("enumParam", AnnotationParameterType.Enum(enumClass = Classifier(packageName = NameSegments("test", "package"), classNames = NameSegments("TestEnum")))) }
-    
-    public val classParam: AnnotationParameter<AnnotationParameterType.KClass> by lazy { AnnotationParameter("classParam", AnnotationParameterType.KClass) }
-    
-    public val nestedAnnotation: AnnotationParameter<AnnotationParameterType.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>> by lazy { AnnotationParameter("nestedAnnotation", AnnotationParameterType.Annotation(annotationClass = test_package_NestedAnnotation)) }
-    
-    public inner class Arguments(producer: AnnotationArgumentProducer) : Symbol.Annotation.Arguments<test_package_ComplexAnnotation_Spec, Arguments> {
-        override val annotation: test_package_ComplexAnnotation_Spec get() = this@test_package_ComplexAnnotation_Spec
-        
-        public val stringParam: AnnotationArgument.String? = producer.getArgument(this@test_package_ComplexAnnotation_Spec.stringParam)
-        public val intParam: AnnotationArgument.Int? = producer.getArgument(this@test_package_ComplexAnnotation_Spec.intParam)
-        public val booleanParam: AnnotationArgument.Boolean? = producer.getArgument(this@test_package_ComplexAnnotation_Spec.booleanParam)
-        public val stringArray: AnnotationArgument.Array<AnnotationArgument.String>? = producer.getArgument(this@test_package_ComplexAnnotation_Spec.stringArray)
-        public val enumParam: AnnotationArgument.EnumEntry? = producer.getArgument(this@test_package_ComplexAnnotation_Spec.enumParam)
-        public val classParam: AnnotationArgument.KClass? = producer.getArgument(this@test_package_ComplexAnnotation_Spec.classParam)
-        public val nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>? = producer.getArgument(this@test_package_ComplexAnnotation_Spec.nestedAnnotation)
+    public val stringParam: AnnotationParameter<AnnotationParameterType.String> by lazy {
+        AnnotationParameter("stringParam", AnnotationParameterType.String)
     }
-    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_ComplexAnnotation_Spec.Arguments = Arguments(producer)
+    
+    public val intParam: AnnotationParameter<AnnotationParameterType.Int> by lazy {
+        AnnotationParameter("intParam", AnnotationParameterType.Int)
+    }
+    
+    public val booleanParam: AnnotationParameter<AnnotationParameterType.Boolean> by lazy {
+        AnnotationParameter("booleanParam", AnnotationParameterType.Boolean)
+    }
+    
+    public val stringArray: AnnotationParameter<AnnotationParameterType.Array<AnnotationParameterType.String, AnnotationArgument.String>> by lazy {
+        AnnotationParameter("stringArray", AnnotationParameterType.Array(elementType = AnnotationParameterType.String))
+    }
+    
+    public val enumParam: AnnotationParameter<AnnotationParameterType.Enum> by lazy {
+        AnnotationParameter("enumParam", AnnotationParameterType.Enum(enumClass = Classifier(packageName = NameSegments("test", "package"), classNames = NameSegments("TestEnum"))))
+    }
+    
+    public val classParam: AnnotationParameter<AnnotationParameterType.KClass> by lazy {
+        AnnotationParameter("classParam", AnnotationParameterType.KClass)
+    }
+    
+    public val nestedAnnotation: AnnotationParameter<AnnotationParameterType.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>> by lazy {
+        AnnotationParameter("nestedAnnotation", AnnotationParameterType.Annotation(annotationClass = test_package_NestedAnnotation))
+    }
+    
+    public inner class Arguments(
+        public val stringParam: AnnotationArgument.String?,
+        public val intParam: AnnotationArgument.Int?,
+        public val booleanParam: AnnotationArgument.Boolean?,
+        public val stringArray: AnnotationArgument.Array<AnnotationArgument.String>?,
+        public val enumParam: AnnotationArgument.EnumEntry?,
+        public val classParam: AnnotationArgument.KClass?,
+        public val nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>?,
+    ) : Symbol.Annotation.Arguments<test_package_ComplexAnnotation_Spec, Arguments> {
+        override val annotation: test_package_ComplexAnnotation_Spec get() = this@test_package_ComplexAnnotation_Spec
+    }
+    
+    override fun produceArguments(producer: AnnotationArgumentProducer): test_package_ComplexAnnotation_Spec.Arguments = Arguments(
+        producer.getArgument(this@test_package_ComplexAnnotation_Spec.stringParam),
+        producer.getArgument(this@test_package_ComplexAnnotation_Spec.intParam),
+        producer.getArgument(this@test_package_ComplexAnnotation_Spec.booleanParam),
+        producer.getArgument(this@test_package_ComplexAnnotation_Spec.stringArray),
+        producer.getArgument(this@test_package_ComplexAnnotation_Spec.enumParam),
+        producer.getArgument(this@test_package_ComplexAnnotation_Spec.classParam),
+        producer.getArgument(this@test_package_ComplexAnnotation_Spec.nestedAnnotation),
+    )
+    
+    public fun createArguments(
+        stringParam: AnnotationArgument.String?,
+        intParam: AnnotationArgument.Int?,
+        booleanParam: AnnotationArgument.Boolean?,
+        stringArray: AnnotationArgument.Array<AnnotationArgument.String>?,
+        enumParam: AnnotationArgument.EnumEntry?,
+        classParam: AnnotationArgument.KClass?,
+        nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>?,
+    ): test_package_ComplexAnnotation_Spec.Arguments = Arguments(
+        stringParam,
+        intParam,
+        booleanParam,
+        stringArray,
+        enumParam,
+        classParam,
+        nestedAnnotation,
+    )
 }
 
         """.trimIndent(),

@@ -1,7 +1,7 @@
 package dev.rnett.lattice.support
 
+import dev.rnett.lattice.RuntimeClassPathProvider
 import dev.rnett.lattice.RuntimeEnvironmentConfigurator
-import dev.rnett.lattice.RuntimeRuntimeClassPathProvider
 import dev.rnett.symbolexport.PluginRegistrar
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
@@ -39,7 +39,7 @@ fun TestConfigurationBuilder.configurePlugin() {
     )
 
     useCustomRuntimeClasspathProviders(
-        ::RuntimeRuntimeClassPathProvider,
+        ::RuntimeClassPathProvider,
     )
 
     defaultDirectives {

@@ -8,20 +8,20 @@ import org.jetbrains.kotlin.test.services.RuntimeClasspathProvider
 import org.jetbrains.kotlin.test.services.TestServices
 import java.io.File
 
-private val buildableRuntimeClasspath =
+private val runtimeClasspath =
     System.getProperty("compilerTestRuntime.classpath")?.split(File.pathSeparator)?.map(::File)
         ?: error("Unable to get a valid classpath from 'compilerTestRuntime.classpath' property")
 
 class RuntimeEnvironmentConfigurator(testServices: TestServices) : EnvironmentConfigurator(testServices) {
     override fun configureCompilerConfiguration(configuration: CompilerConfiguration, module: TestModule) {
-        for (file in buildableRuntimeClasspath) {
+        for (file in runtimeClasspath) {
             configuration.addJvmClasspathRoot(file)
         }
     }
 }
 
-class RuntimeRuntimeClassPathProvider(testServices: TestServices) : RuntimeClasspathProvider(testServices) {
+class RuntimeClassPathProvider(testServices: TestServices) : RuntimeClasspathProvider(testServices) {
     override fun runtimeClassPaths(module: TestModule): List<File> {
-        return buildableRuntimeClasspath
+        return runtimeClasspath
     }
 }

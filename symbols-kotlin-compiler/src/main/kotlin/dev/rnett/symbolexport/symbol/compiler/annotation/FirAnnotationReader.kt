@@ -1,10 +1,12 @@
-package dev.rnett.symbolexport.symbol.compiler
+package dev.rnett.symbolexport.symbol.compiler.annotation
 
 import dev.rnett.symbolexport.symbol.Symbol
 import dev.rnett.symbolexport.symbol.annotation.AnnotationArgument
 import dev.rnett.symbolexport.symbol.annotation.AnnotationArgumentProducer
 import dev.rnett.symbolexport.symbol.annotation.AnnotationParameter
 import dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType
+import dev.rnett.symbolexport.symbol.compiler.asClassId
+import dev.rnett.symbolexport.symbol.compiler.toClassifier
 import org.jetbrains.kotlin.fir.FirAnnotationContainer
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.evaluateAs
@@ -71,14 +73,16 @@ private class FirAnnotationArgumentProvider(val annotation: FirAnnotation, val s
                     throw AnnotationArgumentException("Expected annotation of type ${type.annotationClass.asClassId()}")
                 }
                 val producer = FirAnnotationArgumentProvider(annotation, session)
-                return produceAnnotationArgument(type.annotationClass, producer) as T
+
+                AnnotationArgument.Annotation(type.annotationClass.produceArguments(producer)) as T
             }
 
             is AnnotationParameterType.Array<*, *> -> {
                 val arrayLiteral = expression.evaluateAs<FirArrayLiteral>(session) ?: throw AnnotationArgumentException("Expected array literal")
                 val elements = arrayLiteral.arguments
+
                 @Suppress("UNCHECKED_CAST")
-                return AnnotationArgument.Array(elements.map { asArgumentType(it, type.elementType)!! }, type.elementType) as T
+                AnnotationArgument.Array(elements.map { asArgumentType(it, type.elementType)!! }, type.elementType) as T
             }
 
             is AnnotationParameterType.Enum -> {
@@ -92,7 +96,8 @@ private class FirAnnotationArgumentProvider(val annotation: FirAnnotation, val s
             AnnotationParameterType.KClass -> {
                 val getClassCall = expression.evaluateAs<FirGetClassCall>(session) ?: throw AnnotationArgumentException("Expected class literal}")
                 val classId = getClassCall.getTargetType()?.classId ?: throw AnnotationArgumentException("Expected class literal")
-                return AnnotationArgument.KClass(classId.toClassifier()) as T
+
+                AnnotationArgument.KClass(classId.toClassifier()) as T
             }
 
             AnnotationParameterType.Boolean -> getPrimitiveArgumentValue<Boolean>(expression, session).let { AnnotationArgument.Boolean(it) as T }
@@ -108,13 +113,7 @@ private class FirAnnotationArgumentProvider(val annotation: FirAnnotation, val s
     }
 }
 
-private fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> produceAnnotationArgument(annotation: S, producer: AnnotationArgumentProducer): AnnotationArgument.Annotation<S, A> {
-    return AnnotationArgument.Annotation(annotation.produceArguments(producer))
-}
-
-
 private inline fun <reified T> getPrimitiveArgumentValue(argument: FirExpression, session: FirSession): T {
     val literal = argument.evaluateAs<FirLiteralExpression>(session) ?: throw AnnotationArgumentException("Expected literal")
     return literal.value as? T ?: throw AnnotationArgumentException("Expected ${T::class.simpleName} literal")
 }
-

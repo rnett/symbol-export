@@ -22,29 +22,110 @@ internal object AnnotationGenerator {
             appendIndentedLine {
                 appendLine()
                 name.parameters.forEach {
-                    appendLine("public val ${it.key}: AnnotationParameter<${annotationParameterType(it.value)}> by lazy { AnnotationParameter(\"${it.key}\", ${annotationParameterTypeConstructor(it.value, referencable)}) }")
+                    appendLine("public val ${it.key}: AnnotationParameter<${annotationParameterType(it.value)}> by lazy {")
+                    appendIndentedLine { append("AnnotationParameter(\"${it.key}\", ${annotationParameterTypeConstructor(it.value, referencable)})") }
+                    appendLine("}")
                     appendLine()
                 }
 
-                appendLine("public inner class Arguments(producer: AnnotationArgumentProducer) : Symbol.Annotation.Arguments<$className, Arguments> {")
+                append("public inner class Arguments(")
+                if (name.parameters.isNotEmpty()) {
+                    appendLine()
+                    appendIndentedLine {
+                        name.parameters.forEach {
+                            appendLine("public val ${it.key}: ${annotationValueType(it.value)}?,")
+                        }
+                    }
+                }
+                appendLine(") : Symbol.Annotation.Arguments<$className, Arguments> {")
 
                 appendIndentedLine {
                     appendLine("override val annotation: $className get() = this@$className")
-                    if (name.parameters.isNotEmpty())
-                        appendLine()
+                    appendLine()
 
-                    name.parameters.forEach {
-                        appendLine("public val ${it.key}: ${annotationValueType(it.value)}? = producer.getArgument(this@${className}.${it.key})")
+                    append("override val asMap: Map<AnnotationParameter<*>, AnnotationArgument> by lazy {")
+                    if (name.parameters.isNotEmpty()) {
+                        appendLine()
+                        appendIndentedLine {
+                            appendLine("buildMap {")
+                            appendIndentedLine {
+                                name.parameters.keys.forEach {
+                                    appendLine("if (${it} != null) put(this@${className}.$it, ${it}!!)")
+                                }
+                            }
+                            appendLine("}")
+                        }
+                        appendLine("}")
+                    } else {
+                        appendLine(" emptyMap() }")
                     }
                 }
 
                 appendLine("}")
+                appendLine()
 
-                appendLine("override fun produceArguments(producer: AnnotationArgumentProducer): ${className}.Arguments = Arguments(producer)")
+                append("override fun produceArguments(producer: AnnotationArgumentProducer): ${className}.Arguments = Arguments(")
+                if (name.parameters.isNotEmpty()) {
+                    appendLine()
+                    appendIndentedLine {
+                        name.parameters.forEach {
+                            appendLine("producer.getArgument(this@${className}.${it.key}),")
+                        }
+                    }
+                }
+                appendLine(")")
+
+                appendLine()
+
+                append("public fun createArguments(")
+                if (name.parameters.isNotEmpty()) {
+                    appendLine()
+                    appendIndentedLine {
+                        name.parameters.forEach {
+                            appendLine("${it.key}: ${annotationCreationValueType(it.value)}?,")
+                        }
+                    }
+                }
+                append("): ${className}.Arguments = Arguments(")
+                if (name.parameters.isNotEmpty()) {
+                    appendLine()
+                    appendIndentedLine {
+                        name.parameters.forEach {
+                            appendLine("${annotationCreationConvertedValue(it.key, it.value, referencable)},")
+                        }
+                    }
+                }
+                appendLine(")")
+
             }
 
             appendLine("}")
         }
+    }
+
+    fun annotationCreationConvertedValue(param: String, type: AnnotationParameterType, referencable: Set<InternalName>, nullable: Boolean = true): String {
+        if (type is AnnotationParameterType.Primitive) {
+            val body = "AnnotationArgument.${type.typeName}(it)"
+
+            if (!nullable)
+                return body
+
+            return "$param?.let { $body }"
+        } else if (type is AnnotationParameterType.Array) {
+            val body = "AnnotationArgument.Array(it.map { ${annotationCreationConvertedValue("it", type.elementType, referencable, false)} }, ${annotationParameterTypeConstructor(type.elementType, referencable)})"
+
+            if (!nullable)
+                return body
+
+            return "$param?.let { $body }"
+        }
+        return param
+    }
+
+    fun annotationCreationValueType(type: AnnotationParameterType): String = when (type) {
+        is AnnotationParameterType.Primitive -> type.typeName
+        is AnnotationParameterType.Array -> "List<${annotationCreationValueType(type.elementType)}>"
+        else -> annotationValueType(type)
     }
 
     fun annotationParameterTypeConstructor(type: AnnotationParameterType, referencable: Set<InternalName>): String {
