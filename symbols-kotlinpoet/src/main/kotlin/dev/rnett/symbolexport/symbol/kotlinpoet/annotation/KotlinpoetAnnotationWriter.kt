@@ -47,7 +47,12 @@ private class KotlinpoetAnnotationWriter(val useSiteTarget: AnnotationSpec.UseSi
     override fun writeArrayArgument(elements: List<CodeBlock>, elementType: AnnotationParameterType<*>): CodeBlock {
         return CodeBlock.builder().apply {
             add("[")
-            elements.forEach { add("%L,", it) }
+            elements.forEachIndexed { idx, it ->
+                if (idx != elements.lastIndex)
+                    add("%L, ", it)
+                else
+                    add("%L", it)
+            }
             add("]")
         }.build()
     }

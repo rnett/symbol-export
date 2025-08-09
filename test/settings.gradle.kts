@@ -18,13 +18,15 @@ gradle.beforeProject {
 includeBuild("..")
 
 include(
-    ":produce-a",
-    ":produce-b",
-    ":consume-a",
-    ":consume-all",
-    ":integration-test-compiler",
-    ":integration-test-kotlinpoet",
-    ":test-symbols"
+    ":import-export:produce-a",
+    ":import-export:produce-b",
+    ":import-export:consume-a",
+    ":import-export:consume-all",
+)
+include(
+    ":symbols-integration-tests:compiler",
+    ":symbols-integration-tests:kotlinpoet",
+    ":symbols-integration-tests:test-symbols"
 )
 
 rootProject.name = "symbol-export-parent"

@@ -46,13 +46,15 @@
             <option value="$PROJECT_DIR$/symbols-kotlinpoet" />
             <option value="$PROJECT_DIR$/symbols-ksp" />
             <option value="$PROJECT_DIR$/test" />
-            <option value="$PROJECT_DIR$/test/consume-a" />
-            <option value="$PROJECT_DIR$/test/consume-all" />
-            <option value="$PROJECT_DIR$/test/integration-test-compiler" />
-            <option value="$PROJECT_DIR$/test/integration-test-kotlinpoet" />
-            <option value="$PROJECT_DIR$/test/produce-a" />
-            <option value="$PROJECT_DIR$/test/produce-b" />
-            <option value="$PROJECT_DIR$/test/test-symbols" />
+            <option value="$PROJECT_DIR$/test/import-export" />
+            <option value="$PROJECT_DIR$/test/import-export/consume-a" />
+            <option value="$PROJECT_DIR$/test/import-export/consume-all" />
+            <option value="$PROJECT_DIR$/test/import-export/produce-a" />
+            <option value="$PROJECT_DIR$/test/import-export/produce-b" />
+            <option value="$PROJECT_DIR$/test/symbols-integration-tests" />
+            <option value="$PROJECT_DIR$/test/symbols-integration-tests/compiler" />
+            <option value="$PROJECT_DIR$/test/symbols-integration-tests/kotlinpoet" />
+            <option value="$PROJECT_DIR$/test/symbols-integration-tests/test-symbols" />
           </set>
         </option>
       </GradleProjectSettings>
