@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.getContainingClassSymbol
 import org.jetbrains.kotlin.fir.declarations.FirClass
+import org.jetbrains.kotlin.fir.declarations.primaryConstructorIfAny
 import org.jetbrains.kotlin.fir.declarations.utils.isEnumClass
 import org.jetbrains.kotlin.fir.extensions.predicateBasedProvider
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
@@ -19,9 +20,11 @@ import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.scopes.collectAllProperties
 import org.jetbrains.kotlin.fir.scopes.impl.declaredMemberScope
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.arrayElementType
 import org.jetbrains.kotlin.fir.types.classId
+import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.types.isArrayType
 import org.jetbrains.kotlin.fir.types.isKClassType
 import org.jetbrains.kotlin.name.StandardClassIds
@@ -74,22 +77,28 @@ class AnnotationExporter(session: FirSession, illegalUseChecker: IllegalUseCheck
         return session.predicateBasedProvider.matches(Predicates.annotationExport, declaration)
     }
 
+    @OptIn(SymbolInternals::class)
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun createName(declaration: FirClass): Pair<KtSourceElement?, InternalName>? {
 
         val classifierName = Helpers.createClassName(declaration.symbol)
 
-        val params = session.declaredMemberScope(declaration, null).collectAllProperties()
-            .associate { it.name.asString() to getAnnotationParamType(it.source, it.resolvedReturnType) }
+        val primaryConstructor = declaration.primaryConstructorIfAny(session) ?: error("Annotations must have a primary constructor")
 
-        if (params.values.any { it == null }) {
+        val params = primaryConstructor.fir.valueParameters
+            .mapIndexed { idx, it ->
+                val type = getAnnotationParamType(it.source, it.returnTypeRef.coneType) ?: return@mapIndexed null
+                InternalName.Annotation.Parameter(it.name.asString(), idx, type)
+            }
+
+        if (params.any { it == null }) {
             return null
         }
 
         return declaration.source to InternalName.Annotation(
             classifierName.packageName,
             classifierName.classNames,
-            params.mapValues { it.value!! }
+            params.map { it!! }
         )
     }
 

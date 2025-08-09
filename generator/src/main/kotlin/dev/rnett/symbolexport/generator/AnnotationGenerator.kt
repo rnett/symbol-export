@@ -22,8 +22,8 @@ internal object AnnotationGenerator {
             appendIndentedLine {
                 appendLine()
                 name.parameters.forEach {
-                    appendLine("public val ${it.key}: AnnotationParameter<${annotationParameterType(it.value)}> by lazy {")
-                    appendIndentedLine { append("AnnotationParameter(\"${it.key}\", ${annotationParameterTypeConstructor(it.value, referencable)})") }
+                    appendLine("public val ${it.name}: AnnotationParameter<${annotationParameterType(it.type)}> by lazy {")
+                    appendIndentedLine { append("AnnotationParameter(\"${it.name}\", ${it.index}, ${annotationParameterTypeConstructor(it.type, referencable)})") }
                     appendLine("}")
                     appendLine()
                 }
@@ -33,7 +33,7 @@ internal object AnnotationGenerator {
                     appendLine()
                     appendIndentedLine {
                         name.parameters.forEach {
-                            appendLine("public val ${it.key}: ${annotationValueType(it.value)}?,")
+                            appendLine("public val ${it.name}: ${annotationValueType(it.type)}?,")
                         }
                     }
                 }
@@ -43,14 +43,14 @@ internal object AnnotationGenerator {
                     appendLine("override val annotation: $className get() = this@$className")
                     appendLine()
 
-                    append("override val asMap: Map<AnnotationParameter<*>, AnnotationArgument> by lazy {")
+                    append("override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {")
                     if (name.parameters.isNotEmpty()) {
                         appendLine()
                         appendIndentedLine {
                             appendLine("buildMap {")
                             appendIndentedLine {
-                                name.parameters.keys.forEach {
-                                    appendLine("if (${it} != null) put(this@${className}.$it, ${it}!!)")
+                                name.parameters.forEach {
+                                    appendLine("put(this@${className}.${it.name}, ${it.name})")
                                 }
                             }
                             appendLine("}")
@@ -69,7 +69,7 @@ internal object AnnotationGenerator {
                     appendLine()
                     appendIndentedLine {
                         name.parameters.forEach {
-                            appendLine("producer.getArgument(this@${className}.${it.key}),")
+                            appendLine("producer.getArgument(this@${className}.${it.name}),")
                         }
                     }
                 }
@@ -82,7 +82,7 @@ internal object AnnotationGenerator {
                     appendLine()
                     appendIndentedLine {
                         name.parameters.forEach {
-                            appendLine("${it.key}: ${annotationCreationValueType(it.value)}?,")
+                            appendLine("${it.name}: ${annotationCreationValueType(it.type)}?,")
                         }
                     }
                 }
@@ -91,11 +91,28 @@ internal object AnnotationGenerator {
                     appendLine()
                     appendIndentedLine {
                         name.parameters.forEach {
-                            appendLine("${annotationCreationConvertedValue(it.key, it.value, referencable)},")
+                            appendLine("${annotationCreationConvertedValue(it.name, it.type, referencable)},")
                         }
                     }
                 }
                 appendLine(")")
+
+                append("override val parameters: List<AnnotationParameter<*>> by lazy {")
+                if (name.parameters.isNotEmpty()) {
+                    appendLine()
+                    appendIndentedLine {
+                        appendLine("listOf(")
+                        appendIndentedLine {
+                            name.parameters.sortedBy { it.index }.forEach {
+                                appendLine("${it.name},")
+                            }
+                        }
+                        appendLine(")")
+                    }
+                    appendLine("}")
+                } else {
+                    appendLine(" emptyList() }")
+                }
 
             }
 

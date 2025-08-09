@@ -121,9 +121,17 @@ class DefaultProjectObjectGeneratorAllSymbolsTest {
         val annotation = InternalName.Annotation(
             packageName = listOf("test", "package"),
             classNames = listOf("TestAnnotation"),
-            parameters = mapOf(
-                "stringParam" to AnnotationParameterType.Primitive.STRING,
-                "intParam" to AnnotationParameterType.Primitive.INT
+            parameters = listOf(
+                InternalName.Annotation.Parameter(
+                    "stringParam",
+                    0,
+                    AnnotationParameterType.Primitive.STRING
+                ),
+                InternalName.Annotation.Parameter(
+                    "intParam",
+                    1,
+                    AnnotationParameterType.Primitive.INT
+                )
             )
         )
 

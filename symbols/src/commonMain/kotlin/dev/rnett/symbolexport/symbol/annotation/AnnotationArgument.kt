@@ -3,11 +3,7 @@ package dev.rnett.symbolexport.symbol.annotation
 import dev.rnett.symbolexport.symbol.Symbol
 import dev.rnett.symbolexport.symbol.annotation.AnnotationArgument.EnumEntry
 
-public data class AnnotationParameter<P : AnnotationParameterType<*>>(val name: String, val type: P)
-
-public interface AnnotationArgumentProducer {
-    public fun <T : AnnotationArgument, P : AnnotationParameterType<T>> getArgument(parameter: AnnotationParameter<P>): T?
-}
+public data class AnnotationParameter<P : AnnotationParameterType<*>>(val name: String, val index: Int, val type: P)
 
 public sealed interface AnnotationParameterType<V : AnnotationArgument> {
 
@@ -16,28 +12,78 @@ public sealed interface AnnotationParameterType<V : AnnotationArgument> {
     public data class Annotation<S : Symbol.Annotation<S, T>, T : Symbol.Annotation.Arguments<S, T>>(val annotationClass: S) : AnnotationParameterType<AnnotationArgument.Annotation<S, T>>
     public data class Array<T : AnnotationParameterType<E>, E : AnnotationArgument>(val elementType: T) : AnnotationParameterType<AnnotationArgument.Array<E>>
 
-    public sealed class Primitive<T : Any, A : AnnotationArgument.Primitive<T>>(public val kClass: kotlin.reflect.KClass<T>) : AnnotationParameterType<A>
+    public sealed class Primitive<T : Any, A : AnnotationArgument.Primitive<T>>(public val kClass: kotlin.reflect.KClass<T>) : AnnotationParameterType<A> {
+        public abstract fun createArgument(value: T): A
+    }
 
-    public data object String : Primitive<kotlin.String, AnnotationArgument.String>(kotlin.String::class)
-    public data object Boolean : Primitive<kotlin.Boolean, AnnotationArgument.Boolean>(kotlin.Boolean::class)
-    public data object Int : Primitive<kotlin.Int, AnnotationArgument.Int>(kotlin.Int::class)
-    public data object Float : Primitive<kotlin.Float, AnnotationArgument.Float>(kotlin.Float::class)
-    public data object Long : Primitive<kotlin.Long, AnnotationArgument.Long>(kotlin.Long::class)
-    public data object Double : Primitive<kotlin.Double, AnnotationArgument.Double>(kotlin.Double::class)
-    public data object Char : Primitive<kotlin.Char, AnnotationArgument.Char>(kotlin.Char::class)
-    public data object Byte : Primitive<kotlin.Byte, AnnotationArgument.Byte>(kotlin.Byte::class)
-    public data object Short : Primitive<kotlin.Short, AnnotationArgument.Short>(kotlin.Short::class)
+    public data object String : Primitive<kotlin.String, AnnotationArgument.String>(kotlin.String::class) {
+        override fun createArgument(value: kotlin.String): AnnotationArgument.String {
+            return AnnotationArgument.String(value)
+        }
+    }
+
+    public data object Boolean : Primitive<kotlin.Boolean, AnnotationArgument.Boolean>(kotlin.Boolean::class) {
+        override fun createArgument(value: kotlin.Boolean): AnnotationArgument.Boolean {
+            return AnnotationArgument.Boolean(value)
+        }
+    }
+
+    public data object Int : Primitive<kotlin.Int, AnnotationArgument.Int>(kotlin.Int::class) {
+        override fun createArgument(value: kotlin.Int): AnnotationArgument.Int {
+            return AnnotationArgument.Int(value)
+        }
+    }
+
+    public data object Float : Primitive<kotlin.Float, AnnotationArgument.Float>(kotlin.Float::class) {
+        override fun createArgument(value: kotlin.Float): AnnotationArgument.Float {
+            return AnnotationArgument.Float(value)
+        }
+    }
+
+    public data object Long : Primitive<kotlin.Long, AnnotationArgument.Long>(kotlin.Long::class) {
+        override fun createArgument(value: kotlin.Long): AnnotationArgument.Long {
+            return AnnotationArgument.Long(value)
+        }
+    }
+
+    public data object Double : Primitive<kotlin.Double, AnnotationArgument.Double>(kotlin.Double::class) {
+        override fun createArgument(value: kotlin.Double): AnnotationArgument.Double {
+            return AnnotationArgument.Double(value)
+        }
+    }
+
+    public data object Char : Primitive<kotlin.Char, AnnotationArgument.Char>(kotlin.Char::class) {
+        override fun createArgument(value: kotlin.Char): AnnotationArgument.Char {
+            return AnnotationArgument.Char(value)
+        }
+    }
+
+    public data object Byte : Primitive<kotlin.Byte, AnnotationArgument.Byte>(kotlin.Byte::class) {
+        override fun createArgument(value: kotlin.Byte): AnnotationArgument.Byte {
+            return AnnotationArgument.Byte(value)
+        }
+    }
+
+    public data object Short : Primitive<kotlin.Short, AnnotationArgument.Short>(kotlin.Short::class) {
+        override fun createArgument(value: kotlin.Short): AnnotationArgument.Short {
+            return AnnotationArgument.Short(value)
+        }
+    }
 }
 
 public sealed class AnnotationArgument(public open val type: AnnotationParameterType<*>) {
 
-    public data class Array<T : AnnotationArgument>(val values: List<T>, val elementType: AnnotationParameterType<*>) : AnnotationArgument(AnnotationParameterType.Array(elementType)), List<T> by values {
+    public data class Array<T : AnnotationArgument>(val values: List<T>, val elementType: AnnotationParameterType<T>) : AnnotationArgument(AnnotationParameterType.Array(elementType)), List<T> by values {
         public constructor(values: List<T>) : this(values.toList(), Unit.run {
             require(values.isNotEmpty()) { "Element type must be specified when creating an empty array" }
             val types = values.mapTo(mutableSetOf()) { it.type }
             require(types.size == 1) { "All elements of an array must have the same type, but got $types" }
-            types.single()
+            types.single() as AnnotationParameterType<T>
         })
+
+        init {
+            require(values.all { it.type == elementType }) { "All elements of an array must be of the array's element type ($elementType), but got ${values.map { it.type }}" }
+        }
     }
 
     public data class EnumEntry(val enumClass: Symbol.Classifier, val enumName: kotlin.String) : AnnotationArgument(AnnotationParameterType.Enum(enumClass)) {
@@ -67,7 +113,7 @@ public sealed class AnnotationArgument(public open val type: AnnotationParameter
     public companion object {
         public fun kClass(value: Symbol.Classifier): KClass = KClass(value)
 
-        public fun <T : AnnotationArgument> array(value: List<T>, elementType: AnnotationParameterType<*>): Array<T> = Array(value, elementType)
+        public fun <T : AnnotationArgument> array(value: List<T>, elementType: AnnotationParameterType<T>): Array<T> = Array(value, elementType)
         public fun <T : AnnotationArgument> nonEmptyArray(value: List<T>): Array<T> = Array(value)
         public fun <T : AnnotationArgument> array(first: T, vararg values: T): Array<T> = Array(buildList {
             add(first)

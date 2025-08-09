@@ -12,7 +12,7 @@ class AnnotationGeneratorTest {
         val annotation = InternalName.Annotation(
             packageName = listOf("test", "package"),
             classNames = listOf("TestAnnotation"),
-            parameters = emptyMap()
+            parameters = emptyList()
         )
 
         val result = AnnotationGenerator.annotationClassName(annotation)
@@ -24,7 +24,7 @@ class AnnotationGeneratorTest {
         val annotation = InternalName.Annotation(
             packageName = listOf("test", "package"),
             classNames = listOf("TestAnnotation"),
-            parameters = emptyMap()
+            parameters = emptyList()
         )
 
         val result = AnnotationGenerator.generateClass(annotation, emptySet())
@@ -37,11 +37,14 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
 ) {
     public inner class Arguments() : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
+        
+        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy { emptyMap() }
     }
     
     override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments()
     
     public fun createArguments(): test_package_TestAnnotation_Spec.Arguments = Arguments()
+    override val parameters: List<AnnotationParameter<*>> by lazy { emptyList() }
 }
 
         """.trimIndent(),
@@ -54,10 +57,22 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
         val annotation = InternalName.Annotation(
             packageName = listOf("test", "package"),
             classNames = listOf("TestAnnotation"),
-            parameters = mapOf(
-                "stringParam" to AnnotationParameterType.Primitive.STRING,
-                "intParam" to AnnotationParameterType.Primitive.INT,
-                "booleanParam" to AnnotationParameterType.Primitive.BOOLEAN
+            parameters = listOf(
+                InternalName.Annotation.Parameter(
+                    "stringParam",
+                    0,
+                    AnnotationParameterType.Primitive.STRING
+                ),
+                InternalName.Annotation.Parameter(
+                    "intParam",
+                    1,
+                    AnnotationParameterType.Primitive.INT
+                ),
+                InternalName.Annotation.Parameter(
+                    "booleanParam",
+                    2,
+                    AnnotationParameterType.Primitive.BOOLEAN
+                )
             )
         )
 
@@ -71,15 +86,15 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     classNames = NameSegments("TestAnnotation"),
 ) {
     public val stringParam: AnnotationParameter<AnnotationParameterType.String> by lazy {
-        AnnotationParameter("stringParam", AnnotationParameterType.String)
+        AnnotationParameter("stringParam", 0, AnnotationParameterType.String)
     }
     
     public val intParam: AnnotationParameter<AnnotationParameterType.Int> by lazy {
-        AnnotationParameter("intParam", AnnotationParameterType.Int)
+        AnnotationParameter("intParam", 1, AnnotationParameterType.Int)
     }
     
     public val booleanParam: AnnotationParameter<AnnotationParameterType.Boolean> by lazy {
-        AnnotationParameter("booleanParam", AnnotationParameterType.Boolean)
+        AnnotationParameter("booleanParam", 2, AnnotationParameterType.Boolean)
     }
     
     public inner class Arguments(
@@ -88,6 +103,14 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
         public val booleanParam: AnnotationArgument.Boolean?,
     ) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
+        
+        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
+            buildMap {
+                put(this@test_package_TestAnnotation_Spec.stringParam, stringParam)
+                put(this@test_package_TestAnnotation_Spec.intParam, intParam)
+                put(this@test_package_TestAnnotation_Spec.booleanParam, booleanParam)
+            }
+        }
     }
     
     override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(
@@ -97,14 +120,21 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     )
     
     public fun createArguments(
-        stringParam: AnnotationArgument.String?,
-        intParam: AnnotationArgument.Int?,
-        booleanParam: AnnotationArgument.Boolean?,
+        stringParam: String?,
+        intParam: Int?,
+        booleanParam: Boolean?,
     ): test_package_TestAnnotation_Spec.Arguments = Arguments(
-        stringParam,
-        intParam,
-        booleanParam,
+        stringParam?.let { AnnotationArgument.String(it) },
+        intParam?.let { AnnotationArgument.Int(it) },
+        booleanParam?.let { AnnotationArgument.Boolean(it) },
     )
+    override val parameters: List<AnnotationParameter<*>> by lazy {
+        listOf(
+            stringParam,
+            intParam,
+            booleanParam,
+        )
+    }
 }
 
         """.trimIndent(),
@@ -117,8 +147,12 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
         val annotation = InternalName.Annotation(
             packageName = listOf("test", "package"),
             classNames = listOf("TestAnnotation"),
-            parameters = mapOf(
-                "stringArray" to AnnotationParameterType.Array(AnnotationParameterType.Primitive.STRING)
+            parameters = listOf(
+                InternalName.Annotation.Parameter(
+                    "stringArray",
+                    0,
+                    AnnotationParameterType.Array(AnnotationParameterType.Primitive.STRING)
+                )
             )
         )
 
@@ -132,13 +166,19 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     classNames = NameSegments("TestAnnotation"),
 ) {
     public val stringArray: AnnotationParameter<AnnotationParameterType.Array<AnnotationParameterType.String, AnnotationArgument.String>> by lazy {
-        AnnotationParameter("stringArray", AnnotationParameterType.Array(elementType = AnnotationParameterType.String))
+        AnnotationParameter("stringArray", 0, AnnotationParameterType.Array(elementType = AnnotationParameterType.String))
     }
     
     public inner class Arguments(
         public val stringArray: AnnotationArgument.Array<AnnotationArgument.String>?,
     ) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
+        
+        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
+            buildMap {
+                put(this@test_package_TestAnnotation_Spec.stringArray, stringArray)
+            }
+        }
     }
     
     override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(
@@ -146,10 +186,15 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     )
     
     public fun createArguments(
-        stringArray: AnnotationArgument.Array<AnnotationArgument.String>?,
+        stringArray: List<String>?,
     ): test_package_TestAnnotation_Spec.Arguments = Arguments(
-        stringArray,
+        stringArray?.let { AnnotationArgument.Array(it.map { AnnotationArgument.String(it) }, AnnotationParameterType.String) },
     )
+    override val parameters: List<AnnotationParameter<*>> by lazy {
+        listOf(
+            stringArray,
+        )
+    }
 }
 
         """.trimIndent(),
@@ -167,8 +212,12 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
         val annotation = InternalName.Annotation(
             packageName = listOf("test", "package"),
             classNames = listOf("TestAnnotation"),
-            parameters = mapOf(
-                "enumParam" to AnnotationParameterType.Enum(enumClass)
+            parameters = listOf(
+                InternalName.Annotation.Parameter(
+                    "enumParam",
+                    0,
+                    AnnotationParameterType.Enum(enumClass)
+                )
             )
         )
 
@@ -182,13 +231,19 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     classNames = NameSegments("TestAnnotation"),
 ) {
     public val enumParam: AnnotationParameter<AnnotationParameterType.Enum> by lazy {
-        AnnotationParameter("enumParam", AnnotationParameterType.Enum(enumClass = Classifier(packageName = NameSegments("test", "package"), classNames = NameSegments("TestEnum"))))
+        AnnotationParameter("enumParam", 0, AnnotationParameterType.Enum(enumClass = Classifier(packageName = NameSegments("test", "package"), classNames = NameSegments("TestEnum"))))
     }
     
     public inner class Arguments(
         public val enumParam: AnnotationArgument.EnumEntry?,
     ) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
+        
+        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
+            buildMap {
+                put(this@test_package_TestAnnotation_Spec.enumParam, enumParam)
+            }
+        }
     }
     
     override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(
@@ -200,6 +255,11 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     ): test_package_TestAnnotation_Spec.Arguments = Arguments(
         enumParam,
     )
+    override val parameters: List<AnnotationParameter<*>> by lazy {
+        listOf(
+            enumParam,
+        )
+    }
 }
 
         """.trimIndent(),
@@ -212,8 +272,12 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
         val annotation = InternalName.Annotation(
             packageName = listOf("test", "package"),
             classNames = listOf("TestAnnotation"),
-            parameters = mapOf(
-                "classParam" to AnnotationParameterType.KClass
+            parameters = listOf(
+                InternalName.Annotation.Parameter(
+                    "classParam",
+                    0,
+                    AnnotationParameterType.KClass
+                )
             )
         )
 
@@ -227,13 +291,19 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     classNames = NameSegments("TestAnnotation"),
 ) {
     public val classParam: AnnotationParameter<AnnotationParameterType.KClass> by lazy {
-        AnnotationParameter("classParam", AnnotationParameterType.KClass)
+        AnnotationParameter("classParam", 0, AnnotationParameterType.KClass)
     }
     
     public inner class Arguments(
         public val classParam: AnnotationArgument.KClass?,
     ) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
+        
+        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
+            buildMap {
+                put(this@test_package_TestAnnotation_Spec.classParam, classParam)
+            }
+        }
     }
     
     override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(
@@ -245,6 +315,11 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     ): test_package_TestAnnotation_Spec.Arguments = Arguments(
         classParam,
     )
+    override val parameters: List<AnnotationParameter<*>> by lazy {
+        listOf(
+            classParam,
+        )
+    }
 }
 
         """.trimIndent(),
@@ -262,8 +337,12 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
         val annotation = InternalName.Annotation(
             packageName = listOf("test", "package"),
             classNames = listOf("TestAnnotation"),
-            parameters = mapOf(
-                "nestedAnnotation" to AnnotationParameterType.Annotation(nestedAnnotationClass)
+            parameters = listOf(
+                InternalName.Annotation.Parameter(
+                    "nestedAnnotation",
+                    0,
+                    AnnotationParameterType.Annotation(nestedAnnotationClass)
+                )
             )
         )
 
@@ -277,13 +356,19 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     classNames = NameSegments("TestAnnotation"),
 ) {
     public val nestedAnnotation: AnnotationParameter<AnnotationParameterType.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>> by lazy {
-        AnnotationParameter("nestedAnnotation", AnnotationParameterType.Annotation(annotationClass = test_package_NestedAnnotation))
+        AnnotationParameter("nestedAnnotation", 0, AnnotationParameterType.Annotation(annotationClass = test_package_NestedAnnotation))
     }
     
     public inner class Arguments(
         public val nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>?,
     ) : Symbol.Annotation.Arguments<test_package_TestAnnotation_Spec, Arguments> {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
+        
+        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
+            buildMap {
+                put(this@test_package_TestAnnotation_Spec.nestedAnnotation, nestedAnnotation)
+            }
+        }
     }
     
     override fun produceArguments(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Arguments = Arguments(
@@ -295,6 +380,11 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     ): test_package_TestAnnotation_Spec.Arguments = Arguments(
         nestedAnnotation,
     )
+    override val parameters: List<AnnotationParameter<*>> by lazy {
+        listOf(
+            nestedAnnotation,
+        )
+    }
 }
 
         """.trimIndent(),
@@ -366,14 +456,42 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
         val annotation = InternalName.Annotation(
             packageName = listOf("test", "package"),
             classNames = listOf("ComplexAnnotation"),
-            parameters = mapOf(
-                "stringParam" to AnnotationParameterType.Primitive.STRING,
-                "intParam" to AnnotationParameterType.Primitive.INT,
-                "booleanParam" to AnnotationParameterType.Primitive.BOOLEAN,
-                "stringArray" to AnnotationParameterType.Array(AnnotationParameterType.Primitive.STRING),
-                "enumParam" to AnnotationParameterType.Enum(enumClass),
-                "classParam" to AnnotationParameterType.KClass,
-                "nestedAnnotation" to AnnotationParameterType.Annotation(nestedAnnotationClass)
+            parameters = listOf(
+                InternalName.Annotation.Parameter(
+                    "stringParam",
+                    0,
+                    AnnotationParameterType.Primitive.STRING
+                ),
+                InternalName.Annotation.Parameter(
+                    "intParam",
+                    1,
+                    AnnotationParameterType.Primitive.INT
+                ),
+                InternalName.Annotation.Parameter(
+                    "booleanParam",
+                    2,
+                    AnnotationParameterType.Primitive.BOOLEAN
+                ),
+                InternalName.Annotation.Parameter(
+                    "stringArray",
+                    3,
+                    AnnotationParameterType.Array(AnnotationParameterType.Primitive.STRING)
+                ),
+                InternalName.Annotation.Parameter(
+                    "enumParam",
+                    4,
+                    AnnotationParameterType.Enum(enumClass)
+                ),
+                InternalName.Annotation.Parameter(
+                    "classParam",
+                    5,
+                    AnnotationParameterType.KClass
+                ),
+                InternalName.Annotation.Parameter(
+                    "nestedAnnotation",
+                    6,
+                    AnnotationParameterType.Annotation(nestedAnnotationClass)
+                )
             )
         )
 
@@ -386,31 +504,31 @@ class test_package_ComplexAnnotation_Spec() : Symbol.Annotation<test_package_Com
     classNames = NameSegments("ComplexAnnotation"),
 ) {
     public val stringParam: AnnotationParameter<AnnotationParameterType.String> by lazy {
-        AnnotationParameter("stringParam", AnnotationParameterType.String)
+        AnnotationParameter("stringParam", 0, AnnotationParameterType.String)
     }
     
     public val intParam: AnnotationParameter<AnnotationParameterType.Int> by lazy {
-        AnnotationParameter("intParam", AnnotationParameterType.Int)
+        AnnotationParameter("intParam", 1, AnnotationParameterType.Int)
     }
     
     public val booleanParam: AnnotationParameter<AnnotationParameterType.Boolean> by lazy {
-        AnnotationParameter("booleanParam", AnnotationParameterType.Boolean)
+        AnnotationParameter("booleanParam", 2, AnnotationParameterType.Boolean)
     }
     
     public val stringArray: AnnotationParameter<AnnotationParameterType.Array<AnnotationParameterType.String, AnnotationArgument.String>> by lazy {
-        AnnotationParameter("stringArray", AnnotationParameterType.Array(elementType = AnnotationParameterType.String))
+        AnnotationParameter("stringArray", 3, AnnotationParameterType.Array(elementType = AnnotationParameterType.String))
     }
     
     public val enumParam: AnnotationParameter<AnnotationParameterType.Enum> by lazy {
-        AnnotationParameter("enumParam", AnnotationParameterType.Enum(enumClass = Classifier(packageName = NameSegments("test", "package"), classNames = NameSegments("TestEnum"))))
+        AnnotationParameter("enumParam", 4, AnnotationParameterType.Enum(enumClass = Classifier(packageName = NameSegments("test", "package"), classNames = NameSegments("TestEnum"))))
     }
     
     public val classParam: AnnotationParameter<AnnotationParameterType.KClass> by lazy {
-        AnnotationParameter("classParam", AnnotationParameterType.KClass)
+        AnnotationParameter("classParam", 5, AnnotationParameterType.KClass)
     }
     
     public val nestedAnnotation: AnnotationParameter<AnnotationParameterType.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>> by lazy {
-        AnnotationParameter("nestedAnnotation", AnnotationParameterType.Annotation(annotationClass = test_package_NestedAnnotation))
+        AnnotationParameter("nestedAnnotation", 6, AnnotationParameterType.Annotation(annotationClass = test_package_NestedAnnotation))
     }
     
     public inner class Arguments(
@@ -423,6 +541,18 @@ class test_package_ComplexAnnotation_Spec() : Symbol.Annotation<test_package_Com
         public val nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>?,
     ) : Symbol.Annotation.Arguments<test_package_ComplexAnnotation_Spec, Arguments> {
         override val annotation: test_package_ComplexAnnotation_Spec get() = this@test_package_ComplexAnnotation_Spec
+        
+        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
+            buildMap {
+                put(this@test_package_ComplexAnnotation_Spec.stringParam, stringParam)
+                put(this@test_package_ComplexAnnotation_Spec.intParam, intParam)
+                put(this@test_package_ComplexAnnotation_Spec.booleanParam, booleanParam)
+                put(this@test_package_ComplexAnnotation_Spec.stringArray, stringArray)
+                put(this@test_package_ComplexAnnotation_Spec.enumParam, enumParam)
+                put(this@test_package_ComplexAnnotation_Spec.classParam, classParam)
+                put(this@test_package_ComplexAnnotation_Spec.nestedAnnotation, nestedAnnotation)
+            }
+        }
     }
     
     override fun produceArguments(producer: AnnotationArgumentProducer): test_package_ComplexAnnotation_Spec.Arguments = Arguments(
@@ -436,22 +566,33 @@ class test_package_ComplexAnnotation_Spec() : Symbol.Annotation<test_package_Com
     )
     
     public fun createArguments(
-        stringParam: AnnotationArgument.String?,
-        intParam: AnnotationArgument.Int?,
-        booleanParam: AnnotationArgument.Boolean?,
-        stringArray: AnnotationArgument.Array<AnnotationArgument.String>?,
+        stringParam: String?,
+        intParam: Int?,
+        booleanParam: Boolean?,
+        stringArray: List<String>?,
         enumParam: AnnotationArgument.EnumEntry?,
         classParam: AnnotationArgument.KClass?,
         nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Arguments>?,
     ): test_package_ComplexAnnotation_Spec.Arguments = Arguments(
-        stringParam,
-        intParam,
-        booleanParam,
-        stringArray,
+        stringParam?.let { AnnotationArgument.String(it) },
+        intParam?.let { AnnotationArgument.Int(it) },
+        booleanParam?.let { AnnotationArgument.Boolean(it) },
+        stringArray?.let { AnnotationArgument.Array(it.map { AnnotationArgument.String(it) }, AnnotationParameterType.String) },
         enumParam,
         classParam,
         nestedAnnotation,
     )
+    override val parameters: List<AnnotationParameter<*>> by lazy {
+        listOf(
+            stringParam,
+            intParam,
+            booleanParam,
+            stringArray,
+            enumParam,
+            classParam,
+            nestedAnnotation,
+        )
+    }
 }
 
         """.trimIndent(),

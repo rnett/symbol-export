@@ -147,7 +147,7 @@ public sealed interface Symbol : NameLike {
     ) : ClassLike {
         public interface Arguments<S : Annotation<S, A>, A : Arguments<S, A>> {
             public val annotation: S
-            public val asMap: Map<AnnotationParameter<*>, AnnotationArgument>
+            public val asMap: Map<AnnotationParameter<*>, AnnotationArgument?>
 
             public operator fun <T : AnnotationArgument, P : AnnotationParameterType<T>> get(param: AnnotationParameter<P>): T? = asMap[param] as T
             public operator fun contains(param: AnnotationParameter<*>): Boolean = param in asMap
@@ -155,6 +155,8 @@ public sealed interface Symbol : NameLike {
             public operator fun get(param: String): AnnotationArgument? = asMap.entries.firstOrNull { it.key.name == param }?.value
             public operator fun contains(param: String): Boolean = asMap.keys.any { it.name == param }
         }
+
+        public abstract val parameters: List<AnnotationParameter<*>>
 
         public abstract fun produceArguments(producer: AnnotationArgumentProducer): A
     }

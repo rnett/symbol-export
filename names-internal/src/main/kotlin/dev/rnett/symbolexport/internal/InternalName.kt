@@ -80,6 +80,9 @@ public sealed interface InternalName {
     public data class Annotation(
         val packageName: List<String>,
         val classNames: List<String>,
-        val parameters: Map<String, AnnotationParameterType>
-    ) : InternalName
+        val parameters: List<Parameter>
+    ) : InternalName {
+        @Serializable
+        public data class Parameter(val name: String, val index: Int, val type: AnnotationParameterType)
+    }
 }
