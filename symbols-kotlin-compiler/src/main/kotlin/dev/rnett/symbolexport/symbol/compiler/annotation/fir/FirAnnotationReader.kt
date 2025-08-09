@@ -32,27 +32,41 @@ import org.jetbrains.kotlin.name.Name
 import kotlin.reflect.KClass
 import kotlin.reflect.safeCast
 
-
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> FirAnnotationContainer.findAnnotations(annotation: S, session: FirSession): List<A> {
+/**
+ * Find any annotation instances of [annotation] type.
+ */
+public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> FirAnnotationContainer.findAnnotations(annotation: S, session: FirSession): List<I> {
     return getAnnotationsByClassId(annotation.asClassId(), session).mapNotNull { it.readAnnotation(annotation, session) }
 }
 
+/**
+ * Find any annotation instances of [annotation] type.
+ */
 @OptIn(SymbolInternals::class)
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> FirBasedSymbol<*>.findAnnotations(annotation: S, session: FirSession): List<A> {
+public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> FirBasedSymbol<*>.findAnnotations(annotation: S, session: FirSession): List<I> {
     return fir.findAnnotations(annotation, session)
 }
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> FirAnnotationContainer.findAnnotation(annotation: S, session: FirSession): A? {
+/**
+ * Find the first annotation instance of [annotation] type.
+ */
+public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> FirAnnotationContainer.findAnnotation(annotation: S, session: FirSession): I? {
     val value = getAnnotationByClassId(annotation.asClassId(), session) ?: return null
     return value.readAnnotation(annotation, session)
 }
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> FirBasedSymbol<*>.findAnnotation(annotation: S, session: FirSession): A? {
+/**
+ * Find the first annotation instance of [annotation] type.
+ */
+public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> FirBasedSymbol<*>.findAnnotation(annotation: S, session: FirSession): I? {
     val value = getAnnotationByClassId(annotation.asClassId(), session) ?: return null
     return value.readAnnotation(annotation, session)
 }
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> FirAnnotation.readAnnotation(annotation: S, session: FirSession): A? {
+/**
+ * Read an annotation instance from a [FirAnnotation]. Will return null if the annotation is not of type [annotation].
+ */
+public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> FirAnnotation.readAnnotation(annotation: S, session: FirSession): I? {
     if (annotation.asClassId() != this.toAnnotationClassId(session))
         return null
     return annotation.produceInstance(FirAnnotationArgumentProvider(this, session))

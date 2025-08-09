@@ -36,7 +36,10 @@ import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.types.ConstantValueKind
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> A.toFirAnnotation(
+/**
+ * Create a [FirAnnotation] from an annotation instance.
+ */
+public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> I.toFirAnnotation(
     session: FirSession,
     source: KtSourceElement? = null,
     useSiteTarget: AnnotationUseSiteTarget? = null

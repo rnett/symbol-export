@@ -10,7 +10,10 @@ import dev.rnett.symbolexport.symbol.annotation.AnnotationWriter
 import dev.rnett.symbolexport.symbol.annotation.BaseAnnotationWriter
 import dev.rnett.symbolexport.symbol.kotlinpoet.asClassName
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> A.toAnnotationSpec(
+/**
+ * Create an [AnnotationSpec] from an annotation instance.
+ */
+public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> I.toAnnotationSpec(
     useSiteTarget: AnnotationSpec.UseSiteTarget? = null
 ): AnnotationSpec = KotlinpoetAnnotationWriter(useSiteTarget).write(this)
 

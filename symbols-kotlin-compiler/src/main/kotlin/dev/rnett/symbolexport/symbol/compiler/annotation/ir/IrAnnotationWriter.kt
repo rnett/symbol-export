@@ -29,8 +29,11 @@ import org.jetbrains.kotlin.ir.util.isEnumClass
 import org.jetbrains.kotlin.ir.util.toIrConst
 import org.jetbrains.kotlin.name.Name
 
+/**
+ * Create an annotation [IrConstructorCall] from an annotation instance.
+ */
 @UnsafeDuringIrConstructionAPI
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> A.toIrAnnotation(
+public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> I.toIrAnnotation(
     context: IrPluginContext,
     startOffset: Int = UNDEFINED_OFFSET,
     endOffset: Int = UNDEFINED_OFFSET,

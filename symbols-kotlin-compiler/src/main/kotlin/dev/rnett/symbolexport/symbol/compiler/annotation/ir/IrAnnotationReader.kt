@@ -29,19 +29,28 @@ import kotlin.reflect.KClass
 import kotlin.reflect.safeCast
 
 
+/**
+ * Find any annotation instances of [annotation] type.
+ */
 @UnsafeDuringIrConstructionAPI
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> IrAnnotationContainer.findAnnotations(annotation: S): List<A> {
+public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> IrAnnotationContainer.findAnnotations(annotation: S): List<I> {
     return annotations.filter { it.isAnnotation(annotation.asFqName()) }.mapNotNull { it.readAnnotation(annotation) }
 }
 
+/**
+ * Find the first annotation instance of [annotation] type.
+ */
 @UnsafeDuringIrConstructionAPI
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> IrAnnotationContainer.findAnnotation(annotation: S): A? {
+public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> IrAnnotationContainer.findAnnotation(annotation: S): I? {
     val ctorCall = getAnnotation(annotation.asFqName()) ?: return null
     return ctorCall.readAnnotation(annotation)
 }
 
+/**
+ * Read an annotation instance from a [IrConstructorCall] for an annotation. Will return null if the annotation is not of type [annotation].
+ */
 @UnsafeDuringIrConstructionAPI
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> IrConstructorCall.readAnnotation(annotation: S): A? {
+public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> IrConstructorCall.readAnnotation(annotation: S): I? {
     if (annotation.asClassId() != this.symbol.owner.parentAsClass.classId)
         return null
 
