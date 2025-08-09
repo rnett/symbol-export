@@ -9,11 +9,29 @@ import dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType
  * A type that has a name composed of `.`-seperated segments.
  */
 public interface NameLike {
+    /**
+     * The segments of the name.
+     */
     public val nameSegments: List<String>
+
+    /**
+     * The name as a string.
+     */
     public fun asString(): String = nameSegments.joinToString(".")
 
+    /**
+     * Resolves [other] after this.
+     */
     public operator fun plus(other: NameSegments): NameSegments
+
+    /**
+     * Resolves [segment] after this.
+     */
     public operator fun plus(segment: String): NameSegments = plus(NameSegments(segment))
+
+    /**
+     * Resolves [segments] after this.
+     */
     public fun resolve(vararg segments: String): NameSegments = plus(NameSegments(*segments))
 }
 
@@ -49,9 +67,16 @@ public sealed interface Symbol : NameLike {
      * The fully qualified name of the symbol.
      */
     public val fullName: NameSegments
+
+    /**
+     * The segments of the fully qualified name of this symbol.
+     */
     override val nameSegments: List<String>
         get() = fullName.nameSegments
 
+    /**
+     * The fully qualified name as a string.
+     */
     override fun asString(): String = fullName.asString()
     override fun plus(other: NameSegments): NameSegments = fullName + other
 
@@ -61,7 +86,7 @@ public sealed interface Symbol : NameLike {
     public sealed interface TypeParamHost : Symbol
 
     /**
-     * A symbol with a meaningful name. This is most symbols except [Constructor].
+     * A symbol with a meaningful simple name. This is most symbols except [Constructor].
      */
     public sealed interface NamedSymbol : Symbol {
         /**
@@ -114,7 +139,6 @@ public sealed interface Symbol : NameLike {
      * A named [Member] of a [Classifier].
      *
      * @property classifier The classifier that contains the member
-     * @property name The name of the member
      */
     public data class NamedClassifierMember(val classifier: Classifier, override val name: String) : NamedMember {
         override val fullName: NameSegments = classifier + name
@@ -139,7 +163,6 @@ public sealed interface Symbol : NameLike {
      * A top-level member.
      *
      * @property packageName The package name of the member
-     * @property name The simple name of the member
      */
     public data class TopLevelMember(val packageName: NameSegments, override val name: String) : NamedMember {
         override val fullName: NameSegments = packageName + name
@@ -246,7 +269,7 @@ public sealed interface Symbol : NameLike {
             public abstract val annotation: S
             public abstract val arguments: Map<AnnotationParameter<*>, AnnotationArgument?>
 
-            public operator fun <T : AnnotationArgument, P : AnnotationParameterType<T>> get(param: AnnotationParameter<P>): T? = arguments[param] as T
+            public inline operator fun <reified T : AnnotationArgument, P : AnnotationParameterType<T>> get(param: AnnotationParameter<P>): T? = arguments[param] as T?
             public operator fun contains(param: AnnotationParameter<*>): Boolean = param in arguments
 
             public operator fun get(param: String): AnnotationArgument? = arguments.entries.firstOrNull { it.key.name == param }?.value

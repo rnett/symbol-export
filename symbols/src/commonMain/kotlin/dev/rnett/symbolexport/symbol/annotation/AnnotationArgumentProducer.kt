@@ -71,6 +71,7 @@ public abstract class BaseAnnotationArgumentProducer<Raw> : AnnotationArgumentPr
      */
     protected abstract fun getRawValueForParameter(parameterName: String, parameterIndex: Int): Raw?
 
+    @Suppress("UNCHECKED_CAST")
     private fun <T : AnnotationArgument, P : AnnotationParameterType<T>> extractAnnotationArgument(expression: Raw, type: P): T {
         val result = when (type) {
             is AnnotationParameterType.Annotation<*, *> -> AnnotationArgument.Annotation(type.annotationClass.produceInstance(extractAnnotationProducer(expression, type.annotationClass)))
@@ -80,10 +81,7 @@ public abstract class BaseAnnotationArgumentProducer<Raw> : AnnotationArgumentPr
             is AnnotationParameterType.Primitive<*, *> -> extractPrimitiveArgument(expression, type)
         }
 
-        if (result.type != type)
-            throw IllegalArgumentException("Expected argument with type $type, got ${result.type} for $result")
-
-        return result as T
+        return result.asTypeOrNull(type) ?: throw IllegalArgumentException("Expected argument with type $type, got ${result.type} for $result")
     }
 
     /**
@@ -132,16 +130,16 @@ public abstract class BasePrimitiveSpecificAnnotationArgumentProducer<Raw> : Bas
 
     final override fun <T : Any, A : AnnotationArgument.Primitive<T>> extractPrimitiveArgument(expression: Raw, type: AnnotationParameterType.Primitive<T, A>): A {
         return when (type) {
-            AnnotationParameterType.Boolean -> extractBoolean(expression).let { AnnotationArgument.Boolean(it) as A }
-            AnnotationParameterType.Byte -> extractByte(expression).let { AnnotationArgument.Byte(it) as A }
-            AnnotationParameterType.Char -> extractChar(expression).let { AnnotationArgument.Char(it) as A }
-            AnnotationParameterType.Double -> extractDouble(expression).let { AnnotationArgument.Double(it) as A }
-            AnnotationParameterType.Float -> extractFloat(expression).let { AnnotationArgument.Float(it) as A }
-            AnnotationParameterType.Int -> extractInt(expression).let { AnnotationArgument.Int(it) as A }
-            AnnotationParameterType.Long -> extractLong(expression).let { AnnotationArgument.Long(it) as A }
-            AnnotationParameterType.Short -> extractShort(expression).let { AnnotationArgument.Short(it) as A }
-            AnnotationParameterType.String -> extractString(expression).let { AnnotationArgument.String(it) as A }
-        }
+            AnnotationParameterType.Boolean -> extractBoolean(expression).let { AnnotationArgument.Boolean(it) }
+            AnnotationParameterType.Byte -> extractByte(expression).let { AnnotationArgument.Byte(it) }
+            AnnotationParameterType.Char -> extractChar(expression).let { AnnotationArgument.Char(it) }
+            AnnotationParameterType.Double -> extractDouble(expression).let { AnnotationArgument.Double(it) }
+            AnnotationParameterType.Float -> extractFloat(expression).let { AnnotationArgument.Float(it) }
+            AnnotationParameterType.Int -> extractInt(expression).let { AnnotationArgument.Int(it) }
+            AnnotationParameterType.Long -> extractLong(expression).let { AnnotationArgument.Long(it) }
+            AnnotationParameterType.Short -> extractShort(expression).let { AnnotationArgument.Short(it) }
+            AnnotationParameterType.String -> extractString(expression).let { AnnotationArgument.String(it) }
+        }.asType(type)
     }
 
     override fun <T : Any> extractPrimitiveValue(expression: Raw, type: KClass<T>): T {

@@ -3,16 +3,34 @@ package dev.rnett.symbolexport.export
 import dev.rnett.symbolexport.BuildConfig
 import dev.rnett.symbolexport.Shared
 import dev.rnett.symbolexport.Shared.EXPORTED_SYMBOLS_FILENAME
+import dev.rnett.symbolexport.import.ImportPlugin
 import dev.rnett.symbolexport.withDisallowedChanges
 import org.gradle.api.Project
 import org.gradle.api.attributes.Usage
 import org.gradle.api.provider.Provider
-import org.jetbrains.kotlin.gradle.plugin.*
+import org.jetbrains.kotlin.gradle.plugin.FilesOptionKind
+import org.jetbrains.kotlin.gradle.plugin.FilesSubpluginOption
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
+import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
+import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 import org.slf4j.LoggerFactory
 import java.io.File
 
-@Suppress("unused")
-// Used via reflection.
+/**
+ * The export plugin - `dev.rnett.symbol-export.export`.
+ *
+ * Exports symbols according to [ExportExtension] (`symbolExport`).
+ *
+ * It does this by registering an outgoing configuration with a custom usage attribute value.
+ * When you compile your kotlin code, JSON files of exported symbols are generated and added to that outgoing configuration.
+ * This configuration can then be consumed by other projects using the [ImportPlugin].
+ *
+ * Also automatically adds a dependency on the symbol-export annotation library (see [ExportExtension.autoAddAnnotationDependency]).
+ *
+ * @see ExportExtension
+ * @see ImportPlugin
+ */
 public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
     private val logger = LoggerFactory.getLogger(ExportPlugin::class.java)
 

@@ -69,7 +69,6 @@ public abstract class dev/rnett/symbolexport/symbol/Symbol$Annotation$Instance {
 	public final fun contains (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Z
 	public final fun contains (Ljava/lang/String;)Z
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun get (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
 	public final fun get (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
 	public abstract fun getAnnotation ()Ldev/rnett/symbolexport/symbol/Symbol$Annotation;
 	public abstract fun getArguments ()Ljava/util/Map;
@@ -585,6 +584,8 @@ public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgumentKt
 	public static final fun asAnnotationArgument (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Annotation;
 	public static final fun asAnnotationArgument (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$KClass;
 	public static final fun asAnnotationArgument (Ldev/rnett/symbolexport/symbol/Symbol$EnumEntry;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$EnumEntry;
+	public static final fun asType (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+	public static final fun asTypeOrNull (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
 	public static final fun classAsAnnotationArgument (Ldev/rnett/symbolexport/symbol/Symbol$Annotation;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$KClass;
 }
 

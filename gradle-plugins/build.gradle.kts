@@ -3,6 +3,7 @@ plugins {
     id("java-gradle-plugin")
     alias(libs.plugins.buildconfig)
     alias(libs.plugins.shadow)
+    id("build.dokka")
 }
 
 dependencies {

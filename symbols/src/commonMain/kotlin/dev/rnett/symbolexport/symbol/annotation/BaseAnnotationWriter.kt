@@ -43,7 +43,12 @@ public abstract class BaseAnnotationWriter<out Annotation, Argument : Any> : Ann
     protected abstract fun assembleAnnotation(annotation: Symbol.Annotation<*, *>, arguments: Map<AnnotationParameter<*>, Argument?>, isTopLevel: Boolean): Annotation
 
     final override fun write(instance: Symbol.Annotation.Instance<*, *>, isTopLevel: Boolean): Annotation {
-        val args = instance.arguments.mapValues { (key, value) -> value?.let { writeArgument(key as AnnotationParameter<AnnotationParameterType<AnnotationArgument>>, it) } }
+        val args = instance.arguments.mapValues { (key, value) ->
+            value?.let {
+                @Suppress("UNCHECKED_CAST")
+                writeArgument(key as AnnotationParameter<AnnotationParameterType<AnnotationArgument>>, it)
+            }
+        }
         return try {
             assembleAnnotation(instance.annotation, args, isTopLevel)
         } catch (e: Throwable) {

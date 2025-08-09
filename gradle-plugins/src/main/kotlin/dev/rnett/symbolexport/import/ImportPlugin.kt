@@ -3,6 +3,7 @@ package dev.rnett.symbolexport.import
 import dev.rnett.symbolexport.BuildConfig
 import dev.rnett.symbolexport.Shared
 import dev.rnett.symbolexport.Shared.EXPORTED_SYMBOLS_FILENAME
+import dev.rnett.symbolexport.export.ExportPlugin
 import dev.rnett.symbolexport.generator.SymbolFileWriter
 import dev.rnett.symbolexport.kotlinExtension
 import org.gradle.api.DefaultTask
@@ -12,8 +13,30 @@ import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.*
+import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.TaskProvider
 
+/**
+ * The import plugin - `dev.rnett.symbol-export.import`.
+ *
+ * Imports symbols according to [ImportExtension] (`symbolImport`).
+ *
+ * It does this by registering an incoming configuration `importSymbols` that is compatible with the outgoing configuration added by [ExportPlugin].
+ * You add dependencies to the `importSymbols` configuration to specify which symbols to import.
+ * The `generateSymbolExports` task will generate symbol definition classes for symbols exported by those dependencies.
+ * It is automatically wired as an input for all Kotlin source sets by default - this can be controlled using [ImportExtension.attachToSourceSets].
+ *
+ * Also automatically adds a dependency on the symbols library (see [ImportExtension.autoAddSymbolsDependency]).
+ *
+ * @see ImportExtension
+ * @see ExportPlugin
+ */
 public class ImportPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         val extension = target.extensions.create("symbolImport", ImportExtension::class.java).apply {

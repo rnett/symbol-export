@@ -90,6 +90,8 @@ public sealed class AnnotationArgument(public open val type: AnnotationParameter
             require(values.isNotEmpty()) { "Element type must be specified when creating an empty array" }
             val types = values.mapTo(mutableSetOf()) { it.type }
             require(types.size == 1) { "All elements of an array must have the same type, but got $types" }
+
+            @Suppress("UNCHECKED_CAST")
             types.single() as AnnotationParameterType<T>
         })
 
@@ -178,6 +180,16 @@ public sealed class AnnotationArgument(public open val type: AnnotationParameter
         public fun of(value: kotlin.Short): Short = Short(value)
     }
 }
+
+@Suppress("UNCHECKED_CAST")
+public fun <A : AnnotationArgument, T : AnnotationParameterType<A>> AnnotationArgument.asTypeOrNull(type: T): A? {
+    if (this.type != type)
+        return null
+    return this as A
+}
+
+public fun <A : AnnotationArgument> AnnotationArgument.asType(type: AnnotationParameterType<A>): A = asTypeOrNull(type)
+    ?: throw IllegalArgumentException("Expected argument with type $type, got $this")
 
 public fun Symbol.EnumEntry.asAnnotationArgument(): EnumEntry = EnumEntry(enumClass, name)
 public fun Symbol.Classifier.asAnnotationArgument(): AnnotationArgument.KClass = AnnotationArgument.kClass(this)
