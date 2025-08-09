@@ -21,126 +21,164 @@ internal object AnnotationGenerator {
 
             appendIndentedLine {
                 appendLine()
-                name.parameters.forEach {
-                    appendLine("public val ${it.name}: AnnotationParameter<${annotationParameterType(it.type)}> by lazy {")
-                    appendIndentedLine { append("AnnotationParameter(\"${it.name}\", ${it.index}, ${annotationParameterTypeConstructor(it.type, referencable)})") }
-                    appendLine("}")
-                    appendLine()
-                }
+                appendParameterProperties(name, referencable)
 
-                append("public inner class Instance(")
-                if (name.parameters.isNotEmpty()) {
-                    appendLine()
-                    appendIndentedLine {
-                        name.parameters.forEach {
-                            appendLine("public val ${it.name}: ${annotationValueType(it.type)}?,")
-                        }
-                    }
-                }
-                appendLine(") : Symbol.Annotation.Instance<$className, Instance> {")
-
-                appendIndentedLine {
-                    appendLine("override val annotation: $className get() = this@$className")
-                    appendLine()
-
-                    append("override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {")
-                    if (name.parameters.isNotEmpty()) {
-                        appendLine()
-                        appendIndentedLine {
-                            appendLine("buildMap {")
-                            appendIndentedLine {
-                                name.parameters.forEach {
-                                    appendLine("put(this@${className}.${it.name}, ${it.name})")
-                                }
-                            }
-                            appendLine("}")
-                        }
-                        appendLine("}")
-                    } else {
-                        appendLine(" emptyMap() }")
-                    }
-                }
-
-                appendLine("}")
+                appendInstanceClass(name, referencable)
                 appendLine()
 
-                append("override fun produceInstance(producer: AnnotationArgumentProducer): ${className}.Instance = Instance(")
-                if (name.parameters.isNotEmpty()) {
-                    appendLine()
-                    appendIndentedLine {
-                        name.parameters.forEach {
-                            appendLine("producer.getArgument(this@${className}.${it.name}),")
-                        }
-                    }
-                }
-                appendLine(")")
+                appendProduceInstance(name, referencable)
 
                 appendLine()
 
-                append("public fun createInstance(")
-                if (name.parameters.isNotEmpty()) {
-                    appendLine()
-                    appendIndentedLine {
-                        name.parameters.forEach {
-                            appendLine("${it.name}: ${annotationCreationValueType(it.type)}?,")
-                        }
-                    }
-                }
-                append("): ${className}.Instance = Instance(")
-                if (name.parameters.isNotEmpty()) {
-                    appendLine()
-                    appendIndentedLine {
-                        name.parameters.forEach {
-                            appendLine("${annotationCreationConvertedValue(it.name, it.type, referencable)},")
-                        }
-                    }
-                }
-                appendLine(")")
+                appendCreateInstance(name, referencable)
 
                 appendLine()
 
-                append("public operator fun invoke(")
-                if (name.parameters.isNotEmpty()) {
-                    appendLine()
-                    appendIndentedLine {
-                        name.parameters.forEach {
-                            appendLine("${it.name}: ${annotationCreationValueType(it.type)}?,")
-                        }
-                    }
-                }
-                append("): ${className}.Instance = createInstance(")
-                if (name.parameters.isNotEmpty()) {
-                    appendLine()
-                    appendIndentedLine {
-                        name.parameters.forEach {
-                            appendLine("${it.name},")
-                        }
-                    }
-                }
-                appendLine(")")
+                appendInvoke(name)
 
                 appendLine()
 
-                append("override val parameters: List<AnnotationParameter<*>> by lazy {")
-                if (name.parameters.isNotEmpty()) {
-                    appendLine()
-                    appendIndentedLine {
-                        appendLine("listOf(")
-                        appendIndentedLine {
-                            name.parameters.sortedBy { it.index }.forEach {
-                                appendLine("${it.name},")
-                            }
-                        }
-                        appendLine(")")
-                    }
-                    appendLine("}")
-                } else {
-                    appendLine(" emptyList() }")
-                }
-
+                appendParametersListProperty(name)
             }
 
             appendLine("}")
+        }
+    }
+
+    // Generates top-level AnnotationParameter properties for each annotation parameter
+    private fun StringBuilder.appendParameterProperties(name: InternalName.Annotation, referencable: Set<InternalName>) {
+        name.parameters.forEach {
+            appendLine("public val ${it.name}: AnnotationParameter<${annotationParameterType(it.type)}> by lazy {")
+            appendIndentedLine { append("AnnotationParameter(\"${it.name}\", ${it.index}, ${annotationParameterTypeConstructor(it.type, referencable)})") }
+            appendLine("}")
+            appendLine()
+        }
+    }
+
+    // Generates the inner Instance class, including annotation getter and asMap property
+    private fun StringBuilder.appendInstanceClass(name: InternalName.Annotation, referencable: Set<InternalName>) {
+        val className = annotationClassName(name)
+        append("public inner class Instance(")
+        if (name.parameters.isNotEmpty()) {
+            appendLine()
+            appendIndentedLine {
+                name.parameters.forEach {
+                    appendLine("public val ${it.name}: ${annotationValueType(it.type)}?,")
+                }
+            }
+        }
+        appendLine(") : Symbol.Annotation.Instance<$className, Instance> {")
+
+        appendIndentedLine {
+            appendLine("override val annotation: $className get() = this@$className")
+            appendLine()
+            appendInstanceAsMap(name)
+        }
+
+        appendLine("}")
+    }
+
+    // Generates the asMap property inside the Instance class
+    private fun StringBuilder.appendInstanceAsMap(name: InternalName.Annotation) {
+        val className = annotationClassName(name)
+        append("override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {")
+        if (name.parameters.isNotEmpty()) {
+            appendLine()
+            appendIndentedLine {
+                appendLine("buildMap {")
+                appendIndentedLine {
+                    name.parameters.forEach {
+                        appendLine("put(this@${className}.${it.name}, ${it.name})")
+                    }
+                }
+                appendLine("}")
+            }
+            appendLine("}")
+        } else {
+            appendLine(" emptyMap() }")
+        }
+    }
+
+    // Generates the produceInstance method
+    private fun StringBuilder.appendProduceInstance(name: InternalName.Annotation, referencable: Set<InternalName>) {
+        val className = annotationClassName(name)
+        append("override fun produceInstance(producer: AnnotationArgumentProducer): ${className}.Instance = Instance(")
+        if (name.parameters.isNotEmpty()) {
+            appendLine()
+            appendIndentedLine {
+                name.parameters.forEach {
+                    appendLine("producer.getArgument(this@${className}.${it.name}),")
+                }
+            }
+        }
+        appendLine(")")
+    }
+
+    // Generates the createInstance method
+    private fun StringBuilder.appendCreateInstance(name: InternalName.Annotation, referencable: Set<InternalName>) {
+        val className = annotationClassName(name)
+        append("public fun createInstance(")
+        if (name.parameters.isNotEmpty()) {
+            appendLine()
+            appendIndentedLine {
+                name.parameters.forEach {
+                    appendLine("${it.name}: ${annotationCreationValueType(it.type)}?,")
+                }
+            }
+        }
+        append("): ${className}.Instance = Instance(")
+        if (name.parameters.isNotEmpty()) {
+            appendLine()
+            appendIndentedLine {
+                name.parameters.forEach {
+                    appendLine("${annotationCreationConvertedValue(it.name, it.type, referencable)},")
+                }
+            }
+        }
+        appendLine(")")
+    }
+
+    // Generates the operator invoke method
+    private fun StringBuilder.appendInvoke(name: InternalName.Annotation) {
+        val className = annotationClassName(name)
+        append("public operator fun invoke(")
+        if (name.parameters.isNotEmpty()) {
+            appendLine()
+            appendIndentedLine {
+                name.parameters.forEach {
+                    appendLine("${it.name}: ${annotationCreationValueType(it.type)}?,")
+                }
+            }
+        }
+        append("): ${className}.Instance = createInstance(")
+        if (name.parameters.isNotEmpty()) {
+            appendLine()
+            appendIndentedLine {
+                name.parameters.forEach {
+                    appendLine("${it.name},")
+                }
+            }
+        }
+        appendLine(")")
+    }
+
+    // Generates the parameters list property
+    private fun StringBuilder.appendParametersListProperty(name: InternalName.Annotation) {
+        append("override val parameters: List<AnnotationParameter<*>> by lazy {")
+        if (name.parameters.isNotEmpty()) {
+            appendLine()
+            appendIndentedLine {
+                appendLine("listOf(")
+                appendIndentedLine {
+                    name.parameters.sortedBy { it.index }.forEach {
+                        appendLine("${it.name},")
+                    }
+                }
+                appendLine(")")
+            }
+            appendLine("}")
+        } else {
+            appendLine(" emptyList() }")
         }
     }
 
