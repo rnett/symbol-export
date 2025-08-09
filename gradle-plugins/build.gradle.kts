@@ -14,6 +14,12 @@ dependencies {
     implementation(project(":generator"))
 }
 
+dokka {
+    dokkaPublications.configureEach {
+        includes.from("Module.md")
+    }
+}
+
 tasks.shadowJar {
     dependencies {
         exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))

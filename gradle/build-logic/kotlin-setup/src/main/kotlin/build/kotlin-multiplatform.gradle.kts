@@ -1,5 +1,6 @@
 package build
 
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
@@ -13,11 +14,13 @@ kotlin {
         browser()
         nodejs()
     }
+    @OptIn(ExperimentalWasmDsl::class)
     wasmJs() {
         d8()
         nodejs()
         browser()
     }
+    @OptIn(ExperimentalWasmDsl::class)
     wasmWasi() {
         nodejs()
     }
