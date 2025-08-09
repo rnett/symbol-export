@@ -1,0 +1,10 @@
+FILE: firWriteReadEquality.kt
+    public final class firWriteReadEquality : R|kotlin/Any| {
+        public constructor(): R|firWriteReadEquality| {
+            super<R|kotlin/Any|>()
+        }
+
+    }
+    public final fun box(): R|kotlin/String| {
+        ^box String(OK)
+    }

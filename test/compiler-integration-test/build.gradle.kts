@@ -1,26 +1,23 @@
-import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
-
 plugins {
-    id("build.kotlin-jvm")
-    alias(libs.plugins.buildconfig)
-    alias(libs.plugins.shadow)
+    alias(libs.plugins.kotlin.jvm)
     `java-test-fixtures`
     idea
+    id("dev.rnett.symbol-export.import")
 }
 
-val compilerTestRuntimeClasspath by configurations.registering {
+val compilerTestRuntimeClasspath: Configuration by configurations.creating {
     isCanBeResolved = true
     isTransitive = true
 }
 
 dependencies {
-    compileOnly(kotlin("stdlib"))
-    compileOnly(kotlin("compiler"))
+    implementation(kotlin("compiler"))
+    implementation(kotlin("test-junit5"))
 
-    implementation(project(":names-internal"))
+    implementation("dev.rnett.symbol-export:symbols-kotlin-compiler")
 
-    compilerTestRuntimeClasspath(project(":annotations"))
+    importSymbols(project(":test-symbols"))
+    compilerTestRuntimeClasspath(project(":test-symbols"))
 
     testFixturesApi(kotlin("test-junit5"))
     testFixturesApi(kotlin("compiler-internal-test-framework"))
@@ -29,6 +26,13 @@ dependencies {
     // Dependencies required to run the internal test framework.
     testRuntimeOnly(kotlin("script-runtime"))
     testRuntimeOnly(kotlin("annotations-jvm"))
+}
+kotlin {
+    compilerOptions {
+        optIn.add("org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi")
+        optIn.add("org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI")
+        freeCompilerArgs.add("-Xcontext-parameters")
+    }
 }
 
 sourceSets {
@@ -42,40 +46,13 @@ idea {
     module.generatedSourceDirs.add(projectDir.resolve("src/test-gen"))
 }
 
-tasks.shadowJar {
-    dependencies {
-        exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
-    }
-    relocate("kotlinx.serialization", "dev.rnett.symbolexport.kotlinx.serialization")
-}
-
-buildConfig {
-    useKotlinOutput {
-        internalVisibility = true
-    }
-
-    packageName("dev.rnett.symbolexport")
-    buildConfigField("String", "KOTLIN_PLUGIN_ID", "\"${rootProject.group}\"")
-}
-
-kotlin {
-    compilerOptions {
-        optIn.add("org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi")
-        optIn.add("org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI")
-        freeCompilerArgs.add("-Xcontext-parameters")
-    }
-
-    explicitApi = ExplicitApiMode.Disabled
-    @OptIn(ExperimentalAbiValidation::class)
-    abiValidation { enabled = false }
-}
-
 tasks.test {
+    useJUnitPlatform()
     dependsOn(compilerTestRuntimeClasspath)
     maxHeapSize = "2g"
     workingDir = projectDir
 
-    systemProperty("compilerTestRuntime.classpath", compilerTestRuntimeClasspath.map { it.asPath }.get())
+    systemProperty("compilerTestRuntime.classpath", compilerTestRuntimeClasspath.asPath)
 
     // Properties required to run the internal test framework.
     setLibraryProperty("org.jetbrains.kotlin.test.kotlin-stdlib", "kotlin-stdlib")
@@ -97,7 +74,7 @@ val generateTests by tasks.registering(JavaExec::class) {
         .withPropertyName("generatedTests")
 
     classpath = sourceSets.testFixtures.get().runtimeClasspath
-    mainClass.set("dev.rnett.lattice.GenerateTestsKt")
+    mainClass.set("compilertest.GenerateTestsKt")
     workingDir = projectDir
 }
 

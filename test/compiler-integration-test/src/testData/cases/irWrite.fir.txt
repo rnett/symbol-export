@@ -1,0 +1,11 @@
+FILE: irWrite.kt
+    public final class irWrite : R|kotlin/Any| {
+        public constructor(): R|irWrite| {
+            super<R|kotlin/Any|>()
+        }
+
+    }
+    public final fun box(): R|kotlin/String| {
+        R|kotlin/test/assertTrue|(<getClass>(Q|irWrite|).R|kotlin/jvm/java|<R|irWrite|>.R|SubstitutionOverride<java/lang/Class.isAnnotationPresent: R|kotlin/Boolean|>|(<getClass>(Q|compilertest/symbols/TestAnnotation|).R|kotlin/jvm/java|<R|compilertest/symbols/TestAnnotation|>))
+        ^box String(OK)
+    }

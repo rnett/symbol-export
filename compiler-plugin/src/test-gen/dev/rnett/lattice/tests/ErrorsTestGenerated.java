@@ -33,9 +33,9 @@ public class ErrorsTestGenerated extends BaseDiagnosticCompilerTest {
   }
 
   @Test
-  @TestMetadata("AnnotationExportNonExportedParam.kt")
-  public void testAnnotationExportNonExportedParam() {
-    runTest("src/testData/errors/AnnotationExportNonExportedParam.kt");
+  @TestMetadata("AnnotationExportNonExportedAnnotationParam.kt")
+  public void testAnnotationExportNonExportedAnnotationParam() {
+    runTest("src/testData/errors/AnnotationExportNonExportedAnnotationParam.kt");
   }
 
   @Test

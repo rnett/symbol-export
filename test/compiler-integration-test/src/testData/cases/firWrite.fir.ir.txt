@@ -1,0 +1,34 @@
+FILE fqName:<root> fileName:/firWrite.kt
+  CLASS CLASS name:firWrite modality:FINAL visibility:public superTypes:[kotlin.Any]
+    annotations:
+      TestAnnotation(stringProperty = "compilertest", intProperty = 3, enumProperty = GET_ENUM 'ENUM_ENTRY IR_EXTERNAL_DECLARATION_STUB name:A' type=compilertest.symbols.TestEnum, classProperty = CLASS_REFERENCE 'CLASS IR_EXTERNAL_DECLARATION_STUB CLASS name:FooClass modality:FINAL visibility:public superTypes:[kotlin.Any]' type=kotlin.reflect.KClass<compilertest.symbols.FooClass>, arrayProperty = ["compilertest", "test2"] type=kotlin.Array<kotlin.String> varargElementType=kotlin.String, annotationProperty = TestChildAnnotation(test = "test-child", cls = CLASS_REFERENCE 'CLASS IR_EXTERNAL_DECLARATION_STUB CLASS name:BarClass modality:FINAL visibility:public superTypes:[kotlin.Any]' type=kotlin.reflect.KClass<compilertest.symbols.BarClass>), annotationArrayProperty = [TestChildAnnotation(test = "test-child-2", cls = CLASS_REFERENCE 'CLASS IR_EXTERNAL_DECLARATION_STUB CLASS name:BarClass modality:FINAL visibility:public superTypes:[kotlin.Any]' type=kotlin.reflect.KClass<compilertest.symbols.BarClass>), TestChildAnnotation(test = "test-child-3", cls = CLASS_REFERENCE 'CLASS IR_EXTERNAL_DECLARATION_STUB CLASS name:BarClass modality:FINAL visibility:public superTypes:[kotlin.Any]' type=kotlin.reflect.KClass<compilertest.symbols.BarClass>)] type=kotlin.Array<compilertest.symbols.TestAnnotation.TestChildAnnotation> varargElementType=compilertest.symbols.TestAnnotation.TestChildAnnotation)
+    thisReceiver: VALUE_PARAMETER INSTANCE_RECEIVER kind:DispatchReceiver name:<this> type:<root>.firWrite
+    CONSTRUCTOR visibility:public returnType:<root>.firWrite [primary]
+      BLOCK_BODY
+        DELEGATING_CONSTRUCTOR_CALL 'public constructor <init> () declared in kotlin.Any'
+        INSTANCE_INITIALIZER_CALL classDescriptor='CLASS CLASS name:firWrite modality:FINAL visibility:public superTypes:[kotlin.Any]' type=kotlin.Unit
+    FUN FAKE_OVERRIDE name:equals visibility:public modality:OPEN returnType:kotlin.Boolean [fake_override,operator]
+      VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:kotlin.Any
+      VALUE_PARAMETER kind:Regular name:other index:1 type:kotlin.Any?
+      overridden:
+        public open fun equals (other: kotlin.Any?): kotlin.Boolean declared in kotlin.Any
+    FUN FAKE_OVERRIDE name:hashCode visibility:public modality:OPEN returnType:kotlin.Int [fake_override]
+      VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:kotlin.Any
+      overridden:
+        public open fun hashCode (): kotlin.Int declared in kotlin.Any
+    FUN FAKE_OVERRIDE name:toString visibility:public modality:OPEN returnType:kotlin.String [fake_override]
+      VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:kotlin.Any
+      overridden:
+        public open fun toString (): kotlin.String declared in kotlin.Any
+  FUN name:box visibility:public modality:FINAL returnType:kotlin.String
+    BLOCK_BODY
+      CALL 'public final fun assertTrue (actual: kotlin.Boolean, message: kotlin.String?): kotlin.Unit declared in kotlin.test' type=kotlin.Unit origin=null
+        ARG actual: CALL 'public open fun isAnnotationPresent (p0: @[FlexibleNullability] java.lang.Class<out @[FlexibleNullability] kotlin.Annotation?>?): kotlin.Boolean declared in java.lang.Class' type=kotlin.Boolean origin=null
+          ARG <this>: CALL 'public final fun <get-java> <T> (<this>: kotlin.reflect.KClass<T of kotlin.jvm.<get-java>>): java.lang.Class<T of kotlin.jvm.<get-java>> declared in kotlin.jvm' type=java.lang.Class<<root>.firWrite> origin=GET_PROPERTY
+            TYPE_ARG T: <root>.firWrite
+            ARG <this>: CLASS_REFERENCE 'CLASS CLASS name:firWrite modality:FINAL visibility:public superTypes:[kotlin.Any]' type=kotlin.reflect.KClass<<root>.firWrite>
+          ARG p0: CALL 'public final fun <get-java> <T> (<this>: kotlin.reflect.KClass<T of kotlin.jvm.<get-java>>): java.lang.Class<T of kotlin.jvm.<get-java>> declared in kotlin.jvm' type=java.lang.Class<compilertest.symbols.TestAnnotation> origin=GET_PROPERTY
+            TYPE_ARG T: compilertest.symbols.TestAnnotation
+            ARG <this>: CLASS_REFERENCE 'CLASS IR_EXTERNAL_DECLARATION_STUB ANNOTATION_CLASS name:TestAnnotation modality:OPEN visibility:public superTypes:[kotlin.Annotation]' type=kotlin.reflect.KClass<compilertest.symbols.TestAnnotation>
+      RETURN type=kotlin.Nothing from='public final fun box (): kotlin.String declared in <root>'
+        CONST String type=kotlin.String value="OK"

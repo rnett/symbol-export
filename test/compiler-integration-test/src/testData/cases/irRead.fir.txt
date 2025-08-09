@@ -1,0 +1,10 @@
+FILE: irRead.kt
+    @R|compilertest/symbols/TestAnnotation|(stringProperty = String(compilertest), intProperty = Int(3), enumProperty = Q|compilertest/symbols/TestEnum|.R|compilertest/symbols/TestEnum.A|, classProperty = <getClass>(Q|compilertest/symbols/FooClass|), arrayProperty = <implicitArrayOf>(String(compilertest), String(test2)), annotationProperty = Q|compilertest/symbols/TestAnnotation|.R|compilertest/symbols/TestAnnotation.TestChildAnnotation.TestChildAnnotation|(String(test-child), <getClass>(Q|compilertest/symbols/BarClass|)), annotationArrayProperty = <implicitArrayOf>(Q|compilertest/symbols/TestAnnotation|.R|compilertest/symbols/TestAnnotation.TestChildAnnotation.TestChildAnnotation|(String(test-child-2), <getClass>(Q|compilertest/symbols/BarClass|)), Q|compilertest/symbols/TestAnnotation|.R|compilertest/symbols/TestAnnotation.TestChildAnnotation.TestChildAnnotation|(String(test-child-3), <getClass>(Q|compilertest/symbols/BarClass|)))) public final class irRead : R|kotlin/Any| {
+        public constructor(): R|irRead| {
+            super<R|kotlin/Any|>()
+        }
+
+    }
+    public final fun box(): R|kotlin/String| {
+        ^box String(OK)
+    }

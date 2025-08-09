@@ -162,7 +162,7 @@ private class FirAnnotationWriter(
                 is AnnotationArgument.Short -> ConstantValueKind.Short
                 is AnnotationArgument.String -> ConstantValueKind.String
             },
-            value,
+            value.value,
             setType = true
         )
     }
