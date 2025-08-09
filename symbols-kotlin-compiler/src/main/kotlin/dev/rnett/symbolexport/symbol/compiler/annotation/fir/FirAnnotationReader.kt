@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.fir.declarations.evaluateAs
 import org.jetbrains.kotlin.fir.declarations.extractEnumValueArgumentInfo
 import org.jetbrains.kotlin.fir.declarations.findArgumentByName
 import org.jetbrains.kotlin.fir.declarations.getAnnotationByClassId
+import org.jetbrains.kotlin.fir.declarations.getAnnotationsByClassId
 import org.jetbrains.kotlin.fir.declarations.getTargetType
 import org.jetbrains.kotlin.fir.declarations.resolved
 import org.jetbrains.kotlin.fir.declarations.toAnnotationClassId
@@ -25,19 +26,36 @@ import org.jetbrains.kotlin.fir.expressions.unwrapArgument
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.render
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.types.classId
 import org.jetbrains.kotlin.name.Name
 import kotlin.reflect.KClass
 import kotlin.reflect.safeCast
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> FirAnnotationContainer.readAnnotation(annotation: S, session: FirSession): A? {
-    val value = getAnnotationByClassId(annotation.asClassId(), session) ?: return null
-    return annotation.produceArguments(FirAnnotationArgumentProvider(value, session))
+
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> FirAnnotationContainer.findAnnotations(annotation: S, session: FirSession): List<A> {
+    return getAnnotationsByClassId(annotation.asClassId(), session).mapNotNull { it.readAnnotation(annotation, session) }
 }
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> FirBasedSymbol<*>.readAnnotation(annotation: S, session: FirSession): A? {
+@OptIn(SymbolInternals::class)
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> FirBasedSymbol<*>.findAnnotations(annotation: S, session: FirSession): List<A> {
+    return fir.findAnnotations(annotation, session)
+}
+
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> FirAnnotationContainer.findAnnotation(annotation: S, session: FirSession): A? {
     val value = getAnnotationByClassId(annotation.asClassId(), session) ?: return null
-    return annotation.produceArguments(FirAnnotationArgumentProvider(value, session))
+    return value.readAnnotation(annotation, session)
+}
+
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> FirBasedSymbol<*>.findAnnotation(annotation: S, session: FirSession): A? {
+    val value = getAnnotationByClassId(annotation.asClassId(), session) ?: return null
+    return value.readAnnotation(annotation, session)
+}
+
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> FirAnnotation.readAnnotation(annotation: S, session: FirSession): A? {
+    if (annotation.asClassId() != this.toAnnotationClassId(session))
+        return null
+    return annotation.produceArguments(FirAnnotationArgumentProvider(this, session))
 }
 
 private class FirAnnotationArgumentProvider(val annotation: FirAnnotation, val session: FirSession) : BaseAnnotationArgumentProducer<FirExpression>() {
@@ -51,7 +69,7 @@ private class FirAnnotationArgumentProvider(val annotation: FirAnnotation, val s
         return raw.render()
     }
 
-    override fun getRawValueForParameter(parameterName: String): FirExpression? {
+    override fun getRawValueForParameter(parameterName: String, parameterIndex: Int): FirExpression? {
         return annotation.findArgumentByName(Name.guessByFirstCharacter(parameterName), false)?.unwrapArgument()?.unwrapExpression()
     }
 

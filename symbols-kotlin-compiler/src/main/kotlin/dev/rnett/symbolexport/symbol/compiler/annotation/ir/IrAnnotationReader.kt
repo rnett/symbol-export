@@ -21,23 +21,40 @@ import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.util.classId
 import org.jetbrains.kotlin.ir.util.getAnnotation
 import org.jetbrains.kotlin.ir.util.getValueArgument
+import org.jetbrains.kotlin.ir.util.isAnnotation
 import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.name.Name
 import kotlin.reflect.KClass
 import kotlin.reflect.safeCast
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> IrAnnotationContainer.readAnnotation(annotation: S): A? {
-    val ctorCall = getAnnotation(annotation.asFqName()) ?: return null
-    return annotation.produceArguments(IrAnnotationArgumentProducer(ctorCall))
+
+@UnsafeDuringIrConstructionAPI
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> IrAnnotationContainer.findAnnotations(annotation: S): List<A> {
+    return annotations.filter { it.isAnnotation(annotation.asFqName()) }.mapNotNull { it.readAnnotation(annotation) }
 }
 
+@UnsafeDuringIrConstructionAPI
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> IrAnnotationContainer.findAnnotation(annotation: S): A? {
+    val ctorCall = getAnnotation(annotation.asFqName()) ?: return null
+    return ctorCall.readAnnotation(annotation)
+}
+
+@UnsafeDuringIrConstructionAPI
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> IrConstructorCall.readAnnotation(annotation: S): A? {
+    if (annotation.asClassId() != this.symbol.owner.parentAsClass.classId)
+        return null
+
+    return annotation.produceArguments(IrAnnotationArgumentProducer(this))
+}
+
+@UnsafeDuringIrConstructionAPI
 private class IrAnnotationArgumentProducer(val ctorCall: IrConstructorCall) : BaseAnnotationArgumentProducer<IrExpression>() {
     override fun renderForErrorReporting(raw: IrExpression): String {
         return raw.render()
     }
 
-    override fun getRawValueForParameter(parameterName: String): IrExpression? {
+    override fun getRawValueForParameter(parameterName: String, parameterIndex: Int): IrExpression? {
         return ctorCall.getValueArgument(Name.guessByFirstCharacter(parameterName))
     }
 
@@ -76,7 +93,6 @@ private class IrAnnotationArgumentProducer(val ctorCall: IrConstructorCall) : Ba
         return owner.classId?.toClassifier() ?: throw IllegalArgumentException("Class for literal not found")
     }
 
-    @OptIn(UnsafeDuringIrConstructionAPI::class)
     override fun extractEnumInfo(expression: IrExpression): AnnotationArgument.EnumEntry {
         if (expression !is IrGetEnumValue)
             throw IllegalArgumentException("Expected enum literal")

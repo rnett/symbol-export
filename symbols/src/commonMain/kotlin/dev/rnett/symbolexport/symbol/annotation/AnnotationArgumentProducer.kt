@@ -12,7 +12,7 @@ public class AnnotationParameterReadException(public val parameter: AnnotationPa
 
 public abstract class BaseAnnotationArgumentProducer<E> : AnnotationArgumentProducer {
     override fun <T : AnnotationArgument, P : AnnotationParameterType<T>> getArgument(parameter: AnnotationParameter<P>): T? {
-        val raw = getRawValueForParameter(parameter.name) ?: return null
+        val raw = getRawValueForParameter(parameter.name, parameter.index) ?: return null
         @Suppress("UNCHECKED_CAST")
         return try {
             extractAnnotationArgument(raw, parameter.type)
@@ -23,7 +23,7 @@ public abstract class BaseAnnotationArgumentProducer<E> : AnnotationArgumentProd
 
     protected abstract fun renderForErrorReporting(raw: E): String
 
-    protected abstract fun getRawValueForParameter(parameterName: String): E?
+    protected abstract fun getRawValueForParameter(parameterName: String, parameterIndex: Int): E?
 
     private fun <T : AnnotationArgument, P : AnnotationParameterType<T>> extractAnnotationArgument(expression: E, type: P): T {
         val result = when (type) {
