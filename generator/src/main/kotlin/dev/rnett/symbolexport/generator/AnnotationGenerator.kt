@@ -67,21 +67,21 @@ internal object AnnotationGenerator {
                 }
             }
         }
-        appendLine(") : Symbol.Annotation.Instance<$className, Instance> {")
+        appendLine(") : Symbol.Annotation.Instance<$className, Instance>() {")
 
         appendIndentedLine {
             appendLine("override val annotation: $className get() = this@$className")
             appendLine()
-            appendInstanceAsMap(name)
+            appendInstanceArgumentsMap(name)
         }
 
         appendLine("}")
     }
 
-    // Generates the asMap property inside the Instance class
-    private fun StringBuilder.appendInstanceAsMap(name: InternalName.Annotation) {
+    // Generates the arguments property inside the Instance class
+    private fun StringBuilder.appendInstanceArgumentsMap(name: InternalName.Annotation) {
         val className = annotationClassName(name)
-        append("override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {")
+        append("override val arguments: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {")
         if (name.parameters.isNotEmpty()) {
             appendLine()
             appendIndentedLine {
@@ -183,27 +183,25 @@ internal object AnnotationGenerator {
     }
 
     fun annotationCreationConvertedValue(param: String, type: AnnotationParameterType, referencable: Set<InternalName>, nullable: Boolean = true): String {
-        if (type is AnnotationParameterType.Primitive) {
-            val body = "AnnotationArgument.${type.typeName}(it)"
+        val paramName = if (nullable) "it" else param
+        val body: String = when (type) {
+            is AnnotationParameterType.Primitive -> "AnnotationArgument.${type.typeName}($paramName)"
+            is AnnotationParameterType.Array -> "AnnotationArgument.Array(it.map { ${annotationCreationConvertedValue("it", type.elementType, referencable, false)} }, ${annotationParameterTypeConstructor(type.elementType, referencable)})"
+            is AnnotationParameterType.Annotation -> "AnnotationArgument.Annotation($paramName)"
 
-            if (!nullable)
-                return body
-
-            return "$param?.let { $body }"
-        } else if (type is AnnotationParameterType.Array) {
-            val body = "AnnotationArgument.Array(it.map { ${annotationCreationConvertedValue("it", type.elementType, referencable, false)} }, ${annotationParameterTypeConstructor(type.elementType, referencable)})"
-
-            if (!nullable)
-                return body
-
-            return "$param?.let { $body }"
+            else -> return param
         }
-        return param
+
+        if (!nullable)
+            return body
+
+        return "$param?.let { $body }"
     }
 
     fun annotationCreationValueType(type: AnnotationParameterType): String = when (type) {
         is AnnotationParameterType.Primitive -> type.typeName
         is AnnotationParameterType.Array -> "List<${annotationCreationValueType(type.elementType)}>"
+        is AnnotationParameterType.Annotation -> annotationClassName(type.annotationClass) + ".Instance"
         else -> annotationValueType(type)
     }
 

@@ -240,17 +240,40 @@ public sealed interface Symbol : NameLike {
          * A representation of an annotation instance.
          *
          * @property annotation The annotation type
-         * @property asMap The arguments of the annotation instance, keyed by the parameter name. All parameters are present as keys - if they are not specified, the value is null.
+         * @property arguments The arguments of the annotation instance, keyed by the parameter name. All parameters are present as keys - if they are not specified, the value is null.
          */
-        public interface Instance<S : Annotation<S, I>, I : Instance<S, I>> {
-            public val annotation: S
-            public val asMap: Map<AnnotationParameter<*>, AnnotationArgument?>
+        public abstract class Instance<S : Annotation<S, I>, I : Instance<S, I>> {
+            public abstract val annotation: S
+            public abstract val arguments: Map<AnnotationParameter<*>, AnnotationArgument?>
 
-            public operator fun <T : AnnotationArgument, P : AnnotationParameterType<T>> get(param: AnnotationParameter<P>): T? = asMap[param] as T
-            public operator fun contains(param: AnnotationParameter<*>): Boolean = param in asMap
+            public operator fun <T : AnnotationArgument, P : AnnotationParameterType<T>> get(param: AnnotationParameter<P>): T? = arguments[param] as T
+            public operator fun contains(param: AnnotationParameter<*>): Boolean = param in arguments
 
-            public operator fun get(param: String): AnnotationArgument? = asMap.entries.firstOrNull { it.key.name == param }?.value
-            public operator fun contains(param: String): Boolean = asMap.keys.any { it.name == param }
+            public operator fun get(param: String): AnnotationArgument? = arguments.entries.firstOrNull { it.key.name == param }?.value
+            public operator fun contains(param: String): Boolean = arguments.keys.any { it.name == param }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (other == null || this::class != other::class) return false
+
+                other as Instance<*, *>
+
+                if (annotation != other.annotation) return false
+                if (arguments != other.arguments) return false
+
+                return true
+            }
+
+            override fun hashCode(): Int {
+                var result = annotation.hashCode()
+                result = 31 * result + arguments.hashCode()
+                return result
+            }
+
+            override fun toString(): String {
+                return "Annotation.Instance(annotation=${annotation.asString()}, arguments=${arguments.mapKeys { it.key.name }})"
+            }
+
         }
 
         public abstract val parameters: List<AnnotationParameter<*>>
@@ -259,5 +282,29 @@ public sealed interface Symbol : NameLike {
          * Creates an [Instance] of the annotation by reading an argument for each parameter using [producer].
          */
         public abstract fun produceInstance(producer: AnnotationArgumentProducer): I
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other == null || this::class != other::class) return false
+
+            other as Annotation<*, *>
+
+            if (packageName != other.packageName) return false
+            if (classNames != other.classNames) return false
+            if (parameters != other.parameters) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = packageName.hashCode()
+            result = 31 * result + classNames.hashCode()
+            result = 31 * result + parameters.hashCode()
+            return result
+        }
+
+        override fun toString(): String {
+            return "Annotation(packageName=$packageName, classNames=$classNames, parameters=$parameters)"
+        }
     }
 }

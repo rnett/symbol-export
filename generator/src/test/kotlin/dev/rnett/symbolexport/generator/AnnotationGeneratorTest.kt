@@ -35,10 +35,10 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     packageName = NameSegments("test", "package"),
     classNames = NameSegments("TestAnnotation"),
 ) {
-    public inner class Instance() : Symbol.Annotation.Instance<test_package_TestAnnotation_Spec, Instance> {
+    public inner class Instance() : Symbol.Annotation.Instance<test_package_TestAnnotation_Spec, Instance>() {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
         
-        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy { emptyMap() }
+        override val arguments: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy { emptyMap() }
     }
     
     override fun produceInstance(producer: AnnotationArgumentProducer): test_package_TestAnnotation_Spec.Instance = Instance()
@@ -104,10 +104,10 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
         public val stringParam: AnnotationArgument.String?,
         public val intParam: AnnotationArgument.Int?,
         public val booleanParam: AnnotationArgument.Boolean?,
-    ) : Symbol.Annotation.Instance<test_package_TestAnnotation_Spec, Instance> {
+    ) : Symbol.Annotation.Instance<test_package_TestAnnotation_Spec, Instance>() {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
         
-        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
+        override val arguments: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
             buildMap {
                 put(this@test_package_TestAnnotation_Spec.stringParam, stringParam)
                 put(this@test_package_TestAnnotation_Spec.intParam, intParam)
@@ -185,10 +185,10 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     
     public inner class Instance(
         public val stringArray: AnnotationArgument.Array<AnnotationArgument.String>?,
-    ) : Symbol.Annotation.Instance<test_package_TestAnnotation_Spec, Instance> {
+    ) : Symbol.Annotation.Instance<test_package_TestAnnotation_Spec, Instance>() {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
         
-        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
+        override val arguments: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
             buildMap {
                 put(this@test_package_TestAnnotation_Spec.stringArray, stringArray)
             }
@@ -257,10 +257,10 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     
     public inner class Instance(
         public val enumParam: AnnotationArgument.EnumEntry?,
-    ) : Symbol.Annotation.Instance<test_package_TestAnnotation_Spec, Instance> {
+    ) : Symbol.Annotation.Instance<test_package_TestAnnotation_Spec, Instance>() {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
         
-        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
+        override val arguments: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
             buildMap {
                 put(this@test_package_TestAnnotation_Spec.enumParam, enumParam)
             }
@@ -324,10 +324,10 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     
     public inner class Instance(
         public val classParam: AnnotationArgument.KClass?,
-    ) : Symbol.Annotation.Instance<test_package_TestAnnotation_Spec, Instance> {
+    ) : Symbol.Annotation.Instance<test_package_TestAnnotation_Spec, Instance>() {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
         
-        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
+        override val arguments: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
             buildMap {
                 put(this@test_package_TestAnnotation_Spec.classParam, classParam)
             }
@@ -396,10 +396,10 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     
     public inner class Instance(
         public val nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Instance>?,
-    ) : Symbol.Annotation.Instance<test_package_TestAnnotation_Spec, Instance> {
+    ) : Symbol.Annotation.Instance<test_package_TestAnnotation_Spec, Instance>() {
         override val annotation: test_package_TestAnnotation_Spec get() = this@test_package_TestAnnotation_Spec
         
-        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
+        override val arguments: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
             buildMap {
                 put(this@test_package_TestAnnotation_Spec.nestedAnnotation, nestedAnnotation)
             }
@@ -411,13 +411,13 @@ class test_package_TestAnnotation_Spec() : Symbol.Annotation<test_package_TestAn
     )
     
     public fun createInstance(
-        nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Instance>?,
+        nestedAnnotation: test_package_NestedAnnotation_Spec.Instance?,
     ): test_package_TestAnnotation_Spec.Instance = Instance(
-        nestedAnnotation,
+        nestedAnnotation?.let { AnnotationArgument.Annotation(it) },
     )
     
     public operator fun invoke(
-        nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Instance>?,
+        nestedAnnotation: test_package_NestedAnnotation_Spec.Instance?,
     ): test_package_TestAnnotation_Spec.Instance = createInstance(
         nestedAnnotation,
     )
@@ -581,10 +581,10 @@ class test_package_ComplexAnnotation_Spec() : Symbol.Annotation<test_package_Com
         public val enumParam: AnnotationArgument.EnumEntry?,
         public val classParam: AnnotationArgument.KClass?,
         public val nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Instance>?,
-    ) : Symbol.Annotation.Instance<test_package_ComplexAnnotation_Spec, Instance> {
+    ) : Symbol.Annotation.Instance<test_package_ComplexAnnotation_Spec, Instance>() {
         override val annotation: test_package_ComplexAnnotation_Spec get() = this@test_package_ComplexAnnotation_Spec
         
-        override val asMap: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
+        override val arguments: Map<AnnotationParameter<*>, AnnotationArgument?> by lazy {
             buildMap {
                 put(this@test_package_ComplexAnnotation_Spec.stringParam, stringParam)
                 put(this@test_package_ComplexAnnotation_Spec.intParam, intParam)
@@ -614,7 +614,7 @@ class test_package_ComplexAnnotation_Spec() : Symbol.Annotation<test_package_Com
         stringArray: List<String>?,
         enumParam: AnnotationArgument.EnumEntry?,
         classParam: AnnotationArgument.KClass?,
-        nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Instance>?,
+        nestedAnnotation: test_package_NestedAnnotation_Spec.Instance?,
     ): test_package_ComplexAnnotation_Spec.Instance = Instance(
         stringParam?.let { AnnotationArgument.String(it) },
         intParam?.let { AnnotationArgument.Int(it) },
@@ -622,7 +622,7 @@ class test_package_ComplexAnnotation_Spec() : Symbol.Annotation<test_package_Com
         stringArray?.let { AnnotationArgument.Array(it.map { AnnotationArgument.String(it) }, AnnotationParameterType.String) },
         enumParam,
         classParam,
-        nestedAnnotation,
+        nestedAnnotation?.let { AnnotationArgument.Annotation(it) },
     )
     
     public operator fun invoke(
@@ -632,7 +632,7 @@ class test_package_ComplexAnnotation_Spec() : Symbol.Annotation<test_package_Com
         stringArray: List<String>?,
         enumParam: AnnotationArgument.EnumEntry?,
         classParam: AnnotationArgument.KClass?,
-        nestedAnnotation: AnnotationArgument.Annotation<test_package_NestedAnnotation_Spec, test_package_NestedAnnotation_Spec.Instance>?,
+        nestedAnnotation: test_package_NestedAnnotation_Spec.Instance?,
     ): test_package_ComplexAnnotation_Spec.Instance = createInstance(
         stringParam,
         intParam,
