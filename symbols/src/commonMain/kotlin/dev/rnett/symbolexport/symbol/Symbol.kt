@@ -83,7 +83,9 @@ public sealed interface Symbol : NameLike {
         public override val name: String
     }
 
-    public data class ClassifierMember(val classifier: Classifier, override val name: String) : Member {
+    public sealed interface NamedMember : Member
+
+    public data class ClassifierMember(val classifier: Classifier, override val name: String) : NamedMember {
         override val fullName: NameSegments = classifier + name
     }
 
@@ -91,7 +93,7 @@ public sealed interface Symbol : NameLike {
         override val fullName: NameSegments = classifier + name
     }
 
-    public data class TopLevelMember(val packageName: NameSegments, override val name: String) : Member {
+    public data class TopLevelMember(val packageName: NameSegments, override val name: String) : NamedMember {
         override val fullName: NameSegments = packageName + name
     }
 
