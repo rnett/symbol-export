@@ -3,5 +3,18 @@ public final class dev/rnett/symbolexport/symbol/ksp/KspMappersKt {
 	public static final fun eq (Lcom/google/devtools/ksp/symbol/KSName;Ldev/rnett/symbolexport/symbol/NameLike;)Z
 	public static final fun eq (Ldev/rnett/symbolexport/symbol/NameLike;Lcom/google/devtools/ksp/symbol/KSName;)Z
 	public static final fun getKsNameFromSymbol (Lcom/google/devtools/ksp/processing/Resolver;Ldev/rnett/symbolexport/symbol/NameLike;)Lcom/google/devtools/ksp/symbol/KSName;
+	public static final fun matches (Lcom/google/devtools/ksp/symbol/KSDeclaration;Ldev/rnett/symbolexport/symbol/NameLike;)Z
+	public static final fun matches (Lcom/google/devtools/ksp/symbol/KSName;Ldev/rnett/symbolexport/symbol/NameLike;)Z
+	public static final fun matches (Lcom/google/devtools/ksp/symbol/KSType;Ldev/rnett/symbolexport/symbol/NameLike;)Z
+	public static final fun resolveMatches (Lcom/google/devtools/ksp/symbol/KSTypeReference;Ldev/rnett/symbolexport/symbol/NameLike;)Z
+}
+
+public final class dev/rnett/symbolexport/symbol/ksp/annotation/KspAnnotationReaderKt {
+	public static final fun findAnnotation (Lcom/google/devtools/ksp/symbol/KSAnnotated;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;Z)Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
+	public static synthetic fun findAnnotation$default (Lcom/google/devtools/ksp/symbol/KSAnnotated;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;ZILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
+	public static final fun findAnnotations (Lcom/google/devtools/ksp/symbol/KSAnnotated;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;Z)Ljava/util/List;
+	public static synthetic fun findAnnotations$default (Lcom/google/devtools/ksp/symbol/KSAnnotated;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;ZILjava/lang/Object;)Ljava/util/List;
+	public static final fun readAnnotation (Lcom/google/devtools/ksp/symbol/KSAnnotation;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;Z)Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
+	public static synthetic fun readAnnotation$default (Lcom/google/devtools/ksp/symbol/KSAnnotation;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;ZILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
 }
 

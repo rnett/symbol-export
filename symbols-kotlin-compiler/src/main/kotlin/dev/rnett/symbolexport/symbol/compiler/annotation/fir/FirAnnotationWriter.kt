@@ -36,7 +36,7 @@ import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.types.ConstantValueKind
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> A.toFirAnnotation(
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> A.toFirAnnotation(
     session: FirSession,
     source: KtSourceElement? = null,
     useSiteTarget: AnnotationUseSiteTarget? = null

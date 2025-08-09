@@ -32,7 +32,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
 
         // The classifier should be referenced by field name instead of being constructed
         assertEquals(
-            "ClassifierMember(classifier = test_package_TestClass, name = \"testMethod\")",
+            "NamedClassifierMember(classifier = test_package_TestClass, name = \"testMethod\")",
             result
         )
     }
@@ -124,7 +124,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
         val result = InternalNameGenerationHandler.generateConstructor(classifierMember, referencable)
 
         assertEquals(
-            "ClassifierMember(classifier = Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestClass\")), name = \"testMethod\")",
+            "NamedClassifierMember(classifier = Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestClass\")), name = \"testMethod\")",
             result
         )
     }
@@ -178,7 +178,7 @@ class DefaultProjectObjectGeneratorConstructorTest {
         val result = InternalNameGenerationHandler.generateConstructor(constructor, referencable)
 
         assertEquals(
-            "Constructor(classifier = Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestClass\")), name = \"<init>\")",
+            "Constructor(classifier = Classifier(packageName = NameSegments(\"test\", \"package\"), classNames = NameSegments(\"TestClass\")))",
             result
         )
     }

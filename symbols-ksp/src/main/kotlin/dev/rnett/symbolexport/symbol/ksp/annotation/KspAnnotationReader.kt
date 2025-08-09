@@ -15,23 +15,23 @@ import dev.rnett.symbolexport.symbol.ksp.matches
 import kotlin.reflect.KClass
 import kotlin.reflect.safeCast
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> KSAnnotated.findAnnotations(annotation: S, checkResolvedTypes: Boolean = true): List<A> =
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> KSAnnotated.findAnnotations(annotation: S, checkResolvedTypes: Boolean = true): List<A> =
     annotations.filter { it.shortName.asString() == annotation.name && (!checkResolvedTypes || it.annotationType.resolve().declaration.matches(annotation)) }.mapNotNull { it.readAnnotation(annotation, checkResolvedTypes) }.toList()
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> KSAnnotated.findAnnotation(annotation: S, checkResolvedTypes: Boolean = true): A? {
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> KSAnnotated.findAnnotation(annotation: S, checkResolvedTypes: Boolean = true): A? {
     val value = annotations.firstOrNull { it.shortName.asString() == annotation.name && (!checkResolvedTypes || it.annotationType.resolve().declaration.matches(annotation)) }
         ?: return null
     return value.readAnnotation(annotation, checkResolvedTypes)
 }
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> KSAnnotation.readAnnotation(annotation: S, checkResolvedTypes: Boolean = true): A? {
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> KSAnnotation.readAnnotation(annotation: S, checkResolvedTypes: Boolean = true): A? {
     if (shortName.asString() != annotation.name)
         return null
 
     if (checkResolvedTypes && !annotationType.resolve().declaration.matches(annotation))
         return null
 
-    return annotation.produceArguments(KspAnnotationReader(this, checkResolvedTypes))
+    return annotation.produceInstance(KspAnnotationReader(this, checkResolvedTypes))
 }
 
 /**

@@ -1,6 +1,11 @@
 public final class dev/rnett/symbolexport/symbol/kotlinpoet/KotlinpoetMappersKt {
-	public static final fun asClassName (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;)Lcom/squareup/kotlinpoet/ClassName;
-	public static final fun asMemberName (Ldev/rnett/symbolexport/symbol/Symbol$Member;Z)Lcom/squareup/kotlinpoet/MemberName;
-	public static synthetic fun asMemberName$default (Ldev/rnett/symbolexport/symbol/Symbol$Member;ZILjava/lang/Object;)Lcom/squareup/kotlinpoet/MemberName;
+	public static final fun asClassName (Ldev/rnett/symbolexport/symbol/Symbol$ClassLike;)Lcom/squareup/kotlinpoet/ClassName;
+	public static final fun asMemberName (Ldev/rnett/symbolexport/symbol/Symbol$NamedMember;Z)Lcom/squareup/kotlinpoet/MemberName;
+	public static synthetic fun asMemberName$default (Ldev/rnett/symbolexport/symbol/Symbol$NamedMember;ZILjava/lang/Object;)Lcom/squareup/kotlinpoet/MemberName;
+}
+
+public final class dev/rnett/symbolexport/symbol/kotlinpoet/annotation/KotlinpoetAnnotationWriterKt {
+	public static final fun toAnnotationSpec (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Lcom/squareup/kotlinpoet/AnnotationSpec$UseSiteTarget;)Lcom/squareup/kotlinpoet/AnnotationSpec;
+	public static synthetic fun toAnnotationSpec$default (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Lcom/squareup/kotlinpoet/AnnotationSpec$UseSiteTarget;ILjava/lang/Object;)Lcom/squareup/kotlinpoet/AnnotationSpec;
 }
 

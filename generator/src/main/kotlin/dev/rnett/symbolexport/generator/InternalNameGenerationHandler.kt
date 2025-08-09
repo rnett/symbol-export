@@ -21,11 +21,11 @@ internal object InternalNameGenerationHandler {
             nameSegmentsOf(name.classNames)
         })"
 
-        is InternalName.ClassifierMember -> "ClassifierMember(classifier = ${generateConstructorOrReference(name.classifier, referencable)}, name = \"${name.name}\")"
+        is InternalName.ClassifierMember -> "NamedClassifierMember(classifier = ${generateConstructorOrReference(name.classifier, referencable)}, name = \"${name.name}\")"
 
         is InternalName.TopLevelMember -> "TopLevelMember(packageName = ${nameSegmentsOf(name.packageName)}, name = \"${name.name}\")"
         is InternalName.EnumEntry -> "EnumEntry(enumClass = ${generateConstructorOrReference(name.owner, referencable)}, entryName = \"${name.name}\", entryOrdinal = ${name.ordinal})"
-        is InternalName.Constructor -> "Constructor(classifier = ${generateConstructorOrReference(name.classifier, referencable)}, name = \"${name.name}\")"
+        is InternalName.Constructor -> "Constructor(classifier = ${generateConstructorOrReference(name.classifier, referencable)})"
         is InternalName.TypeParameter -> "TypeParameter(owner=${generateConstructorOrReference(name.owner, referencable)}, index=${name.index}, name=\"${name.name}\")"
         is InternalName.IndexedParameter -> {
             val ctorName = when (name.type) {
@@ -76,7 +76,7 @@ internal object InternalNameGenerationHandler {
 
     fun getType(name: InternalName): String = when (name) {
         is InternalName.Classifier -> "Classifier"
-        is InternalName.ClassifierMember -> "ClassifierMember"
+        is InternalName.ClassifierMember -> "NamedClassifierMember"
         is InternalName.TopLevelMember -> "TopLevelMember"
         is InternalName.EnumEntry -> "EnumEntry"
         is InternalName.Constructor -> "Constructor"

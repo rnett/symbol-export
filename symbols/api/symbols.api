@@ -1,12 +1,13 @@
 public abstract interface class dev/rnett/symbolexport/symbol/NameLike {
-	public abstract fun asString ()Ljava/lang/String;
-	public abstract fun getSegments ()Ljava/util/List;
+	public fun asString ()Ljava/lang/String;
+	public abstract fun getNameSegments ()Ljava/util/List;
 	public abstract fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
 }
 
 public final class dev/rnett/symbolexport/symbol/NameLike$DefaultImpls {
+	public static fun asString (Ldev/rnett/symbolexport/symbol/NameLike;)Ljava/lang/String;
 	public static fun plus (Ldev/rnett/symbolexport/symbol/NameLike;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
 	public static fun resolve (Ldev/rnett/symbolexport/symbol/NameLike;[Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
 }
@@ -19,7 +20,7 @@ public final class dev/rnett/symbolexport/symbol/NameSegments : dev/rnett/symbol
 	public final fun copy (Ljava/util/List;)Ldev/rnett/symbolexport/symbol/NameSegments;
 	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/NameSegments;Ljava/util/List;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun equals (Ljava/lang/Object;)Z
-	public fun getSegments ()Ljava/util/List;
+	public fun getNameSegments ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
@@ -27,57 +28,776 @@ public final class dev/rnett/symbolexport/symbol/NameSegments : dev/rnett/symbol
 	public fun toString ()Ljava/lang/String;
 }
 
-public abstract class dev/rnett/symbolexport/symbol/Symbol : dev/rnett/symbolexport/symbol/NameLike {
-	public synthetic fun <init> (Ldev/rnett/symbolexport/symbol/NameSegments;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+public final class dev/rnett/symbolexport/symbol/ParameterKind : java/lang/Enum {
+	public static final field CONTEXT Ldev/rnett/symbolexport/symbol/ParameterKind;
+	public static final field DISPATCH_RECEIVER Ldev/rnett/symbolexport/symbol/ParameterKind;
+	public static final field EXTENSION_RECEIVER Ldev/rnett/symbolexport/symbol/ParameterKind;
+	public static final field VALUE Ldev/rnett/symbolexport/symbol/ParameterKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/ParameterKind;
+	public static fun values ()[Ldev/rnett/symbolexport/symbol/ParameterKind;
+}
+
+public abstract interface class dev/rnett/symbolexport/symbol/Symbol : dev/rnett/symbolexport/symbol/NameLike {
 	public fun asString ()Ljava/lang/String;
-	public final fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
-	public fun getSegments ()Ljava/util/List;
+	public abstract fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun getNameSegments ()Ljava/util/List;
+	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+}
+
+public abstract class dev/rnett/symbolexport/symbol/Symbol$Annotation : dev/rnett/symbolexport/symbol/Symbol$ClassLike {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/NameSegments;Ldev/rnett/symbolexport/symbol/NameSegments;)V
+	public fun asClassifier ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public fun asString ()Ljava/lang/String;
+	public fun getClassNames ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun getName ()Ljava/lang/String;
+	public fun getNameSegments ()Ljava/util/List;
+	public fun getPackageName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public abstract fun getParameters ()Ljava/util/List;
 	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public abstract fun produceInstance (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgumentProducer;)Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
 	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
 }
 
-public final class dev/rnett/symbolexport/symbol/Symbol$Classifier : dev/rnett/symbolexport/symbol/Symbol {
+public abstract interface class dev/rnett/symbolexport/symbol/Symbol$Annotation$Instance {
+	public fun contains (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Z
+	public fun contains (Ljava/lang/String;)Z
+	public fun get (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+	public fun get (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+	public abstract fun getAnnotation ()Ldev/rnett/symbolexport/symbol/Symbol$Annotation;
+	public abstract fun getAsMap ()Ljava/util/Map;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$Annotation$Instance$DefaultImpls {
+	public static fun contains (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Z
+	public static fun contains (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Ljava/lang/String;)Z
+	public static fun get (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+	public static fun get (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+}
+
+public abstract interface class dev/rnett/symbolexport/symbol/Symbol$ClassLike : dev/rnett/symbolexport/symbol/Symbol, dev/rnett/symbolexport/symbol/Symbol$NamedSymbol {
+	public fun asClassifier ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public abstract fun getClassNames ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun getName ()Ljava/lang/String;
+	public abstract fun getPackageName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$ClassLike$DefaultImpls {
+	public static fun asClassifier (Ldev/rnett/symbolexport/symbol/Symbol$ClassLike;)Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public static fun asString (Ldev/rnett/symbolexport/symbol/Symbol$ClassLike;)Ljava/lang/String;
+	public static fun getFullName (Ldev/rnett/symbolexport/symbol/Symbol$ClassLike;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun getName (Ldev/rnett/symbolexport/symbol/Symbol$ClassLike;)Ljava/lang/String;
+	public static fun getNameSegments (Ldev/rnett/symbolexport/symbol/Symbol$ClassLike;)Ljava/util/List;
+	public static fun plus (Ldev/rnett/symbolexport/symbol/Symbol$ClassLike;Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun plus (Ldev/rnett/symbolexport/symbol/Symbol$ClassLike;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun resolve (Ldev/rnett/symbolexport/symbol/Symbol$ClassLike;[Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$Classifier : dev/rnett/symbolexport/symbol/Symbol$ClassLike, dev/rnett/symbolexport/symbol/Symbol$TypeParamHost {
 	public fun <init> (Ldev/rnett/symbolexport/symbol/NameSegments;Ldev/rnett/symbolexport/symbol/NameSegments;)V
+	public fun asClassifier ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public fun asString ()Ljava/lang/String;
 	public final fun component1 ()Ldev/rnett/symbolexport/symbol/NameSegments;
 	public final fun component2 ()Ldev/rnett/symbolexport/symbol/NameSegments;
 	public final fun copy (Ldev/rnett/symbolexport/symbol/NameSegments;Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
 	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ldev/rnett/symbolexport/symbol/NameSegments;Ldev/rnett/symbolexport/symbol/NameSegments;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getClassNames ()Ldev/rnett/symbolexport/symbol/NameSegments;
-	public final fun getPackageName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun getClassNames ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun getName ()Ljava/lang/String;
+	public fun getNameSegments ()Ljava/util/List;
+	public fun getPackageName ()Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun hashCode ()I
+	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class dev/rnett/symbolexport/symbol/Symbol$ClassifierMember : dev/rnett/symbolexport/symbol/Symbol$Member {
-	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;)V
+public final class dev/rnett/symbolexport/symbol/Symbol$Constructor : dev/rnett/symbolexport/symbol/Symbol$Member {
+	public static final field Companion Ldev/rnett/symbolexport/symbol/Symbol$Constructor$Companion;
+	public static final field NAME Ljava/lang/String;
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;)V
+	public fun asString ()Ljava/lang/String;
 	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
-	public final fun component2 ()Ljava/lang/String;
-	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/Symbol$ClassifierMember;
-	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$ClassifierMember;Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$ClassifierMember;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;)Ldev/rnett/symbolexport/symbol/Symbol$Constructor;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$Constructor;Ldev/rnett/symbolexport/symbol/Symbol$Classifier;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$Constructor;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getClassifier ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun getNameSegments ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$Constructor$Companion {
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$ContextParameter : dev/rnett/symbolexport/symbol/Symbol$Parameter {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Member;IILjava/lang/String;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Member;
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Member;IILjava/lang/String;)Ldev/rnett/symbolexport/symbol/Symbol$ContextParameter;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$ContextParameter;Ldev/rnett/symbolexport/symbol/Symbol$Member;IILjava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$ContextParameter;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getIndex ()I
+	public final fun getIndexInContextParameters ()I
 	public fun getName ()Ljava/lang/String;
+	public fun getOwner ()Ldev/rnett/symbolexport/symbol/Symbol$Member;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public abstract class dev/rnett/symbolexport/symbol/Symbol$Member : dev/rnett/symbolexport/symbol/Symbol {
-	public synthetic fun <init> (Ldev/rnett/symbolexport/symbol/NameSegments;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+public final class dev/rnett/symbolexport/symbol/Symbol$DefaultImpls {
+	public static fun asString (Ldev/rnett/symbolexport/symbol/Symbol;)Ljava/lang/String;
+	public static fun getNameSegments (Ldev/rnett/symbolexport/symbol/Symbol;)Ljava/util/List;
+	public static fun plus (Ldev/rnett/symbolexport/symbol/Symbol;Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun plus (Ldev/rnett/symbolexport/symbol/Symbol;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun resolve (Ldev/rnett/symbolexport/symbol/Symbol;[Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$DispatchReceiverParameter : dev/rnett/symbolexport/symbol/Symbol$Parameter {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Member;ILjava/lang/String;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Member;
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Member;ILjava/lang/String;)Ldev/rnett/symbolexport/symbol/Symbol$DispatchReceiverParameter;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$DispatchReceiverParameter;Ldev/rnett/symbolexport/symbol/Symbol$Member;ILjava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$DispatchReceiverParameter;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getIndex ()I
+	public fun getName ()Ljava/lang/String;
+	public fun getOwner ()Ldev/rnett/symbolexport/symbol/Symbol$Member;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$EnumEntry : dev/rnett/symbolexport/symbol/Symbol, dev/rnett/symbolexport/symbol/Symbol$NamedSymbol {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;I)V
+	public fun asString ()Ljava/lang/String;
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()I
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;I)Ldev/rnett/symbolexport/symbol/Symbol$EnumEntry;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$EnumEntry;Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;IILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$EnumEntry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEntryName ()Ljava/lang/String;
+	public final fun getEntryOrdinal ()I
+	public final fun getEnumClass ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun getName ()Ljava/lang/String;
+	public fun getNameSegments ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$ExtensionReceiverParameter : dev/rnett/symbolexport/symbol/Symbol$Parameter {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Member;ILjava/lang/String;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Member;
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Member;ILjava/lang/String;)Ldev/rnett/symbolexport/symbol/Symbol$ExtensionReceiverParameter;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$ExtensionReceiverParameter;Ldev/rnett/symbolexport/symbol/Symbol$Member;ILjava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$ExtensionReceiverParameter;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getIndex ()I
+	public fun getName ()Ljava/lang/String;
+	public fun getOwner ()Ldev/rnett/symbolexport/symbol/Symbol$Member;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/rnett/symbolexport/symbol/Symbol$Member : dev/rnett/symbolexport/symbol/Symbol, dev/rnett/symbolexport/symbol/Symbol$TypeParamHost {
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$Member$DefaultImpls {
+	public static fun asString (Ldev/rnett/symbolexport/symbol/Symbol$Member;)Ljava/lang/String;
+	public static fun getNameSegments (Ldev/rnett/symbolexport/symbol/Symbol$Member;)Ljava/util/List;
+	public static fun plus (Ldev/rnett/symbolexport/symbol/Symbol$Member;Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun plus (Ldev/rnett/symbolexport/symbol/Symbol$Member;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun resolve (Ldev/rnett/symbolexport/symbol/Symbol$Member;[Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$NamedClassifierMember : dev/rnett/symbolexport/symbol/Symbol$NamedMember {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;)V
+	public fun asString ()Ljava/lang/String;
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/Symbol$NamedClassifierMember;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$NamedClassifierMember;Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$NamedClassifierMember;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClassifier ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun getName ()Ljava/lang/String;
+	public fun getNameSegments ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/rnett/symbolexport/symbol/Symbol$NamedMember : dev/rnett/symbolexport/symbol/Symbol$Member, dev/rnett/symbolexport/symbol/Symbol$NamedSymbol {
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$NamedMember$DefaultImpls {
+	public static fun asString (Ldev/rnett/symbolexport/symbol/Symbol$NamedMember;)Ljava/lang/String;
+	public static fun getNameSegments (Ldev/rnett/symbolexport/symbol/Symbol$NamedMember;)Ljava/util/List;
+	public static fun plus (Ldev/rnett/symbolexport/symbol/Symbol$NamedMember;Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun plus (Ldev/rnett/symbolexport/symbol/Symbol$NamedMember;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun resolve (Ldev/rnett/symbolexport/symbol/Symbol$NamedMember;[Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+}
+
+public abstract interface class dev/rnett/symbolexport/symbol/Symbol$NamedSymbol : dev/rnett/symbolexport/symbol/Symbol {
 	public abstract fun getName ()Ljava/lang/String;
 }
 
-public final class dev/rnett/symbolexport/symbol/Symbol$TopLevelMember : dev/rnett/symbolexport/symbol/Symbol$Member {
+public final class dev/rnett/symbolexport/symbol/Symbol$NamedSymbol$DefaultImpls {
+	public static fun asString (Ldev/rnett/symbolexport/symbol/Symbol$NamedSymbol;)Ljava/lang/String;
+	public static fun getNameSegments (Ldev/rnett/symbolexport/symbol/Symbol$NamedSymbol;)Ljava/util/List;
+	public static fun plus (Ldev/rnett/symbolexport/symbol/Symbol$NamedSymbol;Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun plus (Ldev/rnett/symbolexport/symbol/Symbol$NamedSymbol;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun resolve (Ldev/rnett/symbolexport/symbol/Symbol$NamedSymbol;[Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+}
+
+public abstract class dev/rnett/symbolexport/symbol/Symbol$Parameter : dev/rnett/symbolexport/symbol/Symbol, dev/rnett/symbolexport/symbol/Symbol$NamedSymbol {
+	public synthetic fun <init> (Ldev/rnett/symbolexport/symbol/ParameterKind;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun asString ()Ljava/lang/String;
+	public fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public abstract fun getIndex ()I
+	public final fun getKind ()Ldev/rnett/symbolexport/symbol/ParameterKind;
+	public abstract fun getName ()Ljava/lang/String;
+	public fun getNameSegments ()Ljava/util/List;
+	public abstract fun getOwner ()Ldev/rnett/symbolexport/symbol/Symbol$Member;
+	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$TopLevelMember : dev/rnett/symbolexport/symbol/Symbol$NamedMember {
 	public fun <init> (Ldev/rnett/symbolexport/symbol/NameSegments;Ljava/lang/String;)V
+	public fun asString ()Ljava/lang/String;
 	public final fun component1 ()Ldev/rnett/symbolexport/symbol/NameSegments;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun copy (Ldev/rnett/symbolexport/symbol/NameSegments;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/Symbol$TopLevelMember;
 	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$TopLevelMember;Ldev/rnett/symbolexport/symbol/NameSegments;Ljava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$TopLevelMember;
 	public fun equals (Ljava/lang/Object;)Z
+	public fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun getName ()Ljava/lang/String;
+	public fun getNameSegments ()Ljava/util/List;
 	public final fun getPackageName ()Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun hashCode ()I
+	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/rnett/symbolexport/symbol/Symbol$TypeParamHost : dev/rnett/symbolexport/symbol/Symbol {
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$TypeParamHost$DefaultImpls {
+	public static fun asString (Ldev/rnett/symbolexport/symbol/Symbol$TypeParamHost;)Ljava/lang/String;
+	public static fun getNameSegments (Ldev/rnett/symbolexport/symbol/Symbol$TypeParamHost;)Ljava/util/List;
+	public static fun plus (Ldev/rnett/symbolexport/symbol/Symbol$TypeParamHost;Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun plus (Ldev/rnett/symbolexport/symbol/Symbol$TypeParamHost;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public static fun resolve (Ldev/rnett/symbolexport/symbol/Symbol$TypeParamHost;[Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$TypeParameter : dev/rnett/symbolexport/symbol/Symbol, dev/rnett/symbolexport/symbol/Symbol$NamedSymbol {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$TypeParamHost;ILjava/lang/String;)V
+	public fun asString ()Ljava/lang/String;
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$TypeParamHost;
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$TypeParamHost;ILjava/lang/String;)Ldev/rnett/symbolexport/symbol/Symbol$TypeParameter;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$TypeParameter;Ldev/rnett/symbolexport/symbol/Symbol$TypeParamHost;ILjava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$TypeParameter;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
+	public final fun getIndex ()I
+	public fun getName ()Ljava/lang/String;
+	public fun getNameSegments ()Ljava/util/List;
+	public final fun getOwner ()Ldev/rnett/symbolexport/symbol/Symbol$TypeParamHost;
+	public fun hashCode ()I
+	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/Symbol$ValueParameter : dev/rnett/symbolexport/symbol/Symbol$Parameter {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Member;IILjava/lang/String;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Member;
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Member;IILjava/lang/String;)Ldev/rnett/symbolexport/symbol/Symbol$ValueParameter;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/Symbol$ValueParameter;Ldev/rnett/symbolexport/symbol/Symbol$Member;IILjava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$ValueParameter;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getIndex ()I
+	public final fun getIndexInValueParameters ()I
+	public fun getName ()Ljava/lang/String;
+	public fun getOwner ()Ldev/rnett/symbolexport/symbol/Symbol$Member;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument {
+	public static final field Companion Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Companion;
+	public synthetic fun <init> (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getType ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Annotation : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Annotation;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Annotation;Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Annotation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnnotationArguments ()Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Array : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument, java/util/List, kotlin/jvm/internal/markers/KMappedMarker {
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> (Ljava/util/List;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;)V
+	public fun add (ILdev/rnett/symbolexport/symbol/annotation/AnnotationArgument;)V
+	public synthetic fun add (ILjava/lang/Object;)V
+	public fun add (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;)Z
+	public synthetic fun add (Ljava/lang/Object;)Z
+	public fun addAll (ILjava/util/Collection;)Z
+	public fun addAll (Ljava/util/Collection;)Z
+	public fun clear ()V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;
+	public fun contains (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;)Z
+	public final fun contains (Ljava/lang/Object;)Z
+	public fun containsAll (Ljava/util/Collection;)Z
+	public final fun copy (Ljava/util/List;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Array;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Array;Ljava/util/List;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Array;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun get (I)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+	public synthetic fun get (I)Ljava/lang/Object;
+	public final fun getElementType ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;
+	public fun getSize ()I
+	public final fun getValues ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun indexOf (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;)I
+	public final fun indexOf (Ljava/lang/Object;)I
+	public fun isEmpty ()Z
+	public fun iterator ()Ljava/util/Iterator;
+	public fun lastIndexOf (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;)I
+	public final fun lastIndexOf (Ljava/lang/Object;)I
+	public fun listIterator ()Ljava/util/ListIterator;
+	public fun listIterator (I)Ljava/util/ListIterator;
+	public fun remove (I)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+	public synthetic fun remove (I)Ljava/lang/Object;
+	public fun remove (Ljava/lang/Object;)Z
+	public fun removeAll (Ljava/util/Collection;)Z
+	public fun replaceAll (Ljava/util/function/UnaryOperator;)V
+	public fun retainAll (Ljava/util/Collection;)Z
+	public fun set (ILdev/rnett/symbolexport/symbol/annotation/AnnotationArgument;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+	public synthetic fun set (ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun size ()I
+	public fun sort (Ljava/util/Comparator;)V
+	public fun subList (II)Ljava/util/List;
+	public fun toArray ()[Ljava/lang/Object;
+	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Boolean : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive {
+	public fun <init> (Z)V
+	public final fun component1 ()Z
+	public final fun copy (Z)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Boolean;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Boolean;ZILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Boolean;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getValue ()Ljava/lang/Boolean;
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Byte : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive {
+	public fun <init> (B)V
+	public final fun component1 ()B
+	public final fun copy (B)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Byte;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Byte;BILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Byte;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getValue ()Ljava/lang/Byte;
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Char : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive {
+	public fun <init> (C)V
+	public final fun component1 ()C
+	public final fun copy (C)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Char;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Char;CILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Char;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getValue ()Ljava/lang/Character;
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Companion {
+	public final fun annotation (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Annotation;
+	public final fun array (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;[Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Array;
+	public final fun array (Ljava/util/List;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Array;
+	public final fun enum (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$EnumEntry;
+	public final fun enum (Ldev/rnett/symbolexport/symbol/Symbol$EnumEntry;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$EnumEntry;
+	public final fun kClass (Ldev/rnett/symbolexport/symbol/Symbol$ClassLike;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$KClass;
+	public final fun nonEmptyArray (Ljava/util/List;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Array;
+	public final fun of (B)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Byte;
+	public final fun of (C)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Char;
+	public final fun of (D)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Double;
+	public final fun of (F)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Float;
+	public final fun of (I)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Int;
+	public final fun of (J)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Long;
+	public final fun of (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$String;
+	public final fun of (S)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Short;
+	public final fun of (Z)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Boolean;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Double : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive {
+	public fun <init> (D)V
+	public final fun component1 ()D
+	public final fun copy (D)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Double;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Double;DILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Double;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getValue ()Ljava/lang/Double;
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$EnumEntry : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;)V
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$EnumEntry;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$EnumEntry;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$EnumEntry;Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$EnumEntry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEnumClass ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public final fun getEnumName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Float : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive {
+	public fun <init> (F)V
+	public final fun component1 ()F
+	public final fun copy (F)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Float;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Float;FILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Float;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getValue ()Ljava/lang/Float;
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Int : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Int;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Int;IILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Int;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getValue ()Ljava/lang/Integer;
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$KClass : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$KClass;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$KClass;Ldev/rnett/symbolexport/symbol/Symbol$Classifier;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$KClass;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClassSymbol ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Long : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive {
+	public fun <init> (J)V
+	public final fun component1 ()J
+	public final fun copy (J)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Long;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Long;JILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Long;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getValue ()Ljava/lang/Long;
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument {
+	public synthetic fun <init> (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getType ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive;
+	public synthetic fun getType ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;
+	public abstract fun getValue ()Ljava/lang/Object;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Short : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive {
+	public fun <init> (S)V
+	public final fun component1 ()S
+	public final fun copy (S)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Short;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Short;SILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Short;
+	public fun equals (Ljava/lang/Object;)Z
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun getValue ()Ljava/lang/Short;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$String : dev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$String;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$String;Ljava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$String;
+	public fun equals (Ljava/lang/Object;)Z
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgumentExtractionException : java/lang/IllegalArgumentException {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public final fun getParameter ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;
+	public final fun getRawValue ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationArgumentKt {
+	public static final fun asAnnotationArgument (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Annotation;
+	public static final fun asAnnotationArgument (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$KClass;
+	public static final fun asAnnotationArgument (Ldev/rnett/symbolexport/symbol/Symbol$EnumEntry;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$EnumEntry;
+	public static final fun classAsAnnotationArgument (Ldev/rnett/symbolexport/symbol/Symbol$Annotation;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$KClass;
+}
+
+public abstract interface class dev/rnett/symbolexport/symbol/annotation/AnnotationArgumentProducer {
+	public abstract fun getArgument (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationAssemblyException : java/lang/RuntimeException {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Annotation;Ljava/lang/Throwable;)V
+	public final fun getAnnotation ()Ldev/rnett/symbolexport/symbol/Symbol$Annotation;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationGettingArgumentsException : java/lang/IllegalArgumentException {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;Ljava/lang/Throwable;)V
+	public final fun getParameter ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameter {
+	public fun <init> (Ljava/lang/String;ILdev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun component3 ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;
+	public final fun copy (Ljava/lang/String;ILdev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;Ljava/lang/String;ILdev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public final fun getName ()Ljava/lang/String;
+	public final fun getType ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType {
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Annotation : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Annotation;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Annotation;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Annotation;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Annotation;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Annotation;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Annotation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnnotationClass ()Ldev/rnett/symbolexport/symbol/Symbol$Annotation;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Array : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Array;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Array;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Array;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getElementType ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Boolean : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive {
+	public static final field INSTANCE Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Boolean;
+	public synthetic fun createArgument (Ljava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;
+	public fun createArgument (Z)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Boolean;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Byte : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive {
+	public static final field INSTANCE Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Byte;
+	public fun createArgument (B)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Byte;
+	public synthetic fun createArgument (Ljava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Char : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive {
+	public static final field INSTANCE Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Char;
+	public fun createArgument (C)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Char;
+	public synthetic fun createArgument (Ljava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Double : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive {
+	public static final field INSTANCE Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Double;
+	public fun createArgument (D)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Double;
+	public synthetic fun createArgument (Ljava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Enum : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public final fun copy (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Enum;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Enum;Ldev/rnett/symbolexport/symbol/Symbol$Classifier;ILjava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Enum;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEnumClass ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Float : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive {
+	public static final field INSTANCE Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Float;
+	public fun createArgument (F)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Float;
+	public synthetic fun createArgument (Ljava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Int : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive {
+	public static final field INSTANCE Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Int;
+	public fun createArgument (I)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Int;
+	public synthetic fun createArgument (Ljava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$KClass : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType {
+	public static final field INSTANCE Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$KClass;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Long : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive {
+	public static final field INSTANCE Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Long;
+	public fun createArgument (J)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Long;
+	public synthetic fun createArgument (Ljava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType {
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public abstract fun createArgument (Ljava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;
+	public final fun getKClass ()Lkotlin/reflect/KClass;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Short : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive {
+	public static final field INSTANCE Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Short;
+	public synthetic fun createArgument (Ljava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;
+	public fun createArgument (S)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Short;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$String : dev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive {
+	public static final field INSTANCE Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$String;
+	public synthetic fun createArgument (Ljava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;
+	public fun createArgument (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$String;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationParameterWriteException : java/lang/RuntimeException {
+	public fun <init> (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;Ljava/lang/Throwable;)V
+	public final fun getArgumentValue ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+	public final fun getParameter ()Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;
+}
+
+public abstract interface class dev/rnett/symbolexport/symbol/annotation/AnnotationWriter {
+	public abstract fun write (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Z)Ljava/lang/Object;
+	public static synthetic fun write$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationWriter;Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;ZILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class dev/rnett/symbolexport/symbol/annotation/AnnotationWriter$DefaultImpls {
+	public static synthetic fun write$default (Ldev/rnett/symbolexport/symbol/annotation/AnnotationWriter;Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;ZILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public abstract class dev/rnett/symbolexport/symbol/annotation/BaseAnnotationArgumentProducer : dev/rnett/symbolexport/symbol/annotation/AnnotationArgumentProducer {
+	public fun <init> ()V
+	protected abstract fun extractAnnotationProducer (Ljava/lang/Object;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgumentProducer;
+	protected abstract fun extractArrayArguments (Ljava/lang/Object;)Ljava/util/List;
+	protected abstract fun extractClass (Ljava/lang/Object;)Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
+	protected abstract fun extractEnumInfo (Ljava/lang/Object;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$EnumEntry;
+	protected fun extractPrimitiveArgument (Ljava/lang/Object;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;
+	protected abstract fun extractPrimitiveValue (Ljava/lang/Object;Lkotlin/reflect/KClass;)Ljava/lang/Object;
+	public fun getArgument (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+	protected abstract fun getRawValueForParameter (Ljava/lang/String;I)Ljava/lang/Object;
+	protected abstract fun renderForErrorReporting (Ljava/lang/Object;)Ljava/lang/String;
+}
+
+public abstract class dev/rnett/symbolexport/symbol/annotation/BaseAnnotationWriter : dev/rnett/symbolexport/symbol/annotation/AnnotationWriter {
+	public fun <init> ()V
+	protected abstract fun assembleAnnotation (Ldev/rnett/symbolexport/symbol/Symbol$Annotation;Ljava/util/Map;Z)Ljava/lang/Object;
+	public final fun write (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Z)Ljava/lang/Object;
+	protected abstract fun writeArrayArgument (Ljava/util/List;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType;)Ljava/lang/Object;
+	protected abstract fun writeClassArgument (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;)Ljava/lang/Object;
+	protected abstract fun writeEnumEntryArgument (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;Ljava/lang/String;)Ljava/lang/Object;
+	protected abstract fun writePrimitiveArgument (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;)Ljava/lang/Object;
+	protected abstract fun writerForAnnotationArgument (Ldev/rnett/symbolexport/symbol/Symbol$Annotation;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationWriter;
+}
+
+public abstract class dev/rnett/symbolexport/symbol/annotation/BasePrimitiveSpecificAnnotationArgumentProducer : dev/rnett/symbolexport/symbol/annotation/BaseAnnotationArgumentProducer {
+	public fun <init> ()V
+	protected abstract fun extractBoolean (Ljava/lang/Object;)Z
+	protected abstract fun extractByte (Ljava/lang/Object;)B
+	protected abstract fun extractChar (Ljava/lang/Object;)C
+	protected abstract fun extractDouble (Ljava/lang/Object;)D
+	protected abstract fun extractFloat (Ljava/lang/Object;)F
+	protected abstract fun extractInt (Ljava/lang/Object;)I
+	protected abstract fun extractLong (Ljava/lang/Object;)J
+	protected final fun extractPrimitiveArgument (Ljava/lang/Object;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameterType$Primitive;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Primitive;
+	protected fun extractPrimitiveValue (Ljava/lang/Object;Lkotlin/reflect/KClass;)Ljava/lang/Object;
+	protected abstract fun extractShort (Ljava/lang/Object;)S
+	protected abstract fun extractString (Ljava/lang/Object;)Ljava/lang/String;
 }
 

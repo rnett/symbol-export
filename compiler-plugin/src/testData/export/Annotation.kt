@@ -4,7 +4,7 @@ import kotlin.reflect.KClass
 
 enum class TestEnum { A, B }
 
-<!EXPORTED_MARKER_Annotation(packageName=[export], classNames=[MyAnnotation], parameters={s=STRING, a=Array(elementType=INT), cls=KClass, enu=Enum(enumClass=Classifier(packageName=[export], classNames=[TestEnum])), ann2=Annotation(annotationClass=Classifier(packageName=[export], classNames=[MyAnnotation2]))})!>@ExportAnnotation
+<!EXPORTED_MARKER_Annotation(packageName=[export], classNames=[MyAnnotation], parameters=[Parameter(name=s, index=0, type=STRING), Parameter(name=a, index=1, type=Array(elementType=INT)), Parameter(name=cls, index=2, type=KClass), Parameter(name=enu, index=3, type=Enum(enumClass=Classifier(packageName=[export], classNames=[TestEnum]))), Parameter(name=ann2, index=4, type=Annotation(annotationClass=Classifier(packageName=[export], classNames=[MyAnnotation2])))])!>@ExportAnnotation
 annotation class MyAnnotation(
     val s: String,
     val a: <!INVALID_TYPE_OF_ANNOTATION_MEMBER!>Array<Int><!>,
@@ -13,6 +13,7 @@ annotation class MyAnnotation(
     val ann2: MyAnnotation2,
 )<!>
 
-<!EXPORTED_MARKER_Annotation(packageName=[export], classNames=[MyAnnotation2], parameters={a=LONG, t=Array(elementType=KClass)})!>@ExportAnnotation
+<!EXPORTED_MARKER_Annotation(packageName=[export], classNames=[MyAnnotation2], parameters=[Parameter(name=a, index=0, type=LONG), Parameter(name=t, index=1, type=Array(elementType=KClass))])!>@ExportAnnotation
 annotation class MyAnnotation2(val a: Long, val t: Array<KClass<*>>)<!>
+
 

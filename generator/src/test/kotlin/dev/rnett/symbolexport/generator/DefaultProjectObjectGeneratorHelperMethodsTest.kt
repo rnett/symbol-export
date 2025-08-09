@@ -78,7 +78,7 @@ internal class DefaultProjectObjectGeneratorHelperMethodsTest {
 
         val result = InternalNameGenerationHandler.getType(classifierMember)
 
-        assertEquals("ClassifierMember", result)
+        assertEquals("NamedClassifierMember", result)
     }
 
     @Test

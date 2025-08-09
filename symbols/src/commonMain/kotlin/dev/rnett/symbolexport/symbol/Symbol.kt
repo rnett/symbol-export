@@ -5,6 +5,9 @@ import dev.rnett.symbolexport.symbol.annotation.AnnotationArgumentProducer
 import dev.rnett.symbolexport.symbol.annotation.AnnotationParameter
 import dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType
 
+/**
+ * A type that has a name composed of `.`-seperated segments.
+ */
 public interface NameLike {
     public val nameSegments: List<String>
     public fun asString(): String = nameSegments.joinToString(".")
@@ -14,16 +17,9 @@ public interface NameLike {
     public fun resolve(vararg segments: String): NameSegments = plus(NameSegments(*segments))
 }
 
-internal object Test {
-    object a : Any() {
-        class Inner : Any() {
-            fun test() = InnerInner()
-
-            inner class InnerInner : Any()
-        }
-    }
-}
-
+/**
+ * A name composed of `.`-seperated segments.
+ */
 public data class NameSegments(override val nameSegments: List<String>) : NameLike {
     public constructor(vararg segments: String) : this(segments.toList())
 
@@ -37,12 +33,21 @@ public data class NameSegments(override val nameSegments: List<String>) : NameLi
     public override fun resolve(vararg segments: String): NameSegments = NameSegments(this.nameSegments + segments)
 }
 
+/**
+ * The kind of a [Symbol.Parameter].
+ */
 public enum class ParameterKind {
     DISPATCH_RECEIVER, EXTENSION_RECEIVER, CONTEXT, VALUE;
 }
 
+/**
+ * A referenced Kotlin symbol.
+ */
 public sealed interface Symbol : NameLike {
 
+    /**
+     * The fully qualified name of the symbol.
+     */
     public val fullName: NameSegments
     override val nameSegments: List<String>
         get() = fullName.nameSegments
@@ -50,8 +55,14 @@ public sealed interface Symbol : NameLike {
     override fun asString(): String = fullName.asString()
     override fun plus(other: NameSegments): NameSegments = fullName + other
 
+    /**
+     * A symbol that can have type parameters.
+     */
     public sealed interface TypeParamHost : Symbol
 
+    /**
+     * A symbol with a meaningful name. This is most symbols except [Constructor].
+     */
     public sealed interface NamedSymbol : Symbol {
         /**
          * The simple name of this symbol. Usually the last segment in its fully qualified name.
@@ -63,12 +74,21 @@ public sealed interface Symbol : NameLike {
      * A [Classifier] or [Annotation]. May include type aliases someday.
      */
     public sealed interface ClassLike : Symbol, NamedSymbol {
+        /**
+         * The package name of the classifier.
+         */
         public val packageName: NameSegments
+
+        /**
+         * The class names of the classifier.
+         */
         public val classNames: NameSegments
 
         override val fullName: NameSegments get() = packageName + classNames
 
         override val name: String get() = classNames.nameSegments.last()
+
+        public fun asClassifier(): Classifier = this as? Classifier ?: Classifier(packageName, classNames)
     }
 
     /**
@@ -79,39 +99,85 @@ public sealed interface Symbol : NameLike {
         ClassLike, TypeParamHost {
     }
 
-    public sealed interface Member : Symbol, TypeParamHost, NamedSymbol {
-        public override val name: String
+    /**
+     * A member. Either of a [Classifier] or as a top-level symbol.
+     */
+    public sealed interface Member : Symbol, TypeParamHost {
     }
 
-    public sealed interface NamedMember : Member
+    /**
+     * A member with a meaningful name.
+     */
+    public sealed interface NamedMember : Member, NamedSymbol
 
-    public data class ClassifierMember(val classifier: Classifier, override val name: String) : NamedMember {
+    /**
+     * A named [Member] of a [Classifier].
+     *
+     * @property classifier The classifier that contains the member
+     * @property name The name of the member
+     */
+    public data class NamedClassifierMember(val classifier: Classifier, override val name: String) : NamedMember {
         override val fullName: NameSegments = classifier + name
     }
 
-    public data class Constructor(val classifier: Classifier, override val name: String) : Member {
-        override val fullName: NameSegments = classifier + name
+    /**
+     * A constructor of a [Classifier].
+     *
+     * Uses `<init>` as its name in its [fullName] to avoid collision with classes.
+     *
+     * @property classifier The classifier that contains the constructor
+     */
+    public data class Constructor(val classifier: Classifier) : Member {
+        public companion object {
+            public const val NAME: String = "<init>"
+        }
+
+        override val fullName: NameSegments = classifier.fullName + NAME
     }
 
+    /**
+     * A top-level member.
+     *
+     * @property packageName The package name of the member
+     * @property name The simple name of the member
+     */
     public data class TopLevelMember(val packageName: NameSegments, override val name: String) : NamedMember {
         override val fullName: NameSegments = packageName + name
     }
 
+    /**
+     * A type parameter.
+     *
+     * @property owner The symbol that owns the type parameter
+     * @property index The index of the type parameter in [owner]'s type parameters
+     * @property name The name of the type parameter
+     */
     public data class TypeParameter(val owner: TypeParamHost, val index: Int, override val name: String) : Symbol, NamedSymbol {
         override val fullName: NameSegments = owner + name
     }
 
+    /**
+     * A parameter of a [Member].
+     *
+     * @property kind The kind of the parameter
+     * @property owner The symbol that owns the parameter
+     * @property index The index of the parameter in all of [owner]'s parameters. Ordered according to the Kotlin compiler's parameter ordering: `[dispatch receiver, context parameters, extension receiver, value parameters]`.
+     * @property name The name of the parameter
+     */
     public sealed class Parameter(public val kind: ParameterKind) : Symbol, NamedSymbol {
         public abstract override val name: String
         public abstract val owner: Member
         override val fullName: NameSegments by lazy { owner + name }
 
-        /**
-         * The index according to the Kotlin compiler's parameter ordering: `[dispatch receiver, context parameters, extension receiver, value parameters]`.
-         */
         public abstract val index: Int
     }
 
+    /**
+     * A value parameter of a [Member].
+     *
+     * @property indexInValueParameters The index of the parameter in the value parameters of the member.
+     * @see Parameter
+     */
     public data class ValueParameter(
         override val owner: Member,
         override val index: Int,
@@ -119,6 +185,12 @@ public sealed interface Symbol : NameLike {
         override val name: String
     ) : Parameter(ParameterKind.VALUE)
 
+    /**
+     * A context parameter of a [Member].
+     *
+     * @property indexInContextParameters The index of the parameter in the context parameters of the member.
+     * @see Parameter
+     */
     public data class ContextParameter(
         override val owner: Member,
         override val index: Int,
@@ -126,28 +198,51 @@ public sealed interface Symbol : NameLike {
         override val name: String
     ) : Parameter(ParameterKind.CONTEXT)
 
+    /**
+     * The extension receiver parameter of a [Member].
+     */
     public data class ExtensionReceiverParameter(
         override val owner: Member,
         override val index: Int,
         override val name: String
     ) : Parameter(ParameterKind.EXTENSION_RECEIVER)
 
+    /**
+     * The dispatch receiver parameter of a [Member].
+     */
     public data class DispatchReceiverParameter(
         override val owner: Member,
         override val index: Int,
         override val name: String
     ) : Parameter(ParameterKind.DISPATCH_RECEIVER)
 
+    /**
+     * An enum entry.
+     */
     public data class EnumEntry(val enumClass: Classifier, val entryName: String, val entryOrdinal: Int) : Symbol, NamedSymbol {
         override val fullName: NameSegments = enumClass + entryName
         override val name: String = entryName
     }
 
-    public abstract class Annotation<S : Annotation<S, A>, A : Annotation.Arguments<S, A>>(
+    /**
+     * A full representation of an annotation, as opposed to [Classifier] which just represents the type.
+     * Includes all parameters and the ability to constructor [Instance]s for a given set of arguments.
+     *
+     * @property packageName The package name of the annotation
+     * @property classNames The class names of the annotation
+     * @property parameters All parameters of the annotation
+     */
+    public abstract class Annotation<S : Annotation<S, I>, I : Annotation.Instance<S, I>>(
         override val packageName: NameSegments,
         override val classNames: NameSegments
     ) : ClassLike {
-        public interface Arguments<S : Annotation<S, A>, A : Arguments<S, A>> {
+        /**
+         * A representation of an annotation instance.
+         *
+         * @property annotation The annotation type
+         * @property asMap The arguments of the annotation instance, keyed by the parameter name. All parameters are present as keys - if they are not specified, the value is null.
+         */
+        public interface Instance<S : Annotation<S, I>, I : Instance<S, I>> {
             public val annotation: S
             public val asMap: Map<AnnotationParameter<*>, AnnotationArgument?>
 
@@ -160,6 +255,9 @@ public sealed interface Symbol : NameLike {
 
         public abstract val parameters: List<AnnotationParameter<*>>
 
-        public abstract fun produceArguments(producer: AnnotationArgumentProducer): A
+        /**
+         * Creates an [Instance] of the annotation by reading an argument for each parameter using [producer].
+         */
+        public abstract fun produceInstance(producer: AnnotationArgumentProducer): I
     }
 }

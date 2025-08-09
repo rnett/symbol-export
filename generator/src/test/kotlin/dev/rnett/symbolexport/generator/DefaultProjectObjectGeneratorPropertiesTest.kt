@@ -65,7 +65,7 @@ class DefaultProjectObjectGeneratorPropertiesTest {
 
         // Check that each symbol's property is generated
         assertTrue(result.contains("public val `test_package_TestClass`: Classifier"))
-        assertTrue(result.contains("public val `test_package_TestClass_testMethod`: ClassifierMember"))
+        assertTrue(result.contains("public val `test_package_TestClass_testMethod`: NamedClassifierMember"))
         assertTrue(result.contains("public val `test_package_testFunction`: TopLevelMember"))
 
         // Check that each property has a javadoc comment

@@ -50,7 +50,7 @@ internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
             /**
              * Generated from `test.package.TestClass.testMethod`
              */
-            public val `test_package_TestClass_testMethod`: ClassifierMember = ClassifierMember(classifier = Classifier(packageName = NameSegments("test", "package"), classNames = NameSegments("TestClass")), name = "testMethod")
+            public val `test_package_TestClass_testMethod`: NamedClassifierMember = NamedClassifierMember(classifier = Classifier(packageName = NameSegments("test", "package"), classNames = NameSegments("TestClass")), name = "testMethod")
             """.trimIndent(),
             result.trimIndent()
         )
@@ -119,7 +119,7 @@ internal class DefaultProjectObjectGeneratorPropertyGenerationTest {
             /**
              * Generated from `test.package.TestClass.<init>`
              */
-            public val `test_package_TestClass_init`: Constructor = Constructor(classifier = Classifier(packageName = NameSegments("test", "package"), classNames = NameSegments("TestClass")), name = "<init>")
+            public val `test_package_TestClass_init`: Constructor = Constructor(classifier = Classifier(packageName = NameSegments("test", "package"), classNames = NameSegments("TestClass")))
             """.trimIndent(),
             result.trimIndent()
         )

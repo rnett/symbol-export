@@ -45,7 +45,7 @@ class SymbolsTest {
     fun testExposedClassProp() {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_prop in Symbols.ALL_SYMBOLS)
         assertEquals(
-            Symbol.ClassifierMember(
+            Symbol.NamedClassifierMember(
                 classifier = Symbol.Classifier(
                     packageName = NameSegments("dev", "rnett", "test"),
                     classNames = NameSegments("ExposedClass")
@@ -60,7 +60,7 @@ class SymbolsTest {
     fun testExposedClassCompanionExposedFun() {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_Companion_exposedFun in Symbols.ALL_SYMBOLS)
         assertEquals(
-            Symbol.ClassifierMember(
+            Symbol.NamedClassifierMember(
                 classifier = Symbol.Classifier(
                     packageName = NameSegments("dev", "rnett", "test"),
                     classNames = NameSegments("ExposedClass", "Companion")
@@ -87,7 +87,7 @@ class SymbolsTest {
     fun testExposedClassExposedNestedClassExposedFun() {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_ExposedNestedClass_exposedFun in Symbols.ALL_SYMBOLS)
         assertEquals(
-            Symbol.ClassifierMember(
+            Symbol.NamedClassifierMember(
                 classifier = Symbol.Classifier(
                     packageName = NameSegments("dev", "rnett", "test"),
                     classNames = NameSegments("ExposedClass", "ExposedNestedClass")
@@ -102,7 +102,7 @@ class SymbolsTest {
     fun testExposedClassExposedNestedClassExposedProperty() {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_ExposedNestedClass_exposedProperty in Symbols.ALL_SYMBOLS)
         assertEquals(
-            Symbol.ClassifierMember(
+            Symbol.NamedClassifierMember(
                 classifier = Symbol.Classifier(
                     packageName = NameSegments("dev", "rnett", "test"),
                     classNames = NameSegments("ExposedClass", "ExposedNestedClass")
@@ -122,7 +122,6 @@ class SymbolsTest {
                     packageName = NameSegments("dev", "rnett", "test"),
                     classNames = NameSegments("ExposedClass")
                 ),
-                name = "<init>"
             ),
             Symbols.dev_rnett_test_ExposedClass_init
         )
@@ -138,7 +137,6 @@ class SymbolsTest {
                         packageName = NameSegments("dev", "rnett", "test"),
                         classNames = NameSegments("ExposedClass")
                     ),
-                    name = "<init>"
                 ),
                 index = 0,
                 indexInValueParameters = 0,
@@ -153,7 +151,7 @@ class SymbolsTest {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_withTypeParameters_T in Symbols.ALL_SYMBOLS)
         assertEquals(
             Symbol.TypeParameter(
-                owner = Symbol.ClassifierMember(
+                owner = Symbol.NamedClassifierMember(
                     classifier = Symbol.Classifier(
                         packageName = NameSegments("dev", "rnett", "test"),
                         classNames = NameSegments("ExposedClass")
@@ -172,7 +170,7 @@ class SymbolsTest {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_withValueParameters_t in Symbols.ALL_SYMBOLS)
         assertEquals(
             Symbol.ValueParameter(
-                owner = Symbol.ClassifierMember(
+                owner = Symbol.NamedClassifierMember(
                     classifier = Symbol.Classifier(
                         packageName = NameSegments("dev", "rnett", "test"),
                         classNames = NameSegments("ExposedClass")
@@ -192,7 +190,7 @@ class SymbolsTest {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_withExtensionReceiver_receiver in Symbols.ALL_SYMBOLS)
         assertEquals(
             Symbol.ExtensionReceiverParameter(
-                owner = Symbol.ClassifierMember(
+                owner = Symbol.NamedClassifierMember(
                     classifier = Symbol.Classifier(
                         packageName = NameSegments("dev", "rnett", "test"),
                         classNames = NameSegments("ExposedClass")
@@ -211,7 +209,7 @@ class SymbolsTest {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_withExtensionReceiverAll_this in Symbols.ALL_SYMBOLS)
         assertEquals(
             Symbol.DispatchReceiverParameter(
-                owner = Symbol.ClassifierMember(
+                owner = Symbol.NamedClassifierMember(
                     classifier = Symbol.Classifier(
                         packageName = NameSegments("dev", "rnett", "test"),
                         classNames = NameSegments("ExposedClass")
@@ -230,7 +228,7 @@ class SymbolsTest {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_withExtensionReceiverAll_receiver in Symbols.ALL_SYMBOLS)
         assertEquals(
             Symbol.ExtensionReceiverParameter(
-                owner = Symbol.ClassifierMember(
+                owner = Symbol.NamedClassifierMember(
                     classifier = Symbol.Classifier(
                         packageName = NameSegments("dev", "rnett", "test"),
                         classNames = NameSegments("ExposedClass")
@@ -249,7 +247,7 @@ class SymbolsTest {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_withContextParameters_a in Symbols.ALL_SYMBOLS)
         assertEquals(
             Symbol.ContextParameter(
-                owner = Symbol.ClassifierMember(
+                owner = Symbol.NamedClassifierMember(
                     classifier = Symbol.Classifier(
                         packageName = NameSegments("dev", "rnett", "test"),
                         classNames = NameSegments("ExposedClass")
@@ -269,7 +267,7 @@ class SymbolsTest {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_withExtensionReceiverJustExtension_receiver in Symbols.ALL_SYMBOLS)
         assertEquals(
             Symbol.ExtensionReceiverParameter(
-                owner = Symbol.ClassifierMember(
+                owner = Symbol.NamedClassifierMember(
                     classifier = Symbol.Classifier(
                         packageName = NameSegments("dev", "rnett", "test"),
                         classNames = NameSegments("ExposedClass")
@@ -288,7 +286,7 @@ class SymbolsTest {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_withExtensionReceiverJustDispatch_this in Symbols.ALL_SYMBOLS)
         assertEquals(
             Symbol.DispatchReceiverParameter(
-                owner = Symbol.ClassifierMember(
+                owner = Symbol.NamedClassifierMember(
                     classifier = Symbol.Classifier(
                         packageName = NameSegments("dev", "rnett", "test"),
                         classNames = NameSegments("ExposedClass")
@@ -307,7 +305,7 @@ class SymbolsTest {
         assertTrue(Symbols.dev_rnett_test_ExposedClass_withDispatch_this in Symbols.ALL_SYMBOLS)
         assertEquals(
             Symbol.DispatchReceiverParameter(
-                owner = Symbol.ClassifierMember(
+                owner = Symbol.NamedClassifierMember(
                     classifier = Symbol.Classifier(
                         packageName = NameSegments("dev", "rnett", "test"),
                         classNames = NameSegments("ExposedClass")
@@ -414,7 +412,7 @@ class SymbolsTest {
         assertFalse(notExposedProperty in Symbols.ALL_SYMBOLS)
 
         // Check non-exported nested class method
-        val notExposedMethod = Symbol.ClassifierMember(
+        val notExposedMethod = Symbol.NamedClassifierMember(
             classifier = Symbol.Classifier(
                 packageName = NameSegments("dev", "rnett", "test"),
                 classNames = NameSegments("ExposedClass", "ExposedNestedClass")
@@ -424,7 +422,7 @@ class SymbolsTest {
         assertFalse(notExposedMethod in Symbols.ALL_SYMBOLS)
 
         // Check non-exported nested class property
-        val notExposedNestedProperty = Symbol.ClassifierMember(
+        val notExposedNestedProperty = Symbol.NamedClassifierMember(
             classifier = Symbol.Classifier(
                 packageName = NameSegments("dev", "rnett", "test"),
                 classNames = NameSegments("ExposedClass", "ExposedNestedClass")

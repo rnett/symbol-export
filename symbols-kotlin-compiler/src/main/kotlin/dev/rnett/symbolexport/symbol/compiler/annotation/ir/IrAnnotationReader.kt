@@ -30,22 +30,22 @@ import kotlin.reflect.safeCast
 
 
 @UnsafeDuringIrConstructionAPI
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> IrAnnotationContainer.findAnnotations(annotation: S): List<A> {
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> IrAnnotationContainer.findAnnotations(annotation: S): List<A> {
     return annotations.filter { it.isAnnotation(annotation.asFqName()) }.mapNotNull { it.readAnnotation(annotation) }
 }
 
 @UnsafeDuringIrConstructionAPI
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> IrAnnotationContainer.findAnnotation(annotation: S): A? {
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> IrAnnotationContainer.findAnnotation(annotation: S): A? {
     val ctorCall = getAnnotation(annotation.asFqName()) ?: return null
     return ctorCall.readAnnotation(annotation)
 }
 
 @UnsafeDuringIrConstructionAPI
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> IrConstructorCall.readAnnotation(annotation: S): A? {
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> IrConstructorCall.readAnnotation(annotation: S): A? {
     if (annotation.asClassId() != this.symbol.owner.parentAsClass.classId)
         return null
 
-    return annotation.produceArguments(IrAnnotationArgumentProducer(this))
+    return annotation.produceInstance(IrAnnotationArgumentProducer(this))
 }
 
 @UnsafeDuringIrConstructionAPI

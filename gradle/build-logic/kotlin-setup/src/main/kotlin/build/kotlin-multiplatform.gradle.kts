@@ -52,3 +52,6 @@ kotlin {
 tasks.withType<Test>().configureEach {
     Shared.configureTestTask(this)
 }
+
+@OptIn(ExperimentalAbiValidation::class)
+Shared.sharedSettings(project, kotlin.abiValidation.enabled)

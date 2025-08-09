@@ -2,22 +2,56 @@ package dev.rnett.symbolexport.symbol.annotation
 
 import dev.rnett.symbolexport.symbol.Symbol
 
-public class AnnotationParameterWriteException(public val parameter: AnnotationParameter<*>, public val actualValue: AnnotationArgument, cause: Throwable) :
-    RuntimeException("Error writing argument for annotation parameter ${parameter.name} with expected type ${parameter.type}, the argument value was $actualValue", cause)
+/**
+ * An error writing the argument of an annotation parameter.
+ */
+public class AnnotationParameterWriteException(public val parameter: AnnotationParameter<*>, public val argumentValue: AnnotationArgument, cause: Throwable) :
+    RuntimeException("Error writing argument for annotation parameter ${parameter.name} with expected type ${parameter.type}, the argument value was $argumentValue", cause)
 
-public interface AnnotationWriter<out R> {
-    public fun write(arguments: Symbol.Annotation.Arguments<*, *>, isTopLevel: Boolean = true): R
+/**
+ * An error assembling an annotation from its arguments.
+ */
+public class AnnotationAssemblyException(public val annotation: Symbol.Annotation<*, *>, cause: Throwable) :
+    RuntimeException("Error assembling annotation $annotation from its arguments", cause)
+
+/**
+ * Writes an [Symbol.Annotation.Instance] to a raw annotation type [Annotation].
+ *
+ * Implementors likely want to use [BaseAnnotationWriter].
+ */
+public interface AnnotationWriter<out Annotation> {
+    public fun write(instance: Symbol.Annotation.Instance<*, *>, isTopLevel: Boolean = true): Annotation
 }
 
-public abstract class BaseAnnotationWriter<out R, E : Any> : AnnotationWriter<R> {
+/**
+ * A base implementation of [AnnotationWriter] that handles the argument writing and annotation assembly in two steps.
+ * Mirrors [BaseAnnotationArgumentProducer].
+ *
+ * An annotation is written in two steps:
+ *  * Getting the raw value (of [Argument] type) of each argument using one of the `write` methods.
+ *  * Assembling the annotation from the raw arguments using [assembleAnnotation]
+ */
+public abstract class BaseAnnotationWriter<out Annotation, Argument : Any> : AnnotationWriter<Annotation> {
 
-    protected abstract fun assembleAnnotation(annotation: Symbol.Annotation<*, *>, arguments: Map<AnnotationParameter<*>, E?>, isTopLevel: Boolean): R
+    /**
+     * Assemble the annotation from the raw arguments.
+     *
+     * @param annotation The annotation type we are assembling.
+     * @param arguments The raw arguments. All parameters are included in the map - the argument is null if it wasn't present in the annotation instance.
+     * @param isTopLevel True if the annotation is being written onto a declaration, and false if it's being used as the argument of another annotation.
+     */
+    protected abstract fun assembleAnnotation(annotation: Symbol.Annotation<*, *>, arguments: Map<AnnotationParameter<*>, Argument?>, isTopLevel: Boolean): Annotation
 
-    final override fun write(arguments: Symbol.Annotation.Arguments<*, *>, isTopLevel: Boolean): R {
-        return assembleAnnotation(arguments.annotation, arguments.asMap.mapValues { (key, value) -> value?.let { writeArgument(key as AnnotationParameter<AnnotationParameterType<AnnotationArgument>>, it) } }, isTopLevel)
+    final override fun write(instance: Symbol.Annotation.Instance<*, *>, isTopLevel: Boolean): Annotation {
+        val args = instance.asMap.mapValues { (key, value) -> value?.let { writeArgument(key as AnnotationParameter<AnnotationParameterType<AnnotationArgument>>, it) } }
+        return try {
+            assembleAnnotation(instance.annotation, args, isTopLevel)
+        } catch (e: Throwable) {
+            throw AnnotationAssemblyException(instance.annotation, e)
+        }
     }
 
-    private fun <P : AnnotationParameterType<A>, A : AnnotationArgument> writeArgument(annotationParameter: AnnotationParameter<P>, argument: A): E {
+    private fun <P : AnnotationParameterType<A>, A : AnnotationArgument> writeArgument(annotationParameter: AnnotationParameter<P>, argument: A): Argument {
         try {
             return writeArgument(argument)
         } catch (e: Throwable) {
@@ -25,7 +59,7 @@ public abstract class BaseAnnotationWriter<out R, E : Any> : AnnotationWriter<R>
         }
     }
 
-    private fun <P : AnnotationParameterType<A>, A : AnnotationArgument> writeArgument(argument: A): E {
+    private fun <P : AnnotationParameterType<A>, A : AnnotationArgument> writeArgument(argument: A): Argument {
         @Suppress("UNCHECKED_CAST")
         return when (argument) {
             is AnnotationArgument.Annotation<*, *> -> writerForAnnotationArgument(argument.annotationArguments.annotation).write(argument.annotationArguments, false)
@@ -40,13 +74,28 @@ public abstract class BaseAnnotationWriter<out R, E : Any> : AnnotationWriter<R>
         }
     }
 
-    protected abstract fun writerForAnnotationArgument(annotation: Symbol.Annotation<*, *>): AnnotationWriter<E>
+    /**
+     * Get an annotation writer to use to write an instance of [annotation] when it is used as an argument.
+     */
+    protected abstract fun writerForAnnotationArgument(annotation: Symbol.Annotation<*, *>): AnnotationWriter<Argument>
 
-    protected abstract fun writeArrayArgument(elements: List<E>, elementType: AnnotationParameterType<*>): E
+    /**
+     * Get the raw value of an array argument.
+     */
+    protected abstract fun writeArrayArgument(elements: List<Argument>, elementType: AnnotationParameterType<*>): Argument
 
-    protected abstract fun writeEnumEntryArgument(enumClass: Symbol.Classifier, enumEntryName: String): E
+    /**
+     * Get the raw value of an enum entry argument.
+     */
+    protected abstract fun writeEnumEntryArgument(enumClass: Symbol.Classifier, enumEntryName: String): Argument
 
-    protected abstract fun writeClassArgument(value: Symbol.Classifier): E
+    /**
+     * Get the raw value of a class argument.
+     */
+    protected abstract fun writeClassArgument(value: Symbol.Classifier): Argument
 
-    protected abstract fun writePrimitiveArgument(value: AnnotationArgument.Primitive<*>): E
+    /**
+     * Get the raw value of a primitive argument.
+     */
+    protected abstract fun writePrimitiveArgument(value: AnnotationArgument.Primitive<*>): Argument
 }

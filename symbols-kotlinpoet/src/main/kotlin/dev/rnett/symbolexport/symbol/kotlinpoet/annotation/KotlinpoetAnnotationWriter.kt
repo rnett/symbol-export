@@ -10,7 +10,7 @@ import dev.rnett.symbolexport.symbol.annotation.AnnotationWriter
 import dev.rnett.symbolexport.symbol.annotation.BaseAnnotationWriter
 import dev.rnett.symbolexport.symbol.kotlinpoet.asClassName
 
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> A.toAnnotationSpec(
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> A.toAnnotationSpec(
     useSiteTarget: AnnotationSpec.UseSiteTarget? = null
 ): AnnotationSpec = KotlinpoetAnnotationWriter(useSiteTarget).write(this)
 
@@ -33,8 +33,8 @@ private class KotlinpoetAnnotationWriter(val useSiteTarget: AnnotationSpec.UseSi
 
     override fun writerForAnnotationArgument(annotation: Symbol.Annotation<*, *>): AnnotationWriter<CodeBlock> {
         return object : AnnotationWriter<CodeBlock> {
-            override fun write(arguments: Symbol.Annotation.Arguments<*, *>, isTopLevel: Boolean): CodeBlock {
-                val a = this@KotlinpoetAnnotationWriter.write(arguments, isTopLevel)
+            override fun write(instance: Symbol.Annotation.Instance<*, *>, isTopLevel: Boolean): CodeBlock {
+                val a = this@KotlinpoetAnnotationWriter.write(instance, isTopLevel)
                 return CodeBlock.of("%L", a)
             }
 

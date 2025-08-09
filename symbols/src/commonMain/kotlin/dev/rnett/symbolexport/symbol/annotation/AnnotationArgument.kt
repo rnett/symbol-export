@@ -3,13 +3,19 @@ package dev.rnett.symbolexport.symbol.annotation
 import dev.rnett.symbolexport.symbol.Symbol
 import dev.rnett.symbolexport.symbol.annotation.AnnotationArgument.EnumEntry
 
+/**
+ * An annotation parameter definition.
+ */
 public data class AnnotationParameter<P : AnnotationParameterType<*>>(val name: String, val index: Int, val type: P)
 
+/**
+ * The type of an annotation parameter.
+ */
 public sealed interface AnnotationParameterType<V : AnnotationArgument> {
 
     public data object KClass : AnnotationParameterType<AnnotationArgument.KClass>
     public data class Enum(val enumClass: Symbol.Classifier) : AnnotationParameterType<AnnotationArgument.EnumEntry>
-    public data class Annotation<S : Symbol.Annotation<S, T>, T : Symbol.Annotation.Arguments<S, T>>(val annotationClass: S) : AnnotationParameterType<AnnotationArgument.Annotation<S, T>>
+    public data class Annotation<S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>>(val annotationClass: S) : AnnotationParameterType<AnnotationArgument.Annotation<S, I>>
     public data class Array<T : AnnotationParameterType<E>, E : AnnotationArgument>(val elementType: T) : AnnotationParameterType<AnnotationArgument.Array<E>>
 
     public sealed class Primitive<T : Any, A : AnnotationArgument.Primitive<T>>(public val kClass: kotlin.reflect.KClass<T>) : AnnotationParameterType<A> {
@@ -71,8 +77,14 @@ public sealed interface AnnotationParameterType<V : AnnotationArgument> {
     }
 }
 
+/**
+ * An argument of an annotation instance.
+ */
 public sealed class AnnotationArgument(public open val type: AnnotationParameterType<*>) {
 
+    /**
+     * An array argument with elements of [elementType].
+     */
     public data class Array<T : AnnotationArgument>(val values: List<T>, val elementType: AnnotationParameterType<T>) : AnnotationArgument(AnnotationParameterType.Array(elementType)), List<T> by values {
         public constructor(values: List<T>) : this(values.toList(), Unit.run {
             require(values.isNotEmpty()) { "Element type must be specified when creating an empty array" }
@@ -86,6 +98,9 @@ public sealed class AnnotationArgument(public open val type: AnnotationParameter
         }
     }
 
+    /**
+     * An enum argument. Does not include the ordinal because that is not always available.
+     */
     public data class EnumEntry(val enumClass: Symbol.Classifier, val enumName: kotlin.String) : AnnotationArgument(AnnotationParameterType.Enum(enumClass)) {
         public constructor(enumEntry: Symbol.EnumEntry) : this(
             enumEntry.enumClass,
@@ -93,9 +108,19 @@ public sealed class AnnotationArgument(public open val type: AnnotationParameter
         )
     }
 
+    /**
+     * A class literal argument.
+     */
     public data class KClass(val classSymbol: Symbol.Classifier) : AnnotationArgument(AnnotationParameterType.KClass)
-    public data class Annotation<S : Symbol.Annotation<S, T>, T : Symbol.Annotation.Arguments<S, T>>(val annotationArguments: T) : AnnotationArgument(AnnotationParameterType.Annotation(annotationArguments.annotation))
 
+    /**
+     * Another annotation used as an argument.
+     */
+    public data class Annotation<S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>>(val annotationArguments: I) : AnnotationArgument(AnnotationParameterType.Annotation(annotationArguments.annotation))
+
+    /**
+     * An argument of one of the primitive types (+ String).
+     */
     public sealed class Primitive<T : Any>(override val type: AnnotationParameterType.Primitive<T, *>) : AnnotationArgument(type) {
         public abstract val value: T
     }
@@ -111,10 +136,27 @@ public sealed class AnnotationArgument(public open val type: AnnotationParameter
     public data class Short(override val value: kotlin.Short) : Primitive<kotlin.Short>(AnnotationParameterType.Short)
 
     public companion object {
-        public fun kClass(value: Symbol.Classifier): KClass = KClass(value)
+        public fun kClass(value: Symbol.ClassLike): KClass = KClass(value.asClassifier())
 
+        /**
+         * Create an array argument. All elements must be of type [elementType].
+         *
+         * @throws IllegalArgumentException if any elements are not of type [elementType]
+         */
         public fun <T : AnnotationArgument> array(value: List<T>, elementType: AnnotationParameterType<T>): Array<T> = Array(value, elementType)
+
+        /**
+         * Create an array argument. All elements must have the same [AnnotationArgument.type]. Passing an empty list to this function is an error.
+         *
+         * @throws IllegalArgumentException if there are no elements, or if any elements have a different type
+         */
         public fun <T : AnnotationArgument> nonEmptyArray(value: List<T>): Array<T> = Array(value)
+
+        /**
+         * Create an array argument. All elements must have the same [AnnotationArgument.type].
+         *
+         * @throws IllegalArgumentException if any elements have a different type
+         */
         public fun <T : AnnotationArgument> array(first: T, vararg values: T): Array<T> = Array(buildList {
             add(first)
             addAll(values)
@@ -123,7 +165,7 @@ public sealed class AnnotationArgument(public open val type: AnnotationParameter
         public fun enum(value: Symbol.EnumEntry): EnumEntry = EnumEntry(value)
         public fun enum(value: Symbol.Classifier, name: kotlin.String): EnumEntry = EnumEntry(value, name)
 
-        public fun <S : Symbol.Annotation<S, T>, T : Symbol.Annotation.Arguments<S, T>> annotation(value: T): Annotation<S, T> = Annotation(value)
+        public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> annotation(value: I): Annotation<S, I> = Annotation(value)
 
         public fun of(value: kotlin.String): String = String(value)
         public fun of(value: kotlin.Boolean): Boolean = Boolean(value)
@@ -137,6 +179,8 @@ public sealed class AnnotationArgument(public open val type: AnnotationParameter
     }
 }
 
-
 public fun Symbol.EnumEntry.asAnnotationArgument(): EnumEntry = EnumEntry(enumClass, name)
+public fun Symbol.Classifier.asAnnotationArgument(): AnnotationArgument.KClass = AnnotationArgument.kClass(this)
+public fun Symbol.Annotation<*, *>.classAsAnnotationArgument(): AnnotationArgument.KClass = AnnotationArgument.kClass(this)
+public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> I.asAnnotationArgument(): AnnotationArgument.Annotation<S, I> = AnnotationArgument.annotation(this)
 

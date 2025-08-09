@@ -42,7 +42,7 @@ class SymbolsBTest {
         // Class method
         assertTrue(Symbols.ProduceB.dev_rnett_test_ProducerBOnly_test in Symbols.ProduceB.ALL_SYMBOLS)
         assertEquals(
-            Symbol.ClassifierMember(
+            Symbol.NamedClassifierMember(
                 classifier = Symbol.Classifier(
                     packageName = NameSegments("dev", "rnett", "test"),
                     classNames = NameSegments("ProducerBOnly")

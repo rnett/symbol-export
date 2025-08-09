@@ -1,5 +1,184 @@
+public abstract interface class dev/rnett/symbolexport/internal/AnnotationParameterType {
+	public static final field Companion Ldev/rnett/symbolexport/internal/AnnotationParameterType$Companion;
+}
+
+public final class dev/rnett/symbolexport/internal/AnnotationParameterType$Annotation : dev/rnett/symbolexport/internal/AnnotationParameterType {
+	public static final field Companion Ldev/rnett/symbolexport/internal/AnnotationParameterType$Annotation$Companion;
+	public fun <init> (Ldev/rnett/symbolexport/internal/InternalName$Classifier;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/internal/InternalName$Classifier;
+	public final fun copy (Ldev/rnett/symbolexport/internal/InternalName$Classifier;)Ldev/rnett/symbolexport/internal/AnnotationParameterType$Annotation;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/internal/AnnotationParameterType$Annotation;Ldev/rnett/symbolexport/internal/InternalName$Classifier;ILjava/lang/Object;)Ldev/rnett/symbolexport/internal/AnnotationParameterType$Annotation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnnotationClass ()Ldev/rnett/symbolexport/internal/InternalName$Classifier;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class dev/rnett/symbolexport/internal/AnnotationParameterType$Annotation$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Ldev/rnett/symbolexport/internal/AnnotationParameterType$Annotation$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ldev/rnett/symbolexport/internal/AnnotationParameterType$Annotation;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/rnett/symbolexport/internal/AnnotationParameterType$Annotation;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/AnnotationParameterType$Annotation$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/AnnotationParameterType$Array : dev/rnett/symbolexport/internal/AnnotationParameterType {
+	public static final field Companion Ldev/rnett/symbolexport/internal/AnnotationParameterType$Array$Companion;
+	public fun <init> (Ldev/rnett/symbolexport/internal/AnnotationParameterType;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/internal/AnnotationParameterType;
+	public final fun copy (Ldev/rnett/symbolexport/internal/AnnotationParameterType;)Ldev/rnett/symbolexport/internal/AnnotationParameterType$Array;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/internal/AnnotationParameterType$Array;Ldev/rnett/symbolexport/internal/AnnotationParameterType;ILjava/lang/Object;)Ldev/rnett/symbolexport/internal/AnnotationParameterType$Array;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getElementType ()Ldev/rnett/symbolexport/internal/AnnotationParameterType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class dev/rnett/symbolexport/internal/AnnotationParameterType$Array$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Ldev/rnett/symbolexport/internal/AnnotationParameterType$Array$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ldev/rnett/symbolexport/internal/AnnotationParameterType$Array;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/rnett/symbolexport/internal/AnnotationParameterType$Array;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/AnnotationParameterType$Array$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/AnnotationParameterType$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/AnnotationParameterType$Enum : dev/rnett/symbolexport/internal/AnnotationParameterType {
+	public static final field Companion Ldev/rnett/symbolexport/internal/AnnotationParameterType$Enum$Companion;
+	public fun <init> (Ldev/rnett/symbolexport/internal/InternalName$Classifier;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/internal/InternalName$Classifier;
+	public final fun copy (Ldev/rnett/symbolexport/internal/InternalName$Classifier;)Ldev/rnett/symbolexport/internal/AnnotationParameterType$Enum;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/internal/AnnotationParameterType$Enum;Ldev/rnett/symbolexport/internal/InternalName$Classifier;ILjava/lang/Object;)Ldev/rnett/symbolexport/internal/AnnotationParameterType$Enum;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEnumClass ()Ldev/rnett/symbolexport/internal/InternalName$Classifier;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class dev/rnett/symbolexport/internal/AnnotationParameterType$Enum$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Ldev/rnett/symbolexport/internal/AnnotationParameterType$Enum$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ldev/rnett/symbolexport/internal/AnnotationParameterType$Enum;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/rnett/symbolexport/internal/AnnotationParameterType$Enum;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/AnnotationParameterType$Enum$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/AnnotationParameterType$KClass : dev/rnett/symbolexport/internal/AnnotationParameterType {
+	public static final field INSTANCE Ldev/rnett/symbolexport/internal/AnnotationParameterType$KClass;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/rnett/symbolexport/internal/AnnotationParameterType$Primitive : java/lang/Enum, dev/rnett/symbolexport/internal/AnnotationParameterType {
+	public static final field BOOLEAN Ldev/rnett/symbolexport/internal/AnnotationParameterType$Primitive;
+	public static final field BYTE Ldev/rnett/symbolexport/internal/AnnotationParameterType$Primitive;
+	public static final field CHAR Ldev/rnett/symbolexport/internal/AnnotationParameterType$Primitive;
+	public static final field Companion Ldev/rnett/symbolexport/internal/AnnotationParameterType$Primitive$Companion;
+	public static final field DOUBLE Ldev/rnett/symbolexport/internal/AnnotationParameterType$Primitive;
+	public static final field FLOAT Ldev/rnett/symbolexport/internal/AnnotationParameterType$Primitive;
+	public static final field INT Ldev/rnett/symbolexport/internal/AnnotationParameterType$Primitive;
+	public static final field LONG Ldev/rnett/symbolexport/internal/AnnotationParameterType$Primitive;
+	public static final field SHORT Ldev/rnett/symbolexport/internal/AnnotationParameterType$Primitive;
+	public static final field STRING Ldev/rnett/symbolexport/internal/AnnotationParameterType$Primitive;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/rnett/symbolexport/internal/AnnotationParameterType$Primitive;
+	public static fun values ()[Ldev/rnett/symbolexport/internal/AnnotationParameterType$Primitive;
+}
+
+public final class dev/rnett/symbolexport/internal/AnnotationParameterType$Primitive$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public abstract interface class dev/rnett/symbolexport/internal/InternalName {
 	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$Companion;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$Annotation : dev/rnett/symbolexport/internal/InternalName {
+	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$Annotation$Companion;
+	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;Ljava/util/List;)Ldev/rnett/symbolexport/internal/InternalName$Annotation;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/internal/InternalName$Annotation;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Ldev/rnett/symbolexport/internal/InternalName$Annotation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClassNames ()Ljava/util/List;
+	public final fun getPackageName ()Ljava/util/List;
+	public final fun getParameters ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class dev/rnett/symbolexport/internal/InternalName$Annotation$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Ldev/rnett/symbolexport/internal/InternalName$Annotation$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ldev/rnett/symbolexport/internal/InternalName$Annotation;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/rnett/symbolexport/internal/InternalName$Annotation;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$Annotation$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$Annotation$Parameter {
+	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$Annotation$Parameter$Companion;
+	public fun <init> (Ljava/lang/String;ILdev/rnett/symbolexport/internal/AnnotationParameterType;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun component3 ()Ldev/rnett/symbolexport/internal/AnnotationParameterType;
+	public final fun copy (Ljava/lang/String;ILdev/rnett/symbolexport/internal/AnnotationParameterType;)Ldev/rnett/symbolexport/internal/InternalName$Annotation$Parameter;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/internal/InternalName$Annotation$Parameter;Ljava/lang/String;ILdev/rnett/symbolexport/internal/AnnotationParameterType;ILjava/lang/Object;)Ldev/rnett/symbolexport/internal/InternalName$Annotation$Parameter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public final fun getName ()Ljava/lang/String;
+	public final fun getType ()Ldev/rnett/symbolexport/internal/AnnotationParameterType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class dev/rnett/symbolexport/internal/InternalName$Annotation$Parameter$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Ldev/rnett/symbolexport/internal/InternalName$Annotation$Parameter$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ldev/rnett/symbolexport/internal/InternalName$Annotation$Parameter;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/rnett/symbolexport/internal/InternalName$Annotation$Parameter;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$Annotation$Parameter$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class dev/rnett/symbolexport/internal/InternalName$Classifier : dev/rnett/symbolexport/internal/InternalName {
@@ -31,7 +210,7 @@ public final class dev/rnett/symbolexport/internal/InternalName$Classifier$Compa
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class dev/rnett/symbolexport/internal/InternalName$ClassifierMember : dev/rnett/symbolexport/internal/InternalName {
+public final class dev/rnett/symbolexport/internal/InternalName$ClassifierMember : dev/rnett/symbolexport/internal/InternalName$Member {
 	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$ClassifierMember$Companion;
 	public fun <init> (Ldev/rnett/symbolexport/internal/InternalName$Classifier;Ljava/lang/String;)V
 	public final fun component1 ()Ldev/rnett/symbolexport/internal/InternalName$Classifier;
@@ -64,7 +243,169 @@ public final class dev/rnett/symbolexport/internal/InternalName$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class dev/rnett/symbolexport/internal/InternalName$TopLevelMember : dev/rnett/symbolexport/internal/InternalName {
+public final class dev/rnett/symbolexport/internal/InternalName$Constructor : dev/rnett/symbolexport/internal/InternalName$Member {
+	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$Constructor$Companion;
+	public fun <init> (Ldev/rnett/symbolexport/internal/InternalName$Classifier;Ljava/lang/String;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/internal/InternalName$Classifier;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ldev/rnett/symbolexport/internal/InternalName$Classifier;Ljava/lang/String;)Ldev/rnett/symbolexport/internal/InternalName$Constructor;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/internal/InternalName$Constructor;Ldev/rnett/symbolexport/internal/InternalName$Classifier;Ljava/lang/String;ILjava/lang/Object;)Ldev/rnett/symbolexport/internal/InternalName$Constructor;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClassifier ()Ldev/rnett/symbolexport/internal/InternalName$Classifier;
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class dev/rnett/symbolexport/internal/InternalName$Constructor$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Ldev/rnett/symbolexport/internal/InternalName$Constructor$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ldev/rnett/symbolexport/internal/InternalName$Constructor;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/rnett/symbolexport/internal/InternalName$Constructor;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$Constructor$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$EnumEntry : dev/rnett/symbolexport/internal/InternalName {
+	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$EnumEntry$Companion;
+	public fun <init> (Ldev/rnett/symbolexport/internal/InternalName$Classifier;Ljava/lang/String;I)V
+	public final fun component1 ()Ldev/rnett/symbolexport/internal/InternalName$Classifier;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()I
+	public final fun copy (Ldev/rnett/symbolexport/internal/InternalName$Classifier;Ljava/lang/String;I)Ldev/rnett/symbolexport/internal/InternalName$EnumEntry;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/internal/InternalName$EnumEntry;Ldev/rnett/symbolexport/internal/InternalName$Classifier;Ljava/lang/String;IILjava/lang/Object;)Ldev/rnett/symbolexport/internal/InternalName$EnumEntry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getOrdinal ()I
+	public final fun getOwner ()Ldev/rnett/symbolexport/internal/InternalName$Classifier;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class dev/rnett/symbolexport/internal/InternalName$EnumEntry$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Ldev/rnett/symbolexport/internal/InternalName$EnumEntry$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ldev/rnett/symbolexport/internal/InternalName$EnumEntry;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/rnett/symbolexport/internal/InternalName$EnumEntry;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$EnumEntry$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$IndexedParameter : dev/rnett/symbolexport/internal/InternalName {
+	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter$Companion;
+	public fun <init> (Ldev/rnett/symbolexport/internal/InternalName$Member;Ljava/lang/String;IILdev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/internal/InternalName$Member;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun component5 ()Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type;
+	public final fun copy (Ldev/rnett/symbolexport/internal/InternalName$Member;Ljava/lang/String;IILdev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type;)Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter;Ldev/rnett/symbolexport/internal/InternalName$Member;Ljava/lang/String;IILdev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type;ILjava/lang/Object;)Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public final fun getIndexInList ()I
+	public final fun getName ()Ljava/lang/String;
+	public final fun getOwner ()Ldev/rnett/symbolexport/internal/InternalName$Member;
+	public final fun getType ()Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class dev/rnett/symbolexport/internal/InternalName$IndexedParameter$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$IndexedParameter$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type : java/lang/Enum, dev/rnett/symbolexport/internal/ParameterType {
+	public static final field CONTEXT Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type;
+	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type$Companion;
+	public static final field VALUE Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type;
+	public static fun values ()[Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public abstract interface class dev/rnett/symbolexport/internal/InternalName$Member : dev/rnett/symbolexport/internal/InternalName {
+	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$Member$Companion;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$Member$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$ReceiverParameter : dev/rnett/symbolexport/internal/InternalName {
+	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Companion;
+	public fun <init> (Ldev/rnett/symbolexport/internal/InternalName$Member;Ljava/lang/String;ILdev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type;)V
+	public final fun component1 ()Ldev/rnett/symbolexport/internal/InternalName$Member;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()I
+	public final fun component4 ()Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type;
+	public final fun copy (Ldev/rnett/symbolexport/internal/InternalName$Member;Ljava/lang/String;ILdev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type;)Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter;Ldev/rnett/symbolexport/internal/InternalName$Member;Ljava/lang/String;ILdev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type;ILjava/lang/Object;)Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public final fun getName ()Ljava/lang/String;
+	public final fun getOwner ()Ldev/rnett/symbolexport/internal/InternalName$Member;
+	public final fun getType ()Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class dev/rnett/symbolexport/internal/InternalName$ReceiverParameter$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type : java/lang/Enum, dev/rnett/symbolexport/internal/ParameterType {
+	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type$Companion;
+	public static final field DISPATCH Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type;
+	public static final field EXTENSION Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type;
+	public static fun values ()[Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$TopLevelMember : dev/rnett/symbolexport/internal/InternalName$Member {
 	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$TopLevelMember$Companion;
 	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
 	public final fun component1 ()Ljava/util/List;
@@ -90,6 +431,37 @@ public final synthetic class dev/rnett/symbolexport/internal/InternalName$TopLev
 }
 
 public final class dev/rnett/symbolexport/internal/InternalName$TopLevelMember$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$TypeParameter : dev/rnett/symbolexport/internal/InternalName {
+	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$TypeParameter$Companion;
+	public fun <init> (Ldev/rnett/symbolexport/internal/InternalName;Ljava/lang/String;I)V
+	public final fun component1 ()Ldev/rnett/symbolexport/internal/InternalName;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()I
+	public final fun copy (Ldev/rnett/symbolexport/internal/InternalName;Ljava/lang/String;I)Ldev/rnett/symbolexport/internal/InternalName$TypeParameter;
+	public static synthetic fun copy$default (Ldev/rnett/symbolexport/internal/InternalName$TypeParameter;Ldev/rnett/symbolexport/internal/InternalName;Ljava/lang/String;IILjava/lang/Object;)Ldev/rnett/symbolexport/internal/InternalName$TypeParameter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public final fun getName ()Ljava/lang/String;
+	public final fun getOwner ()Ldev/rnett/symbolexport/internal/InternalName;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class dev/rnett/symbolexport/internal/InternalName$TypeParameter$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Ldev/rnett/symbolexport/internal/InternalName$TypeParameter$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ldev/rnett/symbolexport/internal/InternalName$TypeParameter;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/rnett/symbolexport/internal/InternalName$TypeParameter;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalName$TypeParameter$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
@@ -123,6 +495,20 @@ public final synthetic class dev/rnett/symbolexport/internal/InternalNameEntry$$
 }
 
 public final class dev/rnett/symbolexport/internal/InternalNameEntry$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/rnett/symbolexport/internal/InternalNameSerializer {
+	public static final field INSTANCE Ldev/rnett/symbolexport/internal/InternalNameSerializer;
+	public final fun deserializeEntry (Ljava/lang/String;)Ldev/rnett/symbolexport/internal/InternalNameEntry;
+	public final fun serializeEntry (Ldev/rnett/symbolexport/internal/InternalNameEntry;)Ljava/lang/String;
+}
+
+public abstract interface class dev/rnett/symbolexport/internal/ParameterType {
+	public static final field Companion Ldev/rnett/symbolexport/internal/ParameterType$Companion;
+}
+
+public final class dev/rnett/symbolexport/internal/ParameterType$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 

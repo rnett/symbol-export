@@ -14,7 +14,7 @@ internal object AnnotationGenerator {
         val className = annotationClassName(name)
 
         return buildString {
-            appendLine("class $className() : Symbol.Annotation<$className, ${className}.Arguments>(")
+            appendLine("class $className() : Symbol.Annotation<$className, ${className}.Instance>(")
             appendLine("    packageName = ${nameSegmentsOf(name.packageName)},")
             appendLine("    classNames = ${nameSegmentsOf(name.classNames)},")
             appendLine(") {")
@@ -28,7 +28,7 @@ internal object AnnotationGenerator {
                     appendLine()
                 }
 
-                append("public inner class Arguments(")
+                append("public inner class Instance(")
                 if (name.parameters.isNotEmpty()) {
                     appendLine()
                     appendIndentedLine {
@@ -37,7 +37,7 @@ internal object AnnotationGenerator {
                         }
                     }
                 }
-                appendLine(") : Symbol.Annotation.Arguments<$className, Arguments> {")
+                appendLine(") : Symbol.Annotation.Instance<$className, Instance> {")
 
                 appendIndentedLine {
                     appendLine("override val annotation: $className get() = this@$className")
@@ -64,7 +64,7 @@ internal object AnnotationGenerator {
                 appendLine("}")
                 appendLine()
 
-                append("override fun produceArguments(producer: AnnotationArgumentProducer): ${className}.Arguments = Arguments(")
+                append("override fun produceInstance(producer: AnnotationArgumentProducer): ${className}.Instance = Instance(")
                 if (name.parameters.isNotEmpty()) {
                     appendLine()
                     appendIndentedLine {
@@ -77,7 +77,7 @@ internal object AnnotationGenerator {
 
                 appendLine()
 
-                append("public fun createArguments(")
+                append("public fun createInstance(")
                 if (name.parameters.isNotEmpty()) {
                     appendLine()
                     appendIndentedLine {
@@ -86,7 +86,7 @@ internal object AnnotationGenerator {
                         }
                     }
                 }
-                append("): ${className}.Arguments = Arguments(")
+                append("): ${className}.Instance = Instance(")
                 if (name.parameters.isNotEmpty()) {
                     appendLine()
                     appendIndentedLine {
@@ -96,6 +96,30 @@ internal object AnnotationGenerator {
                     }
                 }
                 appendLine(")")
+
+                appendLine()
+
+                append("public operator fun invoke(")
+                if (name.parameters.isNotEmpty()) {
+                    appendLine()
+                    appendIndentedLine {
+                        name.parameters.forEach {
+                            appendLine("${it.name}: ${annotationCreationValueType(it.type)}?,")
+                        }
+                    }
+                }
+                append("): ${className}.Instance = createInstance(")
+                if (name.parameters.isNotEmpty()) {
+                    appendLine()
+                    appendIndentedLine {
+                        name.parameters.forEach {
+                            appendLine("${it.name},")
+                        }
+                    }
+                }
+                appendLine(")")
+
+                appendLine()
 
                 append("override val parameters: List<AnnotationParameter<*>> by lazy {")
                 if (name.parameters.isNotEmpty()) {
@@ -157,7 +181,7 @@ internal object AnnotationGenerator {
 
     fun annotationParameterType(type: AnnotationParameterType): String {
         return when (type) {
-            is AnnotationParameterType.Annotation -> "AnnotationParameterType.Annotation<${annotationClassName(type.annotationClass)}, ${annotationClassName(type.annotationClass)}.Arguments>"
+            is AnnotationParameterType.Annotation -> "AnnotationParameterType.Annotation<${annotationClassName(type.annotationClass)}, ${annotationClassName(type.annotationClass)}.Instance>"
             is AnnotationParameterType.Array -> "AnnotationParameterType.Array<${annotationParameterType(type.elementType)}, ${annotationValueType(type.elementType)}>"
             is AnnotationParameterType.Enum -> "AnnotationParameterType.Enum"
             AnnotationParameterType.KClass -> "AnnotationParameterType.KClass"
@@ -167,7 +191,7 @@ internal object AnnotationGenerator {
 
     fun annotationValueType(type: AnnotationParameterType): String {
         return when (type) {
-            is AnnotationParameterType.Annotation -> "AnnotationArgument.Annotation<${annotationClassName(type.annotationClass)}, ${annotationClassName(type.annotationClass)}.Arguments>"
+            is AnnotationParameterType.Annotation -> "AnnotationArgument.Annotation<${annotationClassName(type.annotationClass)}, ${annotationClassName(type.annotationClass)}.Instance>"
             is AnnotationParameterType.Array -> "AnnotationArgument.Array<${annotationValueType(type.elementType)}>"
             is AnnotationParameterType.Enum -> "AnnotationArgument.EnumEntry"
             AnnotationParameterType.KClass -> "AnnotationArgument.KClass"

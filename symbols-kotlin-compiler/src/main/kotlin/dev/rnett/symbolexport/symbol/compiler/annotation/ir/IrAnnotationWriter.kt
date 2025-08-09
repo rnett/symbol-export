@@ -30,7 +30,7 @@ import org.jetbrains.kotlin.ir.util.toIrConst
 import org.jetbrains.kotlin.name.Name
 
 @UnsafeDuringIrConstructionAPI
-public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Arguments<S, A>> A.toIrAnnotation(
+public fun <S : Symbol.Annotation<S, A>, A : Symbol.Annotation.Instance<S, A>> A.toIrAnnotation(
     context: IrPluginContext,
     startOffset: Int = UNDEFINED_OFFSET,
     endOffset: Int = UNDEFINED_OFFSET,

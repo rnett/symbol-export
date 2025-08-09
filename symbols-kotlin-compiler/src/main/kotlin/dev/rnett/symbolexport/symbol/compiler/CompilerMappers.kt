@@ -21,6 +21,7 @@ import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.name.SpecialNames
 
 public fun NameLike.asFqName(): FqName = FqName.fromSegments(this.nameSegments)
 
@@ -29,9 +30,9 @@ public fun Symbol.ClassLike.asClassId(): ClassId = ClassId(packageName.asFqName(
 public fun Symbol.NamedSymbol.name(): Name = Name.identifierIfValid(name) ?: Name.special(name)
 
 public fun Symbol.Member.asCallableId(): CallableId = when (this) {
-    is Symbol.ClassifierMember -> CallableId(classifier.asClassId(), name())
+    is Symbol.NamedClassifierMember -> CallableId(classifier.asClassId(), name())
     is Symbol.TopLevelMember -> CallableId(packageName.asFqName(), name())
-    is Symbol.Constructor -> CallableId(classifier.asClassId(), name())
+    is Symbol.Constructor -> CallableId(classifier.asClassId(), SpecialNames.INIT)
 }
 
 public operator fun FirQualifiedAccessExpression.get(param: Symbol.Parameter): FirExpression? = when (param) {

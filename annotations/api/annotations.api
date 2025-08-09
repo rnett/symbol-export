@@ -1,6 +1,14 @@
 public abstract interface annotation class dev/rnett/symbolexport/ChildrenExported : java/lang/annotation/Annotation {
 }
 
+public abstract interface annotation class dev/rnett/symbolexport/ExportAnnotation : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class dev/rnett/symbolexport/ExportReceivers : java/lang/annotation/Annotation {
+	public abstract fun dispatch ()Z
+	public abstract fun extension ()Z
+}
+
 public abstract interface annotation class dev/rnett/symbolexport/ExportSymbol : java/lang/annotation/Annotation {
 }
 

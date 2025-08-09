@@ -10,6 +10,19 @@ open annotation class dev.rnett.symbolexport/ChildrenExported : kotlin/Annotatio
     constructor <init>() // dev.rnett.symbolexport/ChildrenExported.<init>|<init>(){}[0]
 }
 
+open annotation class dev.rnett.symbolexport/ExportAnnotation : kotlin/Annotation { // dev.rnett.symbolexport/ExportAnnotation|null[0]
+    constructor <init>() // dev.rnett.symbolexport/ExportAnnotation.<init>|<init>(){}[0]
+}
+
+open annotation class dev.rnett.symbolexport/ExportReceivers : kotlin/Annotation { // dev.rnett.symbolexport/ExportReceivers|null[0]
+    constructor <init>(kotlin/Boolean = ..., kotlin/Boolean = ...) // dev.rnett.symbolexport/ExportReceivers.<init>|<init>(kotlin.Boolean;kotlin.Boolean){}[0]
+
+    final val dispatch // dev.rnett.symbolexport/ExportReceivers.dispatch|{}dispatch[0]
+        final fun <get-dispatch>(): kotlin/Boolean // dev.rnett.symbolexport/ExportReceivers.dispatch.<get-dispatch>|<get-dispatch>(){}[0]
+    final val extension // dev.rnett.symbolexport/ExportReceivers.extension|{}extension[0]
+        final fun <get-extension>(): kotlin/Boolean // dev.rnett.symbolexport/ExportReceivers.extension.<get-extension>|<get-extension>(){}[0]
+}
+
 open annotation class dev.rnett.symbolexport/ExportSymbol : kotlin/Annotation { // dev.rnett.symbolexport/ExportSymbol|null[0]
     constructor <init>() // dev.rnett.symbolexport/ExportSymbol.<init>|<init>(){}[0]
 }

@@ -6,46 +6,213 @@
 // - Show declarations: true
 
 // Library unique name: <dev.rnett.symbol-export:symbols>
-abstract interface dev.rnett.symbolexport.symbol/NameLike { // dev.rnett.symbolexport.symbol/NameLike|null[0]
-    abstract val segments // dev.rnett.symbolexport.symbol/NameLike.segments|{}segments[0]
-        abstract fun <get-segments>(): kotlin.collections/List<kotlin/String> // dev.rnett.symbolexport.symbol/NameLike.segments.<get-segments>|<get-segments>(){}[0]
+final enum class dev.rnett.symbolexport.symbol/ParameterKind : kotlin/Enum<dev.rnett.symbolexport.symbol/ParameterKind> { // dev.rnett.symbolexport.symbol/ParameterKind|null[0]
+    enum entry CONTEXT // dev.rnett.symbolexport.symbol/ParameterKind.CONTEXT|null[0]
+    enum entry DISPATCH_RECEIVER // dev.rnett.symbolexport.symbol/ParameterKind.DISPATCH_RECEIVER|null[0]
+    enum entry EXTENSION_RECEIVER // dev.rnett.symbolexport.symbol/ParameterKind.EXTENSION_RECEIVER|null[0]
+    enum entry VALUE // dev.rnett.symbolexport.symbol/ParameterKind.VALUE|null[0]
 
-    abstract fun asString(): kotlin/String // dev.rnett.symbolexport.symbol/NameLike.asString|asString(){}[0]
+    final val entries // dev.rnett.symbolexport.symbol/ParameterKind.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<dev.rnett.symbolexport.symbol/ParameterKind> // dev.rnett.symbolexport.symbol/ParameterKind.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): dev.rnett.symbolexport.symbol/ParameterKind // dev.rnett.symbolexport.symbol/ParameterKind.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<dev.rnett.symbolexport.symbol/ParameterKind> // dev.rnett.symbolexport.symbol/ParameterKind.values|values#static(){}[0]
+}
+
+abstract interface <#A: out kotlin/Any?> dev.rnett.symbolexport.symbol.annotation/AnnotationWriter { // dev.rnett.symbolexport.symbol.annotation/AnnotationWriter|null[0]
+    abstract fun write(dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance<*, *>, kotlin/Boolean = ...): #A // dev.rnett.symbolexport.symbol.annotation/AnnotationWriter.write|write(dev.rnett.symbolexport.symbol.Symbol.Annotation.Instance<*,*>;kotlin.Boolean){}[0]
+}
+
+abstract interface dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentProducer { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentProducer|null[0]
+    abstract fun <#A1: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument, #B1: dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<#A1>> getArgument(dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<#B1>): #A1? // dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentProducer.getArgument|getArgument(dev.rnett.symbolexport.symbol.annotation.AnnotationParameter<0:1>){0§<dev.rnett.symbolexport.symbol.annotation.AnnotationArgument>;1§<dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType<0:0>>}[0]
+}
+
+abstract interface dev.rnett.symbolexport.symbol/NameLike { // dev.rnett.symbolexport.symbol/NameLike|null[0]
+    abstract val nameSegments // dev.rnett.symbolexport.symbol/NameLike.nameSegments|{}nameSegments[0]
+        abstract fun <get-nameSegments>(): kotlin.collections/List<kotlin/String> // dev.rnett.symbolexport.symbol/NameLike.nameSegments.<get-nameSegments>|<get-nameSegments>(){}[0]
+
     abstract fun plus(dev.rnett.symbolexport.symbol/NameSegments): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameLike.plus|plus(dev.rnett.symbolexport.symbol.NameSegments){}[0]
+    open fun asString(): kotlin/String // dev.rnett.symbolexport.symbol/NameLike.asString|asString(){}[0]
     open fun plus(kotlin/String): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameLike.plus|plus(kotlin.String){}[0]
     open fun resolve(kotlin/Array<out kotlin/String>...): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameLike.resolve|resolve(kotlin.Array<out|kotlin.String>...){}[0]
 }
 
-final class dev.rnett.symbolexport.symbol/NameSegments : dev.rnett.symbolexport.symbol/NameLike { // dev.rnett.symbolexport.symbol/NameSegments|null[0]
-    constructor <init>(kotlin.collections/List<kotlin/String>) // dev.rnett.symbolexport.symbol/NameSegments.<init>|<init>(kotlin.collections.List<kotlin.String>){}[0]
-    constructor <init>(kotlin/Array<out kotlin/String>...) // dev.rnett.symbolexport.symbol/NameSegments.<init>|<init>(kotlin.Array<out|kotlin.String>...){}[0]
+sealed interface <#A: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument> dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType|null[0]
+    final class <#A1: dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<#B1>, #B1: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument> Array : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array<#B1>> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Array|null[0]
+        constructor <init>(#A1) // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Array.<init>|<init>(1:0){}[0]
 
-    final val segments // dev.rnett.symbolexport.symbol/NameSegments.segments|{}segments[0]
-        final fun <get-segments>(): kotlin.collections/List<kotlin/String> // dev.rnett.symbolexport.symbol/NameSegments.segments.<get-segments>|<get-segments>(){}[0]
+        final val elementType // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Array.elementType|{}elementType[0]
+            final fun <get-elementType>(): #A1 // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Array.elementType.<get-elementType>|<get-elementType>(){}[0]
 
-    final fun asString(): kotlin/String // dev.rnett.symbolexport.symbol/NameSegments.asString|asString(){}[0]
-    final fun component1(): kotlin.collections/List<kotlin/String> // dev.rnett.symbolexport.symbol/NameSegments.component1|component1(){}[0]
-    final fun copy(kotlin.collections/List<kotlin/String> = ...): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameSegments.copy|copy(kotlin.collections.List<kotlin.String>){}[0]
-    final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/NameSegments.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/NameSegments.hashCode|hashCode(){}[0]
-    final fun plus(dev.rnett.symbolexport.symbol/NameSegments): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameSegments.plus|plus(dev.rnett.symbolexport.symbol.NameSegments){}[0]
-    final fun plus(kotlin/String): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameSegments.plus|plus(kotlin.String){}[0]
-    final fun resolve(kotlin/Array<out kotlin/String>...): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameSegments.resolve|resolve(kotlin.Array<out|kotlin.String>...){}[0]
-    final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/NameSegments.toString|toString(){}[0]
+        final fun component1(): #A1 // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Array.component1|component1(){}[0]
+        final fun copy(#A1 = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Array<#A1, #B1> // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Array.copy|copy(1:0){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Array.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Array.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Array.toString|toString(){}[0]
+    }
+
+    final class <#A1: dev.rnett.symbolexport.symbol/Symbol.Annotation<#A1, #B1>, #B1: dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance<#A1, #B1>> Annotation : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation<#A1, #B1>> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Annotation|null[0]
+        constructor <init>(#A1) // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Annotation.<init>|<init>(1:0){}[0]
+
+        final val annotationClass // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Annotation.annotationClass|{}annotationClass[0]
+            final fun <get-annotationClass>(): #A1 // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Annotation.annotationClass.<get-annotationClass>|<get-annotationClass>(){}[0]
+
+        final fun component1(): #A1 // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Annotation.component1|component1(){}[0]
+        final fun copy(#A1 = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Annotation<#A1, #B1> // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Annotation.copy|copy(1:0){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Annotation.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Annotation.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Annotation.toString|toString(){}[0]
+    }
+
+    final class Enum : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Enum|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Classifier) // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Enum.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Classifier){}[0]
+
+        final val enumClass // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Enum.enumClass|{}enumClass[0]
+            final fun <get-enumClass>(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Enum.enumClass.<get-enumClass>|<get-enumClass>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Enum.component1|component1(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/Symbol.Classifier = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Enum // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Enum.copy|copy(dev.rnett.symbolexport.symbol.Symbol.Classifier){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Enum.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Enum.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Enum.toString|toString(){}[0]
+    }
+
+    sealed class <#A1: kotlin/Any, #B1: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<#A1>> Primitive : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<#B1> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive|null[0]
+        final val kClass // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive.kClass|{}kClass[0]
+            final fun <get-kClass>(): kotlin.reflect/KClass<#A1> // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive.kClass.<get-kClass>|<get-kClass>(){}[0]
+
+        abstract fun createArgument(#A1): #B1 // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive.createArgument|createArgument(1:0){}[0]
+    }
+
+    final object Boolean : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive<kotlin/Boolean, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Boolean|null[0]
+        final fun createArgument(kotlin/Boolean): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Boolean.createArgument|createArgument(kotlin.Boolean){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Boolean.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Boolean.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Boolean.toString|toString(){}[0]
+    }
+
+    final object Byte : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive<kotlin/Byte, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Byte|null[0]
+        final fun createArgument(kotlin/Byte): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Byte.createArgument|createArgument(kotlin.Byte){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Byte.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Byte.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Byte.toString|toString(){}[0]
+    }
+
+    final object Char : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive<kotlin/Char, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Char|null[0]
+        final fun createArgument(kotlin/Char): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Char.createArgument|createArgument(kotlin.Char){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Char.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Char.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Char.toString|toString(){}[0]
+    }
+
+    final object Double : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive<kotlin/Double, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Double|null[0]
+        final fun createArgument(kotlin/Double): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Double.createArgument|createArgument(kotlin.Double){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Double.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Double.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Double.toString|toString(){}[0]
+    }
+
+    final object Float : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive<kotlin/Float, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Float|null[0]
+        final fun createArgument(kotlin/Float): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Float.createArgument|createArgument(kotlin.Float){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Float.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Float.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Float.toString|toString(){}[0]
+    }
+
+    final object Int : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive<kotlin/Int, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Int|null[0]
+        final fun createArgument(kotlin/Int): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Int.createArgument|createArgument(kotlin.Int){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Int.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Int.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Int.toString|toString(){}[0]
+    }
+
+    final object KClass : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.KClass|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.KClass.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.KClass.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.KClass.toString|toString(){}[0]
+    }
+
+    final object Long : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive<kotlin/Long, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Long|null[0]
+        final fun createArgument(kotlin/Long): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Long.createArgument|createArgument(kotlin.Long){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Long.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Long.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Long.toString|toString(){}[0]
+    }
+
+    final object Short : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive<kotlin/Short, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Short|null[0]
+        final fun createArgument(kotlin/Short): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Short.createArgument|createArgument(kotlin.Short){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Short.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Short.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Short.toString|toString(){}[0]
+    }
+
+    final object String : dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive<kotlin/String, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String> { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.String|null[0]
+        final fun createArgument(kotlin/String): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.String.createArgument|createArgument(kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.String.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.String.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.String.toString|toString(){}[0]
+    }
 }
 
-sealed class dev.rnett.symbolexport.symbol/Symbol : dev.rnett.symbolexport.symbol/NameLike { // dev.rnett.symbolexport.symbol/Symbol|null[0]
-    final val fullName // dev.rnett.symbolexport.symbol/Symbol.fullName|{}fullName[0]
-        final fun <get-fullName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.fullName.<get-fullName>|<get-fullName>(){}[0]
-    open val segments // dev.rnett.symbolexport.symbol/Symbol.segments|{}segments[0]
-        open fun <get-segments>(): kotlin.collections/List<kotlin/String> // dev.rnett.symbolexport.symbol/Symbol.segments.<get-segments>|<get-segments>(){}[0]
+sealed interface dev.rnett.symbolexport.symbol/Symbol : dev.rnett.symbolexport.symbol/NameLike { // dev.rnett.symbolexport.symbol/Symbol|null[0]
+    abstract val fullName // dev.rnett.symbolexport.symbol/Symbol.fullName|{}fullName[0]
+        abstract fun <get-fullName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.fullName.<get-fullName>|<get-fullName>(){}[0]
+    open val nameSegments // dev.rnett.symbolexport.symbol/Symbol.nameSegments|{}nameSegments[0]
+        open fun <get-nameSegments>(): kotlin.collections/List<kotlin/String> // dev.rnett.symbolexport.symbol/Symbol.nameSegments.<get-nameSegments>|<get-nameSegments>(){}[0]
 
     open fun asString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.asString|asString(){}[0]
     open fun plus(dev.rnett.symbolexport.symbol/NameSegments): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.plus|plus(dev.rnett.symbolexport.symbol.NameSegments){}[0]
-    open fun plus(kotlin/String): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.plus|plus(kotlin.String){}[0]
-    open fun resolve(kotlin/Array<out kotlin/String>...): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.resolve|resolve(kotlin.Array<out|kotlin.String>...){}[0]
 
-    final class Classifier : dev.rnett.symbolexport.symbol/Symbol { // dev.rnett.symbolexport.symbol/Symbol.Classifier|null[0]
+    sealed interface ClassLike : dev.rnett.symbolexport.symbol/Symbol, dev.rnett.symbolexport.symbol/Symbol.NamedSymbol { // dev.rnett.symbolexport.symbol/Symbol.ClassLike|null[0]
+        abstract val classNames // dev.rnett.symbolexport.symbol/Symbol.ClassLike.classNames|{}classNames[0]
+            abstract fun <get-classNames>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.ClassLike.classNames.<get-classNames>|<get-classNames>(){}[0]
+        abstract val packageName // dev.rnett.symbolexport.symbol/Symbol.ClassLike.packageName|{}packageName[0]
+            abstract fun <get-packageName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.ClassLike.packageName.<get-packageName>|<get-packageName>(){}[0]
+        open val fullName // dev.rnett.symbolexport.symbol/Symbol.ClassLike.fullName|{}fullName[0]
+            open fun <get-fullName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.ClassLike.fullName.<get-fullName>|<get-fullName>(){}[0]
+        open val name // dev.rnett.symbolexport.symbol/Symbol.ClassLike.name|{}name[0]
+            open fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ClassLike.name.<get-name>|<get-name>(){}[0]
+
+        open fun asClassifier(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol/Symbol.ClassLike.asClassifier|asClassifier(){}[0]
+    }
+
+    sealed interface Member : dev.rnett.symbolexport.symbol/Symbol, dev.rnett.symbolexport.symbol/Symbol.TypeParamHost // dev.rnett.symbolexport.symbol/Symbol.Member|null[0]
+
+    sealed interface NamedMember : dev.rnett.symbolexport.symbol/Symbol.Member, dev.rnett.symbolexport.symbol/Symbol.NamedSymbol // dev.rnett.symbolexport.symbol/Symbol.NamedMember|null[0]
+
+    sealed interface NamedSymbol : dev.rnett.symbolexport.symbol/Symbol { // dev.rnett.symbolexport.symbol/Symbol.NamedSymbol|null[0]
+        abstract val name // dev.rnett.symbolexport.symbol/Symbol.NamedSymbol.name|{}name[0]
+            abstract fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.NamedSymbol.name.<get-name>|<get-name>(){}[0]
+    }
+
+    sealed interface TypeParamHost : dev.rnett.symbolexport.symbol/Symbol // dev.rnett.symbolexport.symbol/Symbol.TypeParamHost|null[0]
+
+    abstract class <#A1: dev.rnett.symbolexport.symbol/Symbol.Annotation<#A1, #B1>, #B1: dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance<#A1, #B1>> Annotation : dev.rnett.symbolexport.symbol/Symbol.ClassLike { // dev.rnett.symbolexport.symbol/Symbol.Annotation|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/NameSegments, dev.rnett.symbolexport.symbol/NameSegments) // dev.rnett.symbolexport.symbol/Symbol.Annotation.<init>|<init>(dev.rnett.symbolexport.symbol.NameSegments;dev.rnett.symbolexport.symbol.NameSegments){}[0]
+
+        abstract val parameters // dev.rnett.symbolexport.symbol/Symbol.Annotation.parameters|{}parameters[0]
+            abstract fun <get-parameters>(): kotlin.collections/List<dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*>> // dev.rnett.symbolexport.symbol/Symbol.Annotation.parameters.<get-parameters>|<get-parameters>(){}[0]
+        open val classNames // dev.rnett.symbolexport.symbol/Symbol.Annotation.classNames|{}classNames[0]
+            open fun <get-classNames>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.Annotation.classNames.<get-classNames>|<get-classNames>(){}[0]
+        open val packageName // dev.rnett.symbolexport.symbol/Symbol.Annotation.packageName|{}packageName[0]
+            open fun <get-packageName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.Annotation.packageName.<get-packageName>|<get-packageName>(){}[0]
+
+        abstract fun produceInstance(dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentProducer): #B1 // dev.rnett.symbolexport.symbol/Symbol.Annotation.produceInstance|produceInstance(dev.rnett.symbolexport.symbol.annotation.AnnotationArgumentProducer){}[0]
+
+        abstract interface <#A2: dev.rnett.symbolexport.symbol/Symbol.Annotation<#A2, #B2>, #B2: dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance<#A2, #B2>> Instance { // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance|null[0]
+            abstract val annotation // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.annotation|{}annotation[0]
+                abstract fun <get-annotation>(): #A2 // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.annotation.<get-annotation>|<get-annotation>(){}[0]
+            abstract val asMap // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.asMap|{}asMap[0]
+                abstract fun <get-asMap>(): kotlin.collections/Map<dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*>, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument?> // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.asMap.<get-asMap>|<get-asMap>(){}[0]
+
+            open fun <#A3: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument, #B3: dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<#A3>> get(dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<#B3>): #A3? // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.get|get(dev.rnett.symbolexport.symbol.annotation.AnnotationParameter<0:1>){0§<dev.rnett.symbolexport.symbol.annotation.AnnotationArgument>;1§<dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType<0:0>>}[0]
+            open fun contains(dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*>): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.contains|contains(dev.rnett.symbolexport.symbol.annotation.AnnotationParameter<*>){}[0]
+            open fun contains(kotlin/String): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.contains|contains(kotlin.String){}[0]
+            open fun get(kotlin/String): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument? // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.get|get(kotlin.String){}[0]
+        }
+    }
+
+    final class Classifier : dev.rnett.symbolexport.symbol/Symbol.ClassLike, dev.rnett.symbolexport.symbol/Symbol.TypeParamHost { // dev.rnett.symbolexport.symbol/Symbol.Classifier|null[0]
         constructor <init>(dev.rnett.symbolexport.symbol/NameSegments, dev.rnett.symbolexport.symbol/NameSegments) // dev.rnett.symbolexport.symbol/Symbol.Classifier.<init>|<init>(dev.rnett.symbolexport.symbol.NameSegments;dev.rnett.symbolexport.symbol.NameSegments){}[0]
 
         final val classNames // dev.rnett.symbolexport.symbol/Symbol.Classifier.classNames|{}classNames[0]
@@ -61,25 +228,132 @@ sealed class dev.rnett.symbolexport.symbol/Symbol : dev.rnett.symbolexport.symbo
         final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.Classifier.toString|toString(){}[0]
     }
 
-    final class ClassifierMember : dev.rnett.symbolexport.symbol/Symbol.Member { // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember|null[0]
-        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Classifier, kotlin/String) // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Classifier;kotlin.String){}[0]
+    final class Constructor : dev.rnett.symbolexport.symbol/Symbol.Member { // dev.rnett.symbolexport.symbol/Symbol.Constructor|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Classifier) // dev.rnett.symbolexport.symbol/Symbol.Constructor.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Classifier){}[0]
 
-        final val classifier // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.classifier|{}classifier[0]
-            final fun <get-classifier>(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.classifier.<get-classifier>|<get-classifier>(){}[0]
-        final val name // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.name|{}name[0]
-            final fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.name.<get-name>|<get-name>(){}[0]
+        final val classifier // dev.rnett.symbolexport.symbol/Symbol.Constructor.classifier|{}classifier[0]
+            final fun <get-classifier>(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol/Symbol.Constructor.classifier.<get-classifier>|<get-classifier>(){}[0]
+        final val fullName // dev.rnett.symbolexport.symbol/Symbol.Constructor.fullName|{}fullName[0]
+            final fun <get-fullName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.Constructor.fullName.<get-fullName>|<get-fullName>(){}[0]
 
-        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.component1|component1(){}[0]
-        final fun component2(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.component2|component2(){}[0]
-        final fun copy(dev.rnett.symbolexport.symbol/Symbol.Classifier = ..., kotlin/String = ...): dev.rnett.symbolexport.symbol/Symbol.ClassifierMember // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.copy|copy(dev.rnett.symbolexport.symbol.Symbol.Classifier;kotlin.String){}[0]
-        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.equals|equals(kotlin.Any?){}[0]
-        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.hashCode|hashCode(){}[0]
-        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ClassifierMember.toString|toString(){}[0]
+        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol/Symbol.Constructor.component1|component1(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/Symbol.Classifier = ...): dev.rnett.symbolexport.symbol/Symbol.Constructor // dev.rnett.symbolexport.symbol/Symbol.Constructor.copy|copy(dev.rnett.symbolexport.symbol.Symbol.Classifier){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.Constructor.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.Constructor.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.Constructor.toString|toString(){}[0]
+
+        final object Companion { // dev.rnett.symbolexport.symbol/Symbol.Constructor.Companion|null[0]
+            final const val NAME // dev.rnett.symbolexport.symbol/Symbol.Constructor.Companion.NAME|{}NAME[0]
+                final fun <get-NAME>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.Constructor.Companion.NAME.<get-NAME>|<get-NAME>(){}[0]
+        }
     }
 
-    final class TopLevelMember : dev.rnett.symbolexport.symbol/Symbol.Member { // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember|null[0]
+    final class ContextParameter : dev.rnett.symbolexport.symbol/Symbol.Parameter { // dev.rnett.symbolexport.symbol/Symbol.ContextParameter|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Member, kotlin/Int, kotlin/Int, kotlin/String) // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Member;kotlin.Int;kotlin.Int;kotlin.String){}[0]
+
+        final val index // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.index|{}index[0]
+            final fun <get-index>(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.index.<get-index>|<get-index>(){}[0]
+        final val indexInContextParameters // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.indexInContextParameters|{}indexInContextParameters[0]
+            final fun <get-indexInContextParameters>(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.indexInContextParameters.<get-indexInContextParameters>|<get-indexInContextParameters>(){}[0]
+        final val name // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.name|{}name[0]
+            final fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.name.<get-name>|<get-name>(){}[0]
+        final val owner // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.owner|{}owner[0]
+            final fun <get-owner>(): dev.rnett.symbolexport.symbol/Symbol.Member // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.owner.<get-owner>|<get-owner>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.Member // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.component1|component1(){}[0]
+        final fun component2(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.component2|component2(){}[0]
+        final fun component3(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.component3|component3(){}[0]
+        final fun component4(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.component4|component4(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/Symbol.Member = ..., kotlin/Int = ..., kotlin/Int = ..., kotlin/String = ...): dev.rnett.symbolexport.symbol/Symbol.ContextParameter // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.copy|copy(dev.rnett.symbolexport.symbol.Symbol.Member;kotlin.Int;kotlin.Int;kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ContextParameter.toString|toString(){}[0]
+    }
+
+    final class DispatchReceiverParameter : dev.rnett.symbolexport.symbol/Symbol.Parameter { // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Member, kotlin/Int, kotlin/String) // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Member;kotlin.Int;kotlin.String){}[0]
+
+        final val index // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.index|{}index[0]
+            final fun <get-index>(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.index.<get-index>|<get-index>(){}[0]
+        final val name // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.name|{}name[0]
+            final fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.name.<get-name>|<get-name>(){}[0]
+        final val owner // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.owner|{}owner[0]
+            final fun <get-owner>(): dev.rnett.symbolexport.symbol/Symbol.Member // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.owner.<get-owner>|<get-owner>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.Member // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.component1|component1(){}[0]
+        final fun component2(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.component2|component2(){}[0]
+        final fun component3(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.component3|component3(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/Symbol.Member = ..., kotlin/Int = ..., kotlin/String = ...): dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.copy|copy(dev.rnett.symbolexport.symbol.Symbol.Member;kotlin.Int;kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.DispatchReceiverParameter.toString|toString(){}[0]
+    }
+
+    final class EnumEntry : dev.rnett.symbolexport.symbol/Symbol, dev.rnett.symbolexport.symbol/Symbol.NamedSymbol { // dev.rnett.symbolexport.symbol/Symbol.EnumEntry|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Classifier, kotlin/String, kotlin/Int) // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Classifier;kotlin.String;kotlin.Int){}[0]
+
+        final val entryName // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.entryName|{}entryName[0]
+            final fun <get-entryName>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.entryName.<get-entryName>|<get-entryName>(){}[0]
+        final val entryOrdinal // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.entryOrdinal|{}entryOrdinal[0]
+            final fun <get-entryOrdinal>(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.entryOrdinal.<get-entryOrdinal>|<get-entryOrdinal>(){}[0]
+        final val enumClass // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.enumClass|{}enumClass[0]
+            final fun <get-enumClass>(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.enumClass.<get-enumClass>|<get-enumClass>(){}[0]
+        final val fullName // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.fullName|{}fullName[0]
+            final fun <get-fullName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.fullName.<get-fullName>|<get-fullName>(){}[0]
+        final val name // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.name|{}name[0]
+            final fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.name.<get-name>|<get-name>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.component1|component1(){}[0]
+        final fun component2(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.component2|component2(){}[0]
+        final fun component3(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.component3|component3(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/Symbol.Classifier = ..., kotlin/String = ..., kotlin/Int = ...): dev.rnett.symbolexport.symbol/Symbol.EnumEntry // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.copy|copy(dev.rnett.symbolexport.symbol.Symbol.Classifier;kotlin.String;kotlin.Int){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.EnumEntry.toString|toString(){}[0]
+    }
+
+    final class ExtensionReceiverParameter : dev.rnett.symbolexport.symbol/Symbol.Parameter { // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Member, kotlin/Int, kotlin/String) // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Member;kotlin.Int;kotlin.String){}[0]
+
+        final val index // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.index|{}index[0]
+            final fun <get-index>(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.index.<get-index>|<get-index>(){}[0]
+        final val name // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.name|{}name[0]
+            final fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.name.<get-name>|<get-name>(){}[0]
+        final val owner // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.owner|{}owner[0]
+            final fun <get-owner>(): dev.rnett.symbolexport.symbol/Symbol.Member // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.owner.<get-owner>|<get-owner>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.Member // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.component1|component1(){}[0]
+        final fun component2(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.component2|component2(){}[0]
+        final fun component3(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.component3|component3(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/Symbol.Member = ..., kotlin/Int = ..., kotlin/String = ...): dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.copy|copy(dev.rnett.symbolexport.symbol.Symbol.Member;kotlin.Int;kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ExtensionReceiverParameter.toString|toString(){}[0]
+    }
+
+    final class NamedClassifierMember : dev.rnett.symbolexport.symbol/Symbol.NamedMember { // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Classifier, kotlin/String) // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Classifier;kotlin.String){}[0]
+
+        final val classifier // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.classifier|{}classifier[0]
+            final fun <get-classifier>(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.classifier.<get-classifier>|<get-classifier>(){}[0]
+        final val fullName // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.fullName|{}fullName[0]
+            final fun <get-fullName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.fullName.<get-fullName>|<get-fullName>(){}[0]
+        final val name // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.name|{}name[0]
+            final fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.name.<get-name>|<get-name>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.component1|component1(){}[0]
+        final fun component2(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.component2|component2(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/Symbol.Classifier = ..., kotlin/String = ...): dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.copy|copy(dev.rnett.symbolexport.symbol.Symbol.Classifier;kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.NamedClassifierMember.toString|toString(){}[0]
+    }
+
+    final class TopLevelMember : dev.rnett.symbolexport.symbol/Symbol.NamedMember { // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember|null[0]
         constructor <init>(dev.rnett.symbolexport.symbol/NameSegments, kotlin/String) // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.<init>|<init>(dev.rnett.symbolexport.symbol.NameSegments;kotlin.String){}[0]
 
+        final val fullName // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.fullName|{}fullName[0]
+            final fun <get-fullName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.fullName.<get-fullName>|<get-fullName>(){}[0]
         final val name // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.name|{}name[0]
             final fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.name.<get-name>|<get-name>(){}[0]
         final val packageName // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.packageName|{}packageName[0]
@@ -93,8 +367,397 @@ sealed class dev.rnett.symbolexport.symbol/Symbol : dev.rnett.symbolexport.symbo
         final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.TopLevelMember.toString|toString(){}[0]
     }
 
-    sealed class Member : dev.rnett.symbolexport.symbol/Symbol { // dev.rnett.symbolexport.symbol/Symbol.Member|null[0]
-        abstract val name // dev.rnett.symbolexport.symbol/Symbol.Member.name|{}name[0]
-            abstract fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.Member.name.<get-name>|<get-name>(){}[0]
+    final class TypeParameter : dev.rnett.symbolexport.symbol/Symbol, dev.rnett.symbolexport.symbol/Symbol.NamedSymbol { // dev.rnett.symbolexport.symbol/Symbol.TypeParameter|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.TypeParamHost, kotlin/Int, kotlin/String) // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.TypeParamHost;kotlin.Int;kotlin.String){}[0]
+
+        final val fullName // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.fullName|{}fullName[0]
+            final fun <get-fullName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.fullName.<get-fullName>|<get-fullName>(){}[0]
+        final val index // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.index|{}index[0]
+            final fun <get-index>(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.index.<get-index>|<get-index>(){}[0]
+        final val name // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.name|{}name[0]
+            final fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.name.<get-name>|<get-name>(){}[0]
+        final val owner // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.owner|{}owner[0]
+            final fun <get-owner>(): dev.rnett.symbolexport.symbol/Symbol.TypeParamHost // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.owner.<get-owner>|<get-owner>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.TypeParamHost // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.component1|component1(){}[0]
+        final fun component2(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.component2|component2(){}[0]
+        final fun component3(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.component3|component3(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/Symbol.TypeParamHost = ..., kotlin/Int = ..., kotlin/String = ...): dev.rnett.symbolexport.symbol/Symbol.TypeParameter // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.copy|copy(dev.rnett.symbolexport.symbol.Symbol.TypeParamHost;kotlin.Int;kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.TypeParameter.toString|toString(){}[0]
+    }
+
+    final class ValueParameter : dev.rnett.symbolexport.symbol/Symbol.Parameter { // dev.rnett.symbolexport.symbol/Symbol.ValueParameter|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Member, kotlin/Int, kotlin/Int, kotlin/String) // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Member;kotlin.Int;kotlin.Int;kotlin.String){}[0]
+
+        final val index // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.index|{}index[0]
+            final fun <get-index>(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.index.<get-index>|<get-index>(){}[0]
+        final val indexInValueParameters // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.indexInValueParameters|{}indexInValueParameters[0]
+            final fun <get-indexInValueParameters>(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.indexInValueParameters.<get-indexInValueParameters>|<get-indexInValueParameters>(){}[0]
+        final val name // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.name|{}name[0]
+            final fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.name.<get-name>|<get-name>(){}[0]
+        final val owner // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.owner|{}owner[0]
+            final fun <get-owner>(): dev.rnett.symbolexport.symbol/Symbol.Member // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.owner.<get-owner>|<get-owner>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.Member // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.component1|component1(){}[0]
+        final fun component2(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.component2|component2(){}[0]
+        final fun component3(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.component3|component3(){}[0]
+        final fun component4(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.component4|component4(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/Symbol.Member = ..., kotlin/Int = ..., kotlin/Int = ..., kotlin/String = ...): dev.rnett.symbolexport.symbol/Symbol.ValueParameter // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.copy|copy(dev.rnett.symbolexport.symbol.Symbol.Member;kotlin.Int;kotlin.Int;kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.ValueParameter.toString|toString(){}[0]
+    }
+
+    sealed class Parameter : dev.rnett.symbolexport.symbol/Symbol, dev.rnett.symbolexport.symbol/Symbol.NamedSymbol { // dev.rnett.symbolexport.symbol/Symbol.Parameter|null[0]
+        abstract val index // dev.rnett.symbolexport.symbol/Symbol.Parameter.index|{}index[0]
+            abstract fun <get-index>(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.Parameter.index.<get-index>|<get-index>(){}[0]
+        abstract val name // dev.rnett.symbolexport.symbol/Symbol.Parameter.name|{}name[0]
+            abstract fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.Parameter.name.<get-name>|<get-name>(){}[0]
+        abstract val owner // dev.rnett.symbolexport.symbol/Symbol.Parameter.owner|{}owner[0]
+            abstract fun <get-owner>(): dev.rnett.symbolexport.symbol/Symbol.Member // dev.rnett.symbolexport.symbol/Symbol.Parameter.owner.<get-owner>|<get-owner>(){}[0]
+        final val kind // dev.rnett.symbolexport.symbol/Symbol.Parameter.kind|{}kind[0]
+            final fun <get-kind>(): dev.rnett.symbolexport.symbol/ParameterKind // dev.rnett.symbolexport.symbol/Symbol.Parameter.kind.<get-kind>|<get-kind>(){}[0]
+        open val fullName // dev.rnett.symbolexport.symbol/Symbol.Parameter.fullName|{}fullName[0]
+            open fun <get-fullName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.Parameter.fullName.<get-fullName>|<get-fullName>(){}[0]
     }
 }
+
+abstract class <#A: kotlin/Any?> dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer : dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentProducer { // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer|null[0]
+    constructor <init>() // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer.<init>|<init>(){}[0]
+
+    abstract fun <#A1: kotlin/Any> extractPrimitiveValue(#A, kotlin.reflect/KClass<#A1>): #A1 // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer.extractPrimitiveValue|extractPrimitiveValue(1:0;kotlin.reflect.KClass<0:0>){0§<kotlin.Any>}[0]
+    abstract fun extractAnnotationProducer(#A, dev.rnett.symbolexport.symbol/Symbol.Annotation<*, *>): dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentProducer // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer.extractAnnotationProducer|extractAnnotationProducer(1:0;dev.rnett.symbolexport.symbol.Symbol.Annotation<*,*>){}[0]
+    abstract fun extractArrayArguments(#A): kotlin.collections/List<#A> // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer.extractArrayArguments|extractArrayArguments(1:0){}[0]
+    abstract fun extractClass(#A): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer.extractClass|extractClass(1:0){}[0]
+    abstract fun extractEnumInfo(#A): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer.extractEnumInfo|extractEnumInfo(1:0){}[0]
+    abstract fun getRawValueForParameter(kotlin/String, kotlin/Int): #A? // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer.getRawValueForParameter|getRawValueForParameter(kotlin.String;kotlin.Int){}[0]
+    abstract fun renderForErrorReporting(#A): kotlin/String // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer.renderForErrorReporting|renderForErrorReporting(1:0){}[0]
+    open fun <#A1: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument, #B1: dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<#A1>> getArgument(dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<#B1>): #A1? // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer.getArgument|getArgument(dev.rnett.symbolexport.symbol.annotation.AnnotationParameter<0:1>){0§<dev.rnett.symbolexport.symbol.annotation.AnnotationArgument>;1§<dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType<0:0>>}[0]
+    open fun <#A1: kotlin/Any, #B1: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<#A1>> extractPrimitiveArgument(#A, dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive<#A1, #B1>): #B1 // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer.extractPrimitiveArgument|extractPrimitiveArgument(1:0;dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType.Primitive<0:0,0:1>){0§<kotlin.Any>;1§<dev.rnett.symbolexport.symbol.annotation.AnnotationArgument.Primitive<0:0>>}[0]
+}
+
+abstract class <#A: kotlin/Any?> dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer : dev.rnett.symbolexport.symbol.annotation/BaseAnnotationArgumentProducer<#A> { // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer|null[0]
+    constructor <init>() // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer.<init>|<init>(){}[0]
+
+    abstract fun extractBoolean(#A): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer.extractBoolean|extractBoolean(1:0){}[0]
+    abstract fun extractByte(#A): kotlin/Byte // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer.extractByte|extractByte(1:0){}[0]
+    abstract fun extractChar(#A): kotlin/Char // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer.extractChar|extractChar(1:0){}[0]
+    abstract fun extractDouble(#A): kotlin/Double // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer.extractDouble|extractDouble(1:0){}[0]
+    abstract fun extractFloat(#A): kotlin/Float // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer.extractFloat|extractFloat(1:0){}[0]
+    abstract fun extractInt(#A): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer.extractInt|extractInt(1:0){}[0]
+    abstract fun extractLong(#A): kotlin/Long // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer.extractLong|extractLong(1:0){}[0]
+    abstract fun extractShort(#A): kotlin/Short // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer.extractShort|extractShort(1:0){}[0]
+    abstract fun extractString(#A): kotlin/String // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer.extractString|extractString(1:0){}[0]
+    final fun <#A1: kotlin/Any, #B1: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<#A1>> extractPrimitiveArgument(#A, dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive<#A1, #B1>): #B1 // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer.extractPrimitiveArgument|extractPrimitiveArgument(1:0;dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType.Primitive<0:0,0:1>){0§<kotlin.Any>;1§<dev.rnett.symbolexport.symbol.annotation.AnnotationArgument.Primitive<0:0>>}[0]
+    open fun <#A1: kotlin/Any> extractPrimitiveValue(#A, kotlin.reflect/KClass<#A1>): #A1 // dev.rnett.symbolexport.symbol.annotation/BasePrimitiveSpecificAnnotationArgumentProducer.extractPrimitiveValue|extractPrimitiveValue(1:0;kotlin.reflect.KClass<0:0>){0§<kotlin.Any>}[0]
+}
+
+abstract class <#A: out kotlin/Any?, #B: kotlin/Any> dev.rnett.symbolexport.symbol.annotation/BaseAnnotationWriter : dev.rnett.symbolexport.symbol.annotation/AnnotationWriter<#A> { // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationWriter|null[0]
+    constructor <init>() // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationWriter.<init>|<init>(){}[0]
+
+    abstract fun assembleAnnotation(dev.rnett.symbolexport.symbol/Symbol.Annotation<*, *>, kotlin.collections/Map<dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*>, #B?>, kotlin/Boolean): #A // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationWriter.assembleAnnotation|assembleAnnotation(dev.rnett.symbolexport.symbol.Symbol.Annotation<*,*>;kotlin.collections.Map<dev.rnett.symbolexport.symbol.annotation.AnnotationParameter<*>,1:1?>;kotlin.Boolean){}[0]
+    abstract fun writeArrayArgument(kotlin.collections/List<#B>, dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<*>): #B // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationWriter.writeArrayArgument|writeArrayArgument(kotlin.collections.List<1:1>;dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType<*>){}[0]
+    abstract fun writeClassArgument(dev.rnett.symbolexport.symbol/Symbol.Classifier): #B // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationWriter.writeClassArgument|writeClassArgument(dev.rnett.symbolexport.symbol.Symbol.Classifier){}[0]
+    abstract fun writeEnumEntryArgument(dev.rnett.symbolexport.symbol/Symbol.Classifier, kotlin/String): #B // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationWriter.writeEnumEntryArgument|writeEnumEntryArgument(dev.rnett.symbolexport.symbol.Symbol.Classifier;kotlin.String){}[0]
+    abstract fun writePrimitiveArgument(dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<*>): #B // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationWriter.writePrimitiveArgument|writePrimitiveArgument(dev.rnett.symbolexport.symbol.annotation.AnnotationArgument.Primitive<*>){}[0]
+    abstract fun writerForAnnotationArgument(dev.rnett.symbolexport.symbol/Symbol.Annotation<*, *>): dev.rnett.symbolexport.symbol.annotation/AnnotationWriter<#B> // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationWriter.writerForAnnotationArgument|writerForAnnotationArgument(dev.rnett.symbolexport.symbol.Symbol.Annotation<*,*>){}[0]
+    final fun write(dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance<*, *>, kotlin/Boolean): #A // dev.rnett.symbolexport.symbol.annotation/BaseAnnotationWriter.write|write(dev.rnett.symbolexport.symbol.Symbol.Annotation.Instance<*,*>;kotlin.Boolean){}[0]
+}
+
+final class <#A: dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<*>> dev.rnett.symbolexport.symbol.annotation/AnnotationParameter { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter|null[0]
+    constructor <init>(kotlin/String, kotlin/Int, #A) // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.<init>|<init>(kotlin.String;kotlin.Int;1:0){}[0]
+
+    final val index // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.index|{}index[0]
+        final fun <get-index>(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.index.<get-index>|<get-index>(){}[0]
+    final val name // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.name|{}name[0]
+        final fun <get-name>(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.name.<get-name>|<get-name>(){}[0]
+    final val type // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.type|{}type[0]
+        final fun <get-type>(): #A // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.type.<get-type>|<get-type>(){}[0]
+
+    final fun component1(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.component1|component1(){}[0]
+    final fun component2(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.component2|component2(){}[0]
+    final fun component3(): #A // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.component3|component3(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/Int = ..., #A = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<#A> // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.copy|copy(kotlin.String;kotlin.Int;1:0){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationParameter.toString|toString(){}[0]
+}
+
+final class dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentExtractionException : kotlin/IllegalArgumentException { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentExtractionException|null[0]
+    constructor <init>(dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*>, kotlin/String, kotlin/Throwable) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentExtractionException.<init>|<init>(dev.rnett.symbolexport.symbol.annotation.AnnotationParameter<*>;kotlin.String;kotlin.Throwable){}[0]
+
+    final val parameter // dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentExtractionException.parameter|{}parameter[0]
+        final fun <get-parameter>(): dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentExtractionException.parameter.<get-parameter>|<get-parameter>(){}[0]
+    final val rawValue // dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentExtractionException.rawValue|{}rawValue[0]
+        final fun <get-rawValue>(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentExtractionException.rawValue.<get-rawValue>|<get-rawValue>(){}[0]
+}
+
+final class dev.rnett.symbolexport.symbol.annotation/AnnotationAssemblyException : kotlin/RuntimeException { // dev.rnett.symbolexport.symbol.annotation/AnnotationAssemblyException|null[0]
+    constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Annotation<*, *>, kotlin/Throwable) // dev.rnett.symbolexport.symbol.annotation/AnnotationAssemblyException.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Annotation<*,*>;kotlin.Throwable){}[0]
+
+    final val annotation // dev.rnett.symbolexport.symbol.annotation/AnnotationAssemblyException.annotation|{}annotation[0]
+        final fun <get-annotation>(): dev.rnett.symbolexport.symbol/Symbol.Annotation<*, *> // dev.rnett.symbolexport.symbol.annotation/AnnotationAssemblyException.annotation.<get-annotation>|<get-annotation>(){}[0]
+}
+
+final class dev.rnett.symbolexport.symbol.annotation/AnnotationGettingArgumentsException : kotlin/IllegalArgumentException { // dev.rnett.symbolexport.symbol.annotation/AnnotationGettingArgumentsException|null[0]
+    constructor <init>(dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*>, kotlin/Throwable) // dev.rnett.symbolexport.symbol.annotation/AnnotationGettingArgumentsException.<init>|<init>(dev.rnett.symbolexport.symbol.annotation.AnnotationParameter<*>;kotlin.Throwable){}[0]
+
+    final val parameter // dev.rnett.symbolexport.symbol.annotation/AnnotationGettingArgumentsException.parameter|{}parameter[0]
+        final fun <get-parameter>(): dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*> // dev.rnett.symbolexport.symbol.annotation/AnnotationGettingArgumentsException.parameter.<get-parameter>|<get-parameter>(){}[0]
+}
+
+final class dev.rnett.symbolexport.symbol.annotation/AnnotationParameterWriteException : kotlin/RuntimeException { // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterWriteException|null[0]
+    constructor <init>(dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*>, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument, kotlin/Throwable) // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterWriteException.<init>|<init>(dev.rnett.symbolexport.symbol.annotation.AnnotationParameter<*>;dev.rnett.symbolexport.symbol.annotation.AnnotationArgument;kotlin.Throwable){}[0]
+
+    final val argumentValue // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterWriteException.argumentValue|{}argumentValue[0]
+        final fun <get-argumentValue>(): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterWriteException.argumentValue.<get-argumentValue>|<get-argumentValue>(){}[0]
+    final val parameter // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterWriteException.parameter|{}parameter[0]
+        final fun <get-parameter>(): dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*> // dev.rnett.symbolexport.symbol.annotation/AnnotationParameterWriteException.parameter.<get-parameter>|<get-parameter>(){}[0]
+}
+
+final class dev.rnett.symbolexport.symbol/NameSegments : dev.rnett.symbolexport.symbol/NameLike { // dev.rnett.symbolexport.symbol/NameSegments|null[0]
+    constructor <init>(kotlin.collections/List<kotlin/String>) // dev.rnett.symbolexport.symbol/NameSegments.<init>|<init>(kotlin.collections.List<kotlin.String>){}[0]
+    constructor <init>(kotlin/Array<out kotlin/String>...) // dev.rnett.symbolexport.symbol/NameSegments.<init>|<init>(kotlin.Array<out|kotlin.String>...){}[0]
+
+    final val nameSegments // dev.rnett.symbolexport.symbol/NameSegments.nameSegments|{}nameSegments[0]
+        final fun <get-nameSegments>(): kotlin.collections/List<kotlin/String> // dev.rnett.symbolexport.symbol/NameSegments.nameSegments.<get-nameSegments>|<get-nameSegments>(){}[0]
+
+    final fun component1(): kotlin.collections/List<kotlin/String> // dev.rnett.symbolexport.symbol/NameSegments.component1|component1(){}[0]
+    final fun copy(kotlin.collections/List<kotlin/String> = ...): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameSegments.copy|copy(kotlin.collections.List<kotlin.String>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/NameSegments.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/NameSegments.hashCode|hashCode(){}[0]
+    final fun plus(dev.rnett.symbolexport.symbol/NameSegments): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameSegments.plus|plus(dev.rnett.symbolexport.symbol.NameSegments){}[0]
+    final fun plus(kotlin/String): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameSegments.plus|plus(kotlin.String){}[0]
+    final fun resolve(kotlin/Array<out kotlin/String>...): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/NameSegments.resolve|resolve(kotlin.Array<out|kotlin.String>...){}[0]
+    final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/NameSegments.toString|toString(){}[0]
+}
+
+sealed class dev.rnett.symbolexport.symbol.annotation/AnnotationArgument { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument|null[0]
+    open val type // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.type|{}type[0]
+        open fun <get-type>(): dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<*> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.type.<get-type>|<get-type>(){}[0]
+
+    final class <#A1: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument> Array : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument, kotlin.collections/List<#A1> { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array|null[0]
+        constructor <init>(kotlin.collections/List<#A1>) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.<init>|<init>(kotlin.collections.List<1:0>){}[0]
+        constructor <init>(kotlin.collections/List<#A1>, dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<#A1>) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.<init>|<init>(kotlin.collections.List<1:0>;dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType<1:0>){}[0]
+
+        final val elementType // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.elementType|{}elementType[0]
+            final fun <get-elementType>(): dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<#A1> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.elementType.<get-elementType>|<get-elementType>(){}[0]
+        final val size // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.size|{}size[0]
+            final fun <get-size>(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.size.<get-size>|<get-size>(){}[0]
+        final val values // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.values|{}values[0]
+            final fun <get-values>(): kotlin.collections/List<#A1> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.values.<get-values>|<get-values>(){}[0]
+
+        final fun component1(): kotlin.collections/List<#A1> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.component1|component1(){}[0]
+        final fun component2(): dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<#A1> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.component2|component2(){}[0]
+        final fun contains(#A1): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.contains|contains(1:0){}[0]
+        final fun containsAll(kotlin.collections/Collection<#A1>): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.containsAll|containsAll(kotlin.collections.Collection<1:0>){}[0]
+        final fun copy(kotlin.collections/List<#A1> = ..., dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<#A1> = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array<#A1> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.copy|copy(kotlin.collections.List<1:0>;dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType<1:0>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.equals|equals(kotlin.Any?){}[0]
+        final fun get(kotlin/Int): #A1 // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.get|get(kotlin.Int){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.hashCode|hashCode(){}[0]
+        final fun indexOf(#A1): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.indexOf|indexOf(1:0){}[0]
+        final fun isEmpty(): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.isEmpty|isEmpty(){}[0]
+        final fun iterator(): kotlin.collections/Iterator<#A1> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.iterator|iterator(){}[0]
+        final fun lastIndexOf(#A1): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.lastIndexOf|lastIndexOf(1:0){}[0]
+        final fun listIterator(): kotlin.collections/ListIterator<#A1> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.listIterator|listIterator(){}[0]
+        final fun listIterator(kotlin/Int): kotlin.collections/ListIterator<#A1> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.listIterator|listIterator(kotlin.Int){}[0]
+        final fun subList(kotlin/Int, kotlin/Int): kotlin.collections/List<#A1> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.subList|subList(kotlin.Int;kotlin.Int){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.toString|toString(){}[0]
+
+        // Targets: [js]
+        final fun asJsReadonlyArrayView(): kotlin.js.collections/JsReadonlyArray<#A1> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array.asJsReadonlyArrayView|asJsReadonlyArrayView(){}[0]
+    }
+
+    final class <#A1: dev.rnett.symbolexport.symbol/Symbol.Annotation<#A1, #B1>, #B1: dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance<#A1, #B1>> Annotation : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation|null[0]
+        constructor <init>(#B1) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation.<init>|<init>(1:1){}[0]
+
+        final val annotationArguments // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation.annotationArguments|{}annotationArguments[0]
+            final fun <get-annotationArguments>(): #B1 // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation.annotationArguments.<get-annotationArguments>|<get-annotationArguments>(){}[0]
+
+        final fun component1(): #B1 // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation.component1|component1(){}[0]
+        final fun copy(#B1 = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation<#A1, #B1> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation.copy|copy(1:1){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation.toString|toString(){}[0]
+    }
+
+    final class Boolean : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<kotlin/Boolean> { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean|null[0]
+        constructor <init>(kotlin/Boolean) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean.<init>|<init>(kotlin.Boolean){}[0]
+
+        final val value // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean.value|{}value[0]
+            final fun <get-value>(): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean.component1|component1(){}[0]
+        final fun copy(kotlin/Boolean = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean.copy|copy(kotlin.Boolean){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean.toString|toString(){}[0]
+    }
+
+    final class Byte : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<kotlin/Byte> { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte|null[0]
+        constructor <init>(kotlin/Byte) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte.<init>|<init>(kotlin.Byte){}[0]
+
+        final val value // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte.value|{}value[0]
+            final fun <get-value>(): kotlin/Byte // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Byte // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte.component1|component1(){}[0]
+        final fun copy(kotlin/Byte = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte.copy|copy(kotlin.Byte){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte.toString|toString(){}[0]
+    }
+
+    final class Char : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<kotlin/Char> { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char|null[0]
+        constructor <init>(kotlin/Char) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char.<init>|<init>(kotlin.Char){}[0]
+
+        final val value // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char.value|{}value[0]
+            final fun <get-value>(): kotlin/Char // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Char // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char.component1|component1(){}[0]
+        final fun copy(kotlin/Char = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char.copy|copy(kotlin.Char){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char.toString|toString(){}[0]
+    }
+
+    final class Double : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<kotlin/Double> { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double|null[0]
+        constructor <init>(kotlin/Double) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double.<init>|<init>(kotlin.Double){}[0]
+
+        final val value // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double.value|{}value[0]
+            final fun <get-value>(): kotlin/Double // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Double // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double.component1|component1(){}[0]
+        final fun copy(kotlin/Double = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double.copy|copy(kotlin.Double){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double.toString|toString(){}[0]
+    }
+
+    final class EnumEntry : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Classifier, kotlin/String) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Classifier;kotlin.String){}[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.EnumEntry) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.EnumEntry){}[0]
+
+        final val enumClass // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry.enumClass|{}enumClass[0]
+            final fun <get-enumClass>(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry.enumClass.<get-enumClass>|<get-enumClass>(){}[0]
+        final val enumName // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry.enumName|{}enumName[0]
+            final fun <get-enumName>(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry.enumName.<get-enumName>|<get-enumName>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry.component1|component1(){}[0]
+        final fun component2(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry.component2|component2(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/Symbol.Classifier = ..., kotlin/String = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry.copy|copy(dev.rnett.symbolexport.symbol.Symbol.Classifier;kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry.toString|toString(){}[0]
+    }
+
+    final class Float : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<kotlin/Float> { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float|null[0]
+        constructor <init>(kotlin/Float) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float.<init>|<init>(kotlin.Float){}[0]
+
+        final val value // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float.value|{}value[0]
+            final fun <get-value>(): kotlin/Float // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Float // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float.component1|component1(){}[0]
+        final fun copy(kotlin/Float = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float.copy|copy(kotlin.Float){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float.toString|toString(){}[0]
+    }
+
+    final class Int : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<kotlin/Int> { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int|null[0]
+        constructor <init>(kotlin/Int) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int.<init>|<init>(kotlin.Int){}[0]
+
+        final val value // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int.value|{}value[0]
+            final fun <get-value>(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int.component1|component1(){}[0]
+        final fun copy(kotlin/Int = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int.copy|copy(kotlin.Int){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int.toString|toString(){}[0]
+    }
+
+    final class KClass : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass|null[0]
+        constructor <init>(dev.rnett.symbolexport.symbol/Symbol.Classifier) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass.<init>|<init>(dev.rnett.symbolexport.symbol.Symbol.Classifier){}[0]
+
+        final val classSymbol // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass.classSymbol|{}classSymbol[0]
+            final fun <get-classSymbol>(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass.classSymbol.<get-classSymbol>|<get-classSymbol>(){}[0]
+
+        final fun component1(): dev.rnett.symbolexport.symbol/Symbol.Classifier // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass.component1|component1(){}[0]
+        final fun copy(dev.rnett.symbolexport.symbol/Symbol.Classifier = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass.copy|copy(dev.rnett.symbolexport.symbol.Symbol.Classifier){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass.toString|toString(){}[0]
+    }
+
+    final class Long : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<kotlin/Long> { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long|null[0]
+        constructor <init>(kotlin/Long) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long.<init>|<init>(kotlin.Long){}[0]
+
+        final val value // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long.value|{}value[0]
+            final fun <get-value>(): kotlin/Long // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Long // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long.component1|component1(){}[0]
+        final fun copy(kotlin/Long = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long.copy|copy(kotlin.Long){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long.toString|toString(){}[0]
+    }
+
+    final class Short : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<kotlin/Short> { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short|null[0]
+        constructor <init>(kotlin/Short) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short.<init>|<init>(kotlin.Short){}[0]
+
+        final val value // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short.value|{}value[0]
+            final fun <get-value>(): kotlin/Short // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Short // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short.component1|component1(){}[0]
+        final fun copy(kotlin/Short = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short.copy|copy(kotlin.Short){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short.toString|toString(){}[0]
+    }
+
+    final class String : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive<kotlin/String> { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String|null[0]
+        constructor <init>(kotlin/String) // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String.<init>|<init>(kotlin.String){}[0]
+
+        final val value // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String.value|{}value[0]
+            final fun <get-value>(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String.component1|component1(){}[0]
+        final fun copy(kotlin/String = ...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String.copy|copy(kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String.toString|toString(){}[0]
+    }
+
+    sealed class <#A1: kotlin/Any> Primitive : dev.rnett.symbolexport.symbol.annotation/AnnotationArgument { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive|null[0]
+        abstract val value // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive.value|{}value[0]
+            abstract fun <get-value>(): #A1 // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive.value.<get-value>|<get-value>(){}[0]
+        open val type // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive.type|{}type[0]
+            open fun <get-type>(): dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType.Primitive<#A1, *> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Primitive.type.<get-type>|<get-type>(){}[0]
+    }
+
+    final object Companion { // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion|null[0]
+        final fun <#A2: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument> array(#A2, kotlin/Array<out #A2>...): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array<#A2> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.array|array(0:0;kotlin.Array<out|0:0>...){0§<dev.rnett.symbolexport.symbol.annotation.AnnotationArgument>}[0]
+        final fun <#A2: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument> array(kotlin.collections/List<#A2>, dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<#A2>): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array<#A2> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.array|array(kotlin.collections.List<0:0>;dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType<0:0>){0§<dev.rnett.symbolexport.symbol.annotation.AnnotationArgument>}[0]
+        final fun <#A2: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument> nonEmptyArray(kotlin.collections/List<#A2>): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Array<#A2> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.nonEmptyArray|nonEmptyArray(kotlin.collections.List<0:0>){0§<dev.rnett.symbolexport.symbol.annotation.AnnotationArgument>}[0]
+        final fun <#A2: dev.rnett.symbolexport.symbol/Symbol.Annotation<#A2, #B2>, #B2: dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance<#A2, #B2>> annotation(#B2): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation<#A2, #B2> // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.annotation|annotation(0:1){0§<dev.rnett.symbolexport.symbol.Symbol.Annotation<0:0,0:1>>;1§<dev.rnett.symbolexport.symbol.Symbol.Annotation.Instance<0:0,0:1>>}[0]
+        final fun enum(dev.rnett.symbolexport.symbol/Symbol.Classifier, kotlin/String): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.enum|enum(dev.rnett.symbolexport.symbol.Symbol.Classifier;kotlin.String){}[0]
+        final fun enum(dev.rnett.symbolexport.symbol/Symbol.EnumEntry): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.enum|enum(dev.rnett.symbolexport.symbol.Symbol.EnumEntry){}[0]
+        final fun kClass(dev.rnett.symbolexport.symbol/Symbol.ClassLike): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.kClass|kClass(dev.rnett.symbolexport.symbol.Symbol.ClassLike){}[0]
+        final fun of(kotlin/Boolean): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Boolean // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.of|of(kotlin.Boolean){}[0]
+        final fun of(kotlin/Byte): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Byte // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.of|of(kotlin.Byte){}[0]
+        final fun of(kotlin/Char): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Char // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.of|of(kotlin.Char){}[0]
+        final fun of(kotlin/Double): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Double // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.of|of(kotlin.Double){}[0]
+        final fun of(kotlin/Float): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Float // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.of|of(kotlin.Float){}[0]
+        final fun of(kotlin/Int): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Int // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.of|of(kotlin.Int){}[0]
+        final fun of(kotlin/Long): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Long // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.of|of(kotlin.Long){}[0]
+        final fun of(kotlin/Short): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Short // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.of|of(kotlin.Short){}[0]
+        final fun of(kotlin/String): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.String // dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Companion.of|of(kotlin.String){}[0]
+    }
+}
+
+final fun (dev.rnett.symbolexport.symbol/Symbol.Annotation<*, *>).dev.rnett.symbolexport.symbol.annotation/classAsAnnotationArgument(): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass // dev.rnett.symbolexport.symbol.annotation/classAsAnnotationArgument|classAsAnnotationArgument@dev.rnett.symbolexport.symbol.Symbol.Annotation<*,*>(){}[0]
+final fun (dev.rnett.symbolexport.symbol/Symbol.Classifier).dev.rnett.symbolexport.symbol.annotation/asAnnotationArgument(): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.KClass // dev.rnett.symbolexport.symbol.annotation/asAnnotationArgument|asAnnotationArgument@dev.rnett.symbolexport.symbol.Symbol.Classifier(){}[0]
+final fun (dev.rnett.symbolexport.symbol/Symbol.EnumEntry).dev.rnett.symbolexport.symbol.annotation/asAnnotationArgument(): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.EnumEntry // dev.rnett.symbolexport.symbol.annotation/asAnnotationArgument|asAnnotationArgument@dev.rnett.symbolexport.symbol.Symbol.EnumEntry(){}[0]
+final fun <#A: dev.rnett.symbolexport.symbol/Symbol.Annotation<#A, #B>, #B: dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance<#A, #B>> (#B).dev.rnett.symbolexport.symbol.annotation/asAnnotationArgument(): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument.Annotation<#A, #B> // dev.rnett.symbolexport.symbol.annotation/asAnnotationArgument|asAnnotationArgument@0:1(){0§<dev.rnett.symbolexport.symbol.Symbol.Annotation<0:0,0:1>>;1§<dev.rnett.symbolexport.symbol.Symbol.Annotation.Instance<0:0,0:1>>}[0]

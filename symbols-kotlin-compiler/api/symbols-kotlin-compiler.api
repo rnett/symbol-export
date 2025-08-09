@@ -1,6 +1,53 @@
 public final class dev/rnett/symbolexport/symbol/compiler/CompilerMappersKt {
-	public static final fun asClassId (Ldev/rnett/symbolexport/symbol/Symbol$Classifier;)Lorg/jetbrains/kotlin/name/ClassId;
+	public static final fun asCallableId (Ldev/rnett/symbolexport/symbol/Symbol$Member;)Lorg/jetbrains/kotlin/name/CallableId;
+	public static final fun asClassId (Ldev/rnett/symbolexport/symbol/Symbol$ClassLike;)Lorg/jetbrains/kotlin/name/ClassId;
 	public static final fun asFqName (Ldev/rnett/symbolexport/symbol/NameLike;)Lorg/jetbrains/kotlin/name/FqName;
-	public static final fun name (Ldev/rnett/symbolexport/symbol/Symbol$Member;)Lorg/jetbrains/kotlin/name/Name;
+	public static final fun get (Lorg/jetbrains/kotlin/fir/expressions/FirQualifiedAccessExpression;Ldev/rnett/symbolexport/symbol/Symbol$Parameter;)Lorg/jetbrains/kotlin/fir/expressions/FirExpression;
+	public static final fun get (Lorg/jetbrains/kotlin/fir/expressions/FirQualifiedAccessExpression;Ldev/rnett/symbolexport/symbol/Symbol$TypeParameter;)Lorg/jetbrains/kotlin/fir/types/FirTypeProjection;
+	public static final fun get (Lorg/jetbrains/kotlin/fir/types/ConeKotlinType;Ldev/rnett/symbolexport/symbol/Symbol$TypeParameter;)Lorg/jetbrains/kotlin/fir/types/ConeTypeProjection;
+	public static final fun get (Lorg/jetbrains/kotlin/ir/declarations/IrTypeParametersContainer;Ldev/rnett/symbolexport/symbol/Symbol$TypeParameter;)Lorg/jetbrains/kotlin/ir/declarations/IrTypeParameter;
+	public static final fun get (Lorg/jetbrains/kotlin/ir/expressions/IrMemberAccessExpression$ValueArgumentsList;Ldev/rnett/symbolexport/symbol/Symbol$Parameter;)Lorg/jetbrains/kotlin/ir/expressions/IrExpression;
+	public static final fun get (Lorg/jetbrains/kotlin/ir/expressions/IrMemberAccessExpression;Ldev/rnett/symbolexport/symbol/Symbol$TypeParameter;)Lorg/jetbrains/kotlin/ir/types/IrType;
+	public static final fun get (Lorg/jetbrains/kotlin/ir/types/IrSimpleType;Ldev/rnett/symbolexport/symbol/Symbol$TypeParameter;)Lorg/jetbrains/kotlin/ir/types/IrTypeArgument;
+	public static final fun get (Lorg/jetbrains/kotlin/ir/types/IrType;Ldev/rnett/symbolexport/symbol/Symbol$TypeParameter;)Lorg/jetbrains/kotlin/ir/types/IrTypeArgument;
+	public static final fun name (Ldev/rnett/symbolexport/symbol/Symbol$NamedSymbol;)Lorg/jetbrains/kotlin/name/Name;
+	public static final fun set (Lorg/jetbrains/kotlin/ir/expressions/IrMemberAccessExpression$ValueArgumentsList;Ldev/rnett/symbolexport/symbol/Symbol$Parameter;Lorg/jetbrains/kotlin/ir/expressions/IrExpression;)V
+	public static final fun set (Lorg/jetbrains/kotlin/ir/expressions/IrMemberAccessExpression;Ldev/rnett/symbolexport/symbol/Symbol$TypeParameter;Lorg/jetbrains/kotlin/ir/types/IrType;)V
+}
+
+public final class dev/rnett/symbolexport/symbol/compiler/annotation/fir/FirAnnotationReaderKt {
+	public static final fun findAnnotation (Lorg/jetbrains/kotlin/fir/FirAnnotationContainer;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;Lorg/jetbrains/kotlin/fir/FirSession;)Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
+	public static final fun findAnnotation (Lorg/jetbrains/kotlin/fir/symbols/FirBasedSymbol;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;Lorg/jetbrains/kotlin/fir/FirSession;)Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
+	public static final fun findAnnotations (Lorg/jetbrains/kotlin/fir/FirAnnotationContainer;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;Lorg/jetbrains/kotlin/fir/FirSession;)Ljava/util/List;
+	public static final fun findAnnotations (Lorg/jetbrains/kotlin/fir/symbols/FirBasedSymbol;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;Lorg/jetbrains/kotlin/fir/FirSession;)Ljava/util/List;
+	public static final fun readAnnotation (Lorg/jetbrains/kotlin/fir/expressions/FirAnnotation;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;Lorg/jetbrains/kotlin/fir/FirSession;)Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
+}
+
+public final class dev/rnett/symbolexport/symbol/compiler/annotation/fir/FirAnnotationWriterKt {
+	public static final fun toFirAnnotation (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Lorg/jetbrains/kotlin/fir/FirSession;Lorg/jetbrains/kotlin/KtSourceElement;Lorg/jetbrains/kotlin/descriptors/annotations/AnnotationUseSiteTarget;)Lorg/jetbrains/kotlin/fir/expressions/FirAnnotation;
+	public static synthetic fun toFirAnnotation$default (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Lorg/jetbrains/kotlin/fir/FirSession;Lorg/jetbrains/kotlin/KtSourceElement;Lorg/jetbrains/kotlin/descriptors/annotations/AnnotationUseSiteTarget;ILjava/lang/Object;)Lorg/jetbrains/kotlin/fir/expressions/FirAnnotation;
+}
+
+public final class dev/rnett/symbolexport/symbol/compiler/annotation/fir/FirHelpersKt {
+	public static final fun enum (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Companion;Lorg/jetbrains/kotlin/fir/symbols/impl/FirClassSymbol;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$EnumEntry;
+	public static final fun enum (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Companion;Lorg/jetbrains/kotlin/name/ClassId;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$EnumEntry;
+	public static final fun kClass (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Companion;Lorg/jetbrains/kotlin/fir/symbols/impl/FirClassSymbol;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$KClass;
+	public static final fun kClass (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Companion;Lorg/jetbrains/kotlin/name/ClassId;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$KClass;
+}
+
+public final class dev/rnett/symbolexport/symbol/compiler/annotation/ir/IrAnnotationReaderKt {
+	public static final fun findAnnotation (Lorg/jetbrains/kotlin/ir/declarations/IrAnnotationContainer;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;)Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
+	public static final fun findAnnotations (Lorg/jetbrains/kotlin/ir/declarations/IrAnnotationContainer;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;)Ljava/util/List;
+	public static final fun readAnnotation (Lorg/jetbrains/kotlin/ir/expressions/IrConstructorCall;Ldev/rnett/symbolexport/symbol/Symbol$Annotation;)Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
+}
+
+public final class dev/rnett/symbolexport/symbol/compiler/annotation/ir/IrAnnotationWriterKt {
+	public static final fun toIrAnnotation (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Lorg/jetbrains/kotlin/backend/common/extensions/IrPluginContext;IILorg/jetbrains/kotlin/ir/expressions/IrStatementOrigin;Lorg/jetbrains/kotlin/descriptors/SourceElement;)Lorg/jetbrains/kotlin/ir/expressions/IrConstructorCall;
+	public static synthetic fun toIrAnnotation$default (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Lorg/jetbrains/kotlin/backend/common/extensions/IrPluginContext;IILorg/jetbrains/kotlin/ir/expressions/IrStatementOrigin;Lorg/jetbrains/kotlin/descriptors/SourceElement;ILjava/lang/Object;)Lorg/jetbrains/kotlin/ir/expressions/IrConstructorCall;
+}
+
+public final class dev/rnett/symbolexport/symbol/compiler/annotation/ir/IrHelpersKt {
+	public static final fun enum (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Companion;Lorg/jetbrains/kotlin/ir/symbols/IrClassSymbol;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$EnumEntry;
+	public static final fun kClass (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$Companion;Lorg/jetbrains/kotlin/ir/symbols/IrClassSymbol;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument$KClass;
 }
 

@@ -42,7 +42,7 @@ class SymbolsATest {
         // Class property
         assertTrue(Symbols.`produce-a`.dev_rnett_test_ExposedClass_prop in Symbols.`produce-a`.ALL_SYMBOLS)
         assertEquals(
-            Symbol.ClassifierMember(
+            Symbol.NamedClassifierMember(
                 classifier = Symbol.Classifier(
                     packageName = NameSegments("dev", "rnett", "test"),
                     classNames = NameSegments("ExposedClass")
@@ -55,7 +55,7 @@ class SymbolsATest {
         // Companion function
         assertTrue(Symbols.`produce-a`.dev_rnett_test_ExposedClass_Companion_exposedFun in Symbols.`produce-a`.ALL_SYMBOLS)
         assertEquals(
-            Symbol.ClassifierMember(
+            Symbol.NamedClassifierMember(
                 classifier = Symbol.Classifier(
                     packageName = NameSegments("dev", "rnett", "test"),
                     classNames = NameSegments("ExposedClass", "Companion")
@@ -78,7 +78,7 @@ class SymbolsATest {
         // Nested class function
         assertTrue(Symbols.`produce-a`.dev_rnett_test_ExposedClass_ExposedNestedClass_exposedFun in Symbols.`produce-a`.ALL_SYMBOLS)
         assertEquals(
-            Symbol.ClassifierMember(
+            Symbol.NamedClassifierMember(
                 classifier = Symbol.Classifier(
                     packageName = NameSegments("dev", "rnett", "test"),
                     classNames = NameSegments("ExposedClass", "ExposedNestedClass")
@@ -91,7 +91,7 @@ class SymbolsATest {
         // Nested class property
         assertTrue(Symbols.`produce-a`.dev_rnett_test_ExposedClass_ExposedNestedClass_exposedProperty in Symbols.`produce-a`.ALL_SYMBOLS)
         assertEquals(
-            Symbol.ClassifierMember(
+            Symbol.NamedClassifierMember(
                 classifier = Symbol.Classifier(
                     packageName = NameSegments("dev", "rnett", "test"),
                     classNames = NameSegments("ExposedClass", "ExposedNestedClass")
@@ -128,7 +128,7 @@ class SymbolsATest {
         assertFalse(notExposedProperty in Symbols.`produce-a`.ALL_SYMBOLS)
 
         // Check non-exported nested class method
-        val notExposedMethod = Symbol.ClassifierMember(
+        val notExposedMethod = Symbol.NamedClassifierMember(
             classifier = Symbol.Classifier(
                 packageName = NameSegments("dev", "rnett", "test"),
                 classNames = NameSegments("ExposedClass", "ExposedNestedClass")
@@ -138,7 +138,7 @@ class SymbolsATest {
         assertFalse(notExposedMethod in Symbols.`produce-a`.ALL_SYMBOLS)
 
         // Check non-exported nested class property
-        val notExposedNestedProperty = Symbol.ClassifierMember(
+        val notExposedNestedProperty = Symbol.NamedClassifierMember(
             classifier = Symbol.Classifier(
                 packageName = NameSegments("dev", "rnett", "test"),
                 classNames = NameSegments("ExposedClass", "ExposedNestedClass")
