@@ -22,7 +22,8 @@ include(
     ":produce-b",
     ":consume-a",
     ":consume-all",
-    ":compiler-integration-test",
+    ":integration-test-compiler",
+    ":integration-test-kotlinpoet",
     ":test-symbols"
 )
 
