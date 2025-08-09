@@ -6,6 +6,6 @@ FILE: irWrite.kt
 
     }
     public final fun box(): R|kotlin/String| {
-        R|kotlin/test/assertTrue|(<getClass>(Q|irWrite|).R|kotlin/jvm/java|<R|irWrite|>.R|SubstitutionOverride<java/lang/Class.isAnnotationPresent: R|kotlin/Boolean|>|(<getClass>(Q|compilertest/symbols/TestAnnotation|).R|kotlin/jvm/java|<R|compilertest/symbols/TestAnnotation|>))
+        R|kotlin/test/assertTrue|(<getClass>(Q|irWrite|).R|kotlin/jvm/java|<R|irWrite|>.R|SubstitutionOverride<java/lang/Class.isAnnotationPresent: R|kotlin/Boolean|>|(<getClass>(Q|test/symbols/TestAnnotation|).R|kotlin/jvm/java|<R|test/symbols/TestAnnotation|>))
         ^box String(OK)
     }

@@ -1,4 +1,4 @@
-// GENERATED FROM class compilertest.cases.Cases, DO NOT EDIT
+// GENERATED FROM class test.cases.Cases, DO NOT EDIT
 
 @TestAnnotation(
     stringProperty = "test",

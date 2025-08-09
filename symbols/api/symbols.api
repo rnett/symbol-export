@@ -49,32 +49,32 @@ public abstract class dev/rnett/symbolexport/symbol/Symbol$Annotation : dev/rnet
 	public fun <init> (Ldev/rnett/symbolexport/symbol/NameSegments;Ldev/rnett/symbolexport/symbol/NameSegments;)V
 	public fun asClassifier ()Ldev/rnett/symbolexport/symbol/Symbol$Classifier;
 	public fun asString ()Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getClassNames ()Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun getFullName ()Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun getName ()Ljava/lang/String;
 	public fun getNameSegments ()Ljava/util/List;
 	public fun getPackageName ()Ldev/rnett/symbolexport/symbol/NameSegments;
 	public abstract fun getParameters ()Ljava/util/List;
+	public fun hashCode ()I
 	public fun plus (Ldev/rnett/symbolexport/symbol/NameSegments;)Ldev/rnett/symbolexport/symbol/NameSegments;
 	public fun plus (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
 	public abstract fun produceInstance (Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgumentProducer;)Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;
 	public fun resolve ([Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/NameSegments;
+	public fun toString ()Ljava/lang/String;
 }
 
-public abstract interface class dev/rnett/symbolexport/symbol/Symbol$Annotation$Instance {
-	public fun contains (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Z
-	public fun contains (Ljava/lang/String;)Z
-	public fun get (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
-	public fun get (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+public abstract class dev/rnett/symbolexport/symbol/Symbol$Annotation$Instance {
+	public fun <init> ()V
+	public final fun contains (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Z
+	public final fun contains (Ljava/lang/String;)Z
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+	public final fun get (Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
 	public abstract fun getAnnotation ()Ldev/rnett/symbolexport/symbol/Symbol$Annotation;
-	public abstract fun getAsMap ()Ljava/util/Map;
-}
-
-public final class dev/rnett/symbolexport/symbol/Symbol$Annotation$Instance$DefaultImpls {
-	public static fun contains (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Z
-	public static fun contains (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Ljava/lang/String;)Z
-	public static fun get (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Ldev/rnett/symbolexport/symbol/annotation/AnnotationParameter;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
-	public static fun get (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Ljava/lang/String;)Ldev/rnett/symbolexport/symbol/annotation/AnnotationArgument;
+	public abstract fun getArguments ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface class dev/rnett/symbolexport/symbol/Symbol$ClassLike : dev/rnett/symbolexport/symbol/Symbol, dev/rnett/symbolexport/symbol/Symbol$NamedSymbol {

@@ -198,17 +198,25 @@ sealed interface dev.rnett.symbolexport.symbol/Symbol : dev.rnett.symbolexport.s
             open fun <get-packageName>(): dev.rnett.symbolexport.symbol/NameSegments // dev.rnett.symbolexport.symbol/Symbol.Annotation.packageName.<get-packageName>|<get-packageName>(){}[0]
 
         abstract fun produceInstance(dev.rnett.symbolexport.symbol.annotation/AnnotationArgumentProducer): #B1 // dev.rnett.symbolexport.symbol/Symbol.Annotation.produceInstance|produceInstance(dev.rnett.symbolexport.symbol.annotation.AnnotationArgumentProducer){}[0]
+        open fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.Annotation.equals|equals(kotlin.Any?){}[0]
+        open fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.Annotation.hashCode|hashCode(){}[0]
+        open fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.Annotation.toString|toString(){}[0]
 
-        abstract interface <#A2: dev.rnett.symbolexport.symbol/Symbol.Annotation<#A2, #B2>, #B2: dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance<#A2, #B2>> Instance { // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance|null[0]
+        abstract class <#A2: dev.rnett.symbolexport.symbol/Symbol.Annotation<#A2, #B2>, #B2: dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance<#A2, #B2>> Instance { // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance|null[0]
+            constructor <init>() // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.<init>|<init>(){}[0]
+
             abstract val annotation // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.annotation|{}annotation[0]
                 abstract fun <get-annotation>(): #A2 // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.annotation.<get-annotation>|<get-annotation>(){}[0]
-            abstract val asMap // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.asMap|{}asMap[0]
-                abstract fun <get-asMap>(): kotlin.collections/Map<dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*>, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument?> // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.asMap.<get-asMap>|<get-asMap>(){}[0]
+            abstract val arguments // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.arguments|{}arguments[0]
+                abstract fun <get-arguments>(): kotlin.collections/Map<dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*>, dev.rnett.symbolexport.symbol.annotation/AnnotationArgument?> // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.arguments.<get-arguments>|<get-arguments>(){}[0]
 
-            open fun <#A3: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument, #B3: dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<#A3>> get(dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<#B3>): #A3? // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.get|get(dev.rnett.symbolexport.symbol.annotation.AnnotationParameter<0:1>){0§<dev.rnett.symbolexport.symbol.annotation.AnnotationArgument>;1§<dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType<0:0>>}[0]
-            open fun contains(dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*>): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.contains|contains(dev.rnett.symbolexport.symbol.annotation.AnnotationParameter<*>){}[0]
-            open fun contains(kotlin/String): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.contains|contains(kotlin.String){}[0]
-            open fun get(kotlin/String): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument? // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.get|get(kotlin.String){}[0]
+            final fun <#A3: dev.rnett.symbolexport.symbol.annotation/AnnotationArgument, #B3: dev.rnett.symbolexport.symbol.annotation/AnnotationParameterType<#A3>> get(dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<#B3>): #A3? // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.get|get(dev.rnett.symbolexport.symbol.annotation.AnnotationParameter<0:1>){0§<dev.rnett.symbolexport.symbol.annotation.AnnotationArgument>;1§<dev.rnett.symbolexport.symbol.annotation.AnnotationParameterType<0:0>>}[0]
+            final fun contains(dev.rnett.symbolexport.symbol.annotation/AnnotationParameter<*>): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.contains|contains(dev.rnett.symbolexport.symbol.annotation.AnnotationParameter<*>){}[0]
+            final fun contains(kotlin/String): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.contains|contains(kotlin.String){}[0]
+            final fun get(kotlin/String): dev.rnett.symbolexport.symbol.annotation/AnnotationArgument? // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.get|get(kotlin.String){}[0]
+            open fun equals(kotlin/Any?): kotlin/Boolean // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.equals|equals(kotlin.Any?){}[0]
+            open fun hashCode(): kotlin/Int // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.hashCode|hashCode(){}[0]
+            open fun toString(): kotlin/String // dev.rnett.symbolexport.symbol/Symbol.Annotation.Instance.toString|toString(){}[0]
         }
     }
 

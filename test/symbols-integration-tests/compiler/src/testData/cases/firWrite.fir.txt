@@ -1,11 +1,11 @@
 FILE: firWrite.kt
-    @R|compilertest/symbols/TestAnnotation|(stringProperty = String(compilertest), intProperty = Int(3), enumProperty = Q|compilertest/symbols/TestEnum|.R|compilertest/symbols/TestEnum.A|, classProperty = <getClass>(Q|compilertest/symbols/FooClass|), arrayProperty = <implicitArrayOf>(String(compilertest), String(test2)), annotationProperty = @R|compilertest/symbols/TestAnnotation.TestChildAnnotation|(test = String(test-child), cls = <getClass>(Q|compilertest/symbols/BarClass|)) , annotationArrayProperty = <implicitArrayOf>(@R|compilertest/symbols/TestAnnotation.TestChildAnnotation|(test = String(test-child-2), cls = <getClass>(Q|compilertest/symbols/BarClass|)) , @R|compilertest/symbols/TestAnnotation.TestChildAnnotation|(test = String(test-child-3), cls = <getClass>(Q|compilertest/symbols/BarClass|)) )) public final class firWrite : R|kotlin/Any| {
+    @R|test/symbols/TestAnnotation|(stringProperty = String(test), intProperty = Int(3), enumProperty = Q|test/symbols/TestEnum|.R|test/symbols/TestEnum.A|, classProperty = <getClass>(Q|test/symbols/FooClass|), arrayProperty = <implicitArrayOf>(String(test), String(test2)), annotationProperty = @R|test/symbols/TestAnnotation.TestChildAnnotation|(test = String(test-child), cls = <getClass>(Q|test/symbols/BarClass|)) , annotationArrayProperty = <implicitArrayOf>(@R|test/symbols/TestAnnotation.TestChildAnnotation|(test = String(test-child-2), cls = <getClass>(Q|test/symbols/BarClass|)) , @R|test/symbols/TestAnnotation.TestChildAnnotation|(test = String(test-child-3), cls = <getClass>(Q|test/symbols/BarClass|)) )) public final class firWrite : R|kotlin/Any| {
         public constructor(): R|firWrite| {
             super<R|kotlin/Any|>()
         }
 
     }
     public final fun box(): R|kotlin/String| {
-        R|kotlin/test/assertTrue|(<getClass>(Q|firWrite|).R|kotlin/jvm/java|<R|firWrite|>.R|SubstitutionOverride<java/lang/Class.isAnnotationPresent: R|kotlin/Boolean|>|(<getClass>(Q|compilertest/symbols/TestAnnotation|).R|kotlin/jvm/java|<R|compilertest/symbols/TestAnnotation|>))
+        R|kotlin/test/assertTrue|(<getClass>(Q|firWrite|).R|kotlin/jvm/java|<R|firWrite|>.R|SubstitutionOverride<java/lang/Class.isAnnotationPresent: R|kotlin/Boolean|>|(<getClass>(Q|test/symbols/TestAnnotation|).R|kotlin/jvm/java|<R|test/symbols/TestAnnotation|>))
         ^box String(OK)
     }

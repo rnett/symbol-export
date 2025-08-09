@@ -28,7 +28,7 @@ fun TestConfigurationBuilder.baseConfiguration() {
             ImportsPreprocessor(
                 setOf(
                     "kotlin.test.*",
-                    "compilertest.symbols.*"
+                    "test.symbols.*"
                 ),
                 it
             )
