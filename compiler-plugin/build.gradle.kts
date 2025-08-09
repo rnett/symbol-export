@@ -9,9 +9,9 @@ plugins {
     idea
 }
 
-val compilerTestRuntimeClasspath: Configuration by configurations.creating {
+val compilerTestRuntimeClasspath by configurations.registering {
     isCanBeResolved = true
-    isTransitive = true
+//    isTransitive = true
 }
 
 dependencies {
@@ -73,9 +73,9 @@ kotlin {
 tasks.test {
     dependsOn(compilerTestRuntimeClasspath)
     maxHeapSize = "2g"
-    workingDir = rootDir
+    workingDir = projectDir
 
-    systemProperty("compilerTestRuntime.classpath", compilerTestRuntimeClasspath.asPath)
+    systemProperty("compilerTestRuntime.classpath", compilerTestRuntimeClasspath.map { it.asPath }.get())
 
     // Properties required to run the internal test framework.
     setLibraryProperty("org.jetbrains.kotlin.test.kotlin-stdlib", "kotlin-stdlib")
@@ -86,7 +86,7 @@ tasks.test {
     setLibraryProperty("org.jetbrains.kotlin.test.kotlin-annotations-jvm", "kotlin-annotations-jvm")
 
     systemProperty("idea.ignore.disabled.plugins", "true")
-    systemProperty("idea.home.path", rootDir)
+    systemProperty("idea.home.path", projectDir)
 }
 
 val generateTests by tasks.registering(JavaExec::class) {
@@ -98,7 +98,7 @@ val generateTests by tasks.registering(JavaExec::class) {
 
     classpath = sourceSets.testFixtures.get().runtimeClasspath
     mainClass.set("dev.rnett.lattice.GenerateTestsKt")
-    workingDir = rootDir
+    workingDir = projectDir
 }
 
 val clearDumps by tasks.registering(Delete::class) {
