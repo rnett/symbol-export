@@ -69,14 +69,8 @@ afterEvaluate {
 
     if (hasGradlePlugin) {
         // we use our own publication instead
-        tasks.named { it == "publishPluginMavenPublicationToMavenLocal" }.configureEach {
+        tasks.named { "PluginMavenPublication" in it }.configureEach {
             enabled = false
-        }
-        tasks.named { it == "publishPluginMavenPublicationToMavenCentralRepository" }.configureEach {
-            enabled = false
-        }
-        tasks.named { it == "generateMetadataFileForMavenPublication" }.configureEach {
-            dependsOn("jar")
         }
     }
 
