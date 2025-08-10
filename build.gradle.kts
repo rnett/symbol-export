@@ -43,3 +43,7 @@ tasks.withType<KotlinNpmInstallTask>().configureEach {
     if (name == "kotlinWasmNpmInstall")
         mustRunAfter("kotlinNpmInstall")
 }
+
+tasks.named<UpdateDaemonJvm>("updateDaemonJvm") {
+    languageVersion = JavaLanguageVersion.of(24)
+}
