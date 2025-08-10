@@ -57,6 +57,10 @@ jobs:
         working-directory: ./test
         run: ./gradlew check
 
+      - name: Get version
+        id: get-version
+        run: echo "version=$(cat version.txt)" >> "$GITHUB_OUTPUT"
+
   publishSnapshot:
     name: Publish snapshot
     needs: buildAndTest
