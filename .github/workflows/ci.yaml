@@ -10,6 +10,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m"
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
     steps:
       - uses: actions/checkout@v2
       - name: Setup Java 17
@@ -81,10 +83,10 @@ jobs:
           path: build/dokka/html
 
   deployDocs:
-    name: Deploy docs
-    needs: buildAndTest
+    name: Deploy snapshot docs
+    needs: [ buildAndTest ]
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' && endsWith(needs.buildAndTest.outputs.version, '-SNAPSHOT') }}
 
 
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
