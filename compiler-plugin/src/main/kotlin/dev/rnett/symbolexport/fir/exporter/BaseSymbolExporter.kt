@@ -19,7 +19,7 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 
 interface SymbolExporter<T : FirDeclaration> {
     context(context: CheckerContext, reporter: DiagnosticReporter)
-    open fun exportSymbols(declaration: T): Iterable<Pair<KtSourceElement?, InternalName>>
+    fun exportSymbols(declaration: T): Iterable<Pair<KtSourceElement?, InternalName>>
 }
 
 abstract class BaseSymbolExporter<T : FirDeclaration>(
