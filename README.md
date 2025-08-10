@@ -1,6 +1,6 @@
-![Maven Central Version](https://img.shields.io/maven-central/v/dev.rnett.symbol-export/symbols?style=for-the-badge)
-![Documentation](https://img.shields.io/badge/documentation-symbol--export.rnett.dev-blue?style=for-the-badge&link=https%3A%2F%2Fsymbol-export.rnett.dev%2F)
-![GitHub License](https://img.shields.io/github/license/rnett/symbol-export?style=for-the-badge)
+[![Maven Central Version](https://img.shields.io/maven-central/v/dev.rnett.symbol-export/symbols?style=for-the-badge)](https://central.sonatype.com/artifact/dev.rnett.symbol-export/symbols)
+[![Documentation](https://img.shields.io/badge/documentation-symbol--export.rnett.dev-blue?style=for-the-badge&link=https%3A%2F%2Fsymbol-export.rnett.dev%2F)](https://symbol-export.rnett.dev)
+[![GitHub License](https://img.shields.io/github/license/rnett/symbol-export?style=for-the-badge)](./LICENSE)
 
 # Symbol-export
 
