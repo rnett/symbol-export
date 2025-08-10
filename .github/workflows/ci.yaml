@@ -55,5 +55,18 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' && github.ref == 'refs/heads/main' }}
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
           path: build/dokka/html
+
+  deployDocs:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    steps:
+      - name: Deploy docs
+        uses: actions/deploy-pages@v4
