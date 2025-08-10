@@ -1,3 +1,6 @@
+import groovy.util.Node
+import groovy.util.NodeList
+
 plugins {
     id("build.kotlin-jvm")
     id("build.public-module")
@@ -28,6 +31,21 @@ tasks.shadowJar {
         exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
     }
     relocate("kotlinx.serialization", "dev.rnett.symbolexport.kotlinx.serialization")
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            named<MavenPublication>("pluginMaven") {
+                pom.withXml {
+                    val dependenciesNode = asNode().get("dependencies") ?: return@withXml
+                    (dependenciesNode as NodeList).forEach {
+                        this.asNode().remove(it as Node)
+                    }
+                }
+            }
+        }
+    }
 }
 
 fun libraryCoordinates(project: Project) = buildString {

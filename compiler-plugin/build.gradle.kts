@@ -1,3 +1,5 @@
+import groovy.util.Node
+import groovy.util.NodeList
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
@@ -51,6 +53,21 @@ tasks.shadowJar {
         exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
     }
     relocate("kotlinx.serialization", "dev.rnett.symbolexport.kotlinx.serialization")
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            named<MavenPublication>("maven") {
+                pom.withXml {
+                    val dependenciesNode = asNode().get("dependencies") ?: return@withXml
+                    (dependenciesNode as NodeList).forEach {
+                        this.asNode().remove(it as Node)
+                    }
+                }
+            }
+        }
+    }
 }
 
 buildConfig {
