@@ -17,10 +17,14 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          build-scan-publish: true
+          build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
+          build-scan-terms-of-use-agree: 'yes'
 
       - name: Build library
-        run: ./gradlew assemble
+        run: gradle assemble
 
       - name: Build tests
         working-directory: ./test
-        run: ./gradlew assemble
+        run: gradle assemble
