@@ -1,7 +1,6 @@
 package build
 
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
     kotlin("multiplatform")
@@ -36,25 +35,8 @@ kotlin {
         dependencies {
         }
     }
-    sourceSets.configureEach {
-        explicitApi()
-        languageSettings {
-        }
-    }
-
-    @OptIn(ExperimentalAbiValidation::class)
-    abiValidation {
-        enabled = true
-        klib {
-            enabled = true
-            keepUnsupportedTargets = true
-        }
-    }
 }
 
 tasks.withType<Test>().configureEach {
     Shared.configureTestTask(this)
 }
-
-@OptIn(ExperimentalAbiValidation::class)
-Shared.sharedSettings(project, kotlin.abiValidation.enabled)

@@ -1,9 +1,9 @@
 plugins {
     id("build.kotlin-jvm")
+    id("build.published-module")
     id("java-gradle-plugin")
     alias(libs.plugins.buildconfig)
     alias(libs.plugins.shadow)
-    id("build.dokka")
 }
 
 dependencies {

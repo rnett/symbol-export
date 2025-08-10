@@ -49,14 +49,18 @@ jobs:
         run: ./gradlew check -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m"
 
       - name: Generate dokka docs
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.os == 'macos-latest' }}
         run: ./gradlew dokkaGenerate -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m"
 
       - name: Upload docs
-        if: ${{ matrix.os == 'ubuntu-latest' && github.ref == 'refs/heads/main' }}
+        if: ${{ matrix.os == 'macos-latest' && github.ref == 'refs/heads/main' }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: build/dokka/html
+
+      - name: Publish to staging
+        if: ${{ matrix.os == 'macos-latest' && github.ref == 'refs/heads/main' }}
+        run: ./gradlew publishToMavenCentral
 
   deployDocs:
     name: Deploy docs

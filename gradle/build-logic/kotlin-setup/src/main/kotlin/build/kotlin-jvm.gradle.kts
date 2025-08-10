@@ -1,19 +1,11 @@
 package build
 
-import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
-
 plugins {
     kotlin("jvm")
 }
 
 kotlin {
     jvmToolchain(Shared::toolchain)
-    explicitApi()
-
-    @OptIn(ExperimentalAbiValidation::class)
-    abiValidation {
-        enabled = true
-    }
 }
 
 dependencies {
@@ -23,6 +15,3 @@ dependencies {
 tasks.withType<Test>().configureEach {
     Shared.configureTestTask(this)
 }
-
-@OptIn(ExperimentalAbiValidation::class)
-Shared.sharedSettings(project, kotlin.abiValidation.enabled)
