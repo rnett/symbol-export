@@ -1,0 +1,26 @@
+name: CI
+run-name: CI
+on: [ push ]
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build library
+        run: ./gradlew assemble
+
+      - name: Build tests
+        working-directory: ./test
+        run: ./gradlew assemble
