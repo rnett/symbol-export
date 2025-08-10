@@ -62,7 +62,7 @@ jobs:
 
       - name: Publish to staging
         if: ${{ matrix.os == 'macos-latest' && github.ref == 'refs/heads/main' }}
-        run: ./gradlew publishToMavenCentral
+        run: ./gradlew publishAllPublicationsToMavenCentralRepository
 
   deployDocs:
     name: Deploy docs
