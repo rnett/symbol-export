@@ -26,19 +26,17 @@ jobs:
       - name: Build library
         run: |
           chmod +x gradlew
-          gradle assemble
+          ./gradlew assemble
 
       - name: Build tests
         working-directory: ./test
         run: |
           chmod +x gradlew
-          gradle assemble
+          ./gradlew assemble
 
       - name: Test library
-        run: |
-          gradle check
+        run: ./gradlew check
 
       - name: Run integration tests
         working-directory: ./test
-        run: |
-          gradle check
+        run: ./gradlew check
