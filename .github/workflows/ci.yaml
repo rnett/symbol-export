@@ -41,13 +41,11 @@ jobs:
 
       - name: Build library
         run: |
-          chmod +x gradlew
           ./gradlew assemble
 
       - name: Build tests
         working-directory: ./test
         run: |
-          chmod +x gradlew
           ./gradlew assemble
 
       - name: Test library
@@ -97,7 +95,6 @@ jobs:
 
       - name: Generate dokka docs
         run: |
-          chmod +x gradlew
           ./gradlew dokkaGenerate
 
       - name: Publish to staging
