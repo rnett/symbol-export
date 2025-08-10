@@ -23,8 +23,12 @@ jobs:
           build-scan-terms-of-use-agree: 'yes'
 
       - name: Build library
-        run: gradle assemble
+        run: |
+          chmod +x gradlew
+          gradle assemble
 
       - name: Build tests
         working-directory: ./test
-        run: gradle assemble
+        run: |
+          chmod +x gradlew
+          gradle assemble
