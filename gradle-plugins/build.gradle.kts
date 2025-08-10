@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
+description = "The symbol-export export and import Gradle plugins"
+
 dependencies {
     compileOnly(kotlin("stdlib"))
     compileOnly(kotlin("gradle-plugin-api"))

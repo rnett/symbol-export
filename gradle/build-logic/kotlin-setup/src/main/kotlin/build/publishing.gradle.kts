@@ -13,8 +13,8 @@ extensionIfPresent<MavenPublishBaseExtension> {
     coordinates(group.toString(), project.name, project.version.toString())
 
     pom {
-        name = "Symbol Export"
-        description = "A Gradle plugin and support library to export Kotlin symbols for use in code generators and compiler plugins."
+        name = "Symbol Export - ${project.name}"
+        description = provider { project.description }
         inceptionYear = "2025"
         licenses {
             license {

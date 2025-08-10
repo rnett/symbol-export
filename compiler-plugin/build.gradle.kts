@@ -10,6 +10,8 @@ plugins {
     idea
 }
 
+description = "The compiler plugin that powers symbol-export by exporting marked symbols as JSON"
+
 val compilerTestRuntimeClasspath by configurations.registering {
     isCanBeResolved = true
     isTransitive = true
