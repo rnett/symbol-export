@@ -32,26 +32,26 @@ jobs:
       - name: Build library
         run: |
           chmod +x gradlew
-          ./gradlew assemble
+          ./gradlew assemble -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m"
 
       - name: Build tests
         working-directory: ./test
         run: |
           chmod +x gradlew
-          ./gradlew assemble
+          ./gradlew assemble -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m"
 
       - name: Test library
-        run: ./gradlew check
+        run: ./gradlew check -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m"
 
       - name: Run integration tests
         working-directory: ./test
-        run: ./gradlew check
+        run: ./gradlew check -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m"
 
-      - name: Generate dokka
+      - name: Generate dokka docs
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: ./gradlew dokkaGenerate
+        run: ./gradlew dokkaGenerate -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m"
 
-      - name: Upload dokka
+      - name: Upload docs
         if: ${{ matrix.os == 'ubuntu-latest' && github.ref == 'refs/heads/main' }}
         uses: actions/upload-pages-artifact@v3
         with:
