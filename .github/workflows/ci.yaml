@@ -59,8 +59,13 @@ jobs:
         if: ${{ matrix.os == 'macos-latest' }}
         run: ./gradlew dokkaGenerate
 
-      - name: Publish to staging
+      - name: Get version
+        id: get-version
         if: ${{ matrix.os == 'macos-latest' && github.ref == 'refs/heads/main' }}
+        run: echo "version=$(cat version.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Publish to staging
+        if: ${{ matrix.os == 'macos-latest' && github.ref == 'refs/heads/main' && endsWith(steps.get-version.outputs.version, '-SNAPSHOT') }}
         with:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.ORG_GRADLE_PROJECT_MAVENCENTRALUSERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.ORG_GRADLE_PROJECT_MAVENCENTRALPASSWORD }}
@@ -70,7 +75,7 @@ jobs:
         run: ./gradlew publishAllPublicationsToMavenCentralRepository
 
       - name: Upload docs
-        if: ${{ matrix.os == 'macos-latest' && github.ref == 'refs/heads/main' }}
+        if: ${{ matrix.os == 'macos-latest' && github.ref == 'refs/heads/main' && endsWith(steps.get-version.outputs.version, '-SNAPSHOT') }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: build/dokka/html

@@ -8,9 +8,11 @@ dependencyResolutionManagement {
     }
 }
 
+val versionFile = providers.fileContents(layout.rootDirectory.file("version.txt"))
+
 gradle.beforeProject {
     group = "dev.rnett.symbol-export"
-    version = "1.0-SNAPSHOT"
+    version = versionFile.asText.get().trim()
 }
 
 include(
