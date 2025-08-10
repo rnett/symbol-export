@@ -59,15 +59,15 @@ jobs:
         if: ${{ matrix.os == 'macos-latest' }}
         run: ./gradlew dokkaGenerate
 
+      - name: Publish to staging
+        if: ${{ matrix.os == 'macos-latest' && github.ref == 'refs/heads/main' }}
+        run: ./gradlew publishAllPublicationsToMavenCentralRepository
+
       - name: Upload docs
         if: ${{ matrix.os == 'macos-latest' && github.ref == 'refs/heads/main' }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: build/dokka/html
-
-      - name: Publish to staging
-        if: ${{ matrix.os == 'macos-latest' && github.ref == 'refs/heads/main' }}
-        run: ./gradlew publishAllPublicationsToMavenCentralRepository
 
   deployDocs:
     name: Deploy docs
