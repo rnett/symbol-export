@@ -46,3 +46,14 @@ jobs:
       - name: Run integration tests
         working-directory: ./test
         run: ./gradlew check
+
+      - name: Generate dokka
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: ./gradlew dokkaGenerate
+
+      - name: Upload dokka
+        if: ${{ matrix.os == 'macos-latest' && github.ref == 'refs/heads/main' }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: build/dokka/html
