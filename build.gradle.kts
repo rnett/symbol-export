@@ -26,8 +26,6 @@ dependencies {
     dokka(project(":symbols-kotlin-compiler"))
     dokka(project(":symbols-kotlinpoet"))
     dokka(project(":symbols-ksp"))
-
-    dokkaHtmlPlugin(libs.dokka.versioning.plugin)
 }
 
 tasks.withType<KotlinNpmInstallTask>().configureEach {
