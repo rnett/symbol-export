@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
-
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
@@ -37,9 +35,4 @@ dependencies {
     dokka(project(":symbols-kotlin-compiler"))
     dokka(project(":symbols-kotlinpoet"))
     dokka(project(":symbols-ksp"))
-}
-
-tasks.withType<KotlinNpmInstallTask>().configureEach {
-    if (name == "kotlinWasmNpmInstall")
-        mustRunAfter("kotlinNpmInstall")
 }
