@@ -3,7 +3,7 @@ run-name: CI
 on: [ push ]
 jobs:
   buildAndTest:
-    name: Build and test
+    name: Build, test, and publish
     strategy:
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
