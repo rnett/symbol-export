@@ -48,11 +48,11 @@ jobs:
         run: ./gradlew check
 
       - name: Generate dokka
-        if: ${{ matrix.os == 'macos-latest' }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: ./gradlew dokkaGenerate
 
       - name: Upload dokka
-        if: ${{ matrix.os == 'macos-latest' && github.ref == 'refs/heads/main' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && github.ref == 'refs/heads/main' }}
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
