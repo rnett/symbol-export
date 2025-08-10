@@ -1,3 +1,7 @@
+![Maven Central Version](https://img.shields.io/maven-central/v/dev.rnett.symbol-export/symbols?style=for-the-badge)
+![Documentation](https://img.shields.io/badge/documentation-symbol--export.rnett.dev-blue?style=for-the-badge&link=https%3A%2F%2Fsymbol-export.rnett.dev%2F)
+![GitHub License](https://img.shields.io/github/license/rnett/symbol-export?style=for-the-badge)
+
 # Symbol-export
 
 Symbol-export is a tool for exporting symbols from Kotlin libraries so that they can be referenced by tooling such as compile plugins or annotation processors.
