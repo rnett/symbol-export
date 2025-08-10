@@ -32,6 +32,6 @@ dependencies {
 }
 ```
 
-Then the importer project can import a `Symbols` object containing the exported symbols (the package defaults to the project's group ID).
+Then the importer project can import a `Symbols` object containing the exported symbols for any declarations in `exporter` marked with `@ExportSymbol` (`Symbol`'s package defaults to the project's group ID).
 
 Dependencies on the annotations ([annotations]) and symbol library ([symbols]) will be added automatically to the exporting and importing projects, respectively (this can be opted out of).

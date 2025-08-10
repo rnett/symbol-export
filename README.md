@@ -32,7 +32,7 @@ dependencies {
 }
 ```
 
-Then the importer project can import a `Symbols` object containing the exported symbols (the package defaults to the project's group ID).
+Then the importer project can import a `Symbols` object containing the exported symbols for any declarations in `exporter` marked with `@ExportSymbol`.
 
 ## Documentation
 
