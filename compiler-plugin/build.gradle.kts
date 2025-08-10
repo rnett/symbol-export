@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
     id("build.kotlin-jvm")
+    id("build.publishing")
     alias(libs.plugins.buildconfig)
     alias(libs.plugins.shadow)
     `java-test-fixtures`
@@ -43,6 +44,7 @@ idea {
 }
 
 tasks.shadowJar {
+    archiveClassifier = ""
     dependencies {
         exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
     }

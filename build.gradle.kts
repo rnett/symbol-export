@@ -19,6 +19,17 @@ tasks.register("checkAll") {
     dependsOn(project.subprojects.map { it.tasks.named("check") })
 }
 
+afterEvaluate {
+    tasks.register("publishAllToMavenCentral") {
+        group = "publishing"
+        dependsOn(project.subprojects.flatMap { it.tasks.named({ it == "publishAllPublicationsToMavenCentralRepository" }) })
+    }
+    tasks.register("publishAllToMavenLocal") {
+        group = "publishing"
+        dependsOn(project.subprojects.flatMap { it.tasks.named({ it == "publishToMavenLocal" }) })
+    }
+}
+
 dependencies {
     dokka(project(":annotations"))
     dokka(project(":gradle-plugins"))

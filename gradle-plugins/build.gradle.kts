@@ -1,6 +1,6 @@
 plugins {
     id("build.kotlin-jvm")
-    id("build.published-module")
+    id("build.public-module")
     id("java-gradle-plugin")
     alias(libs.plugins.buildconfig)
     alias(libs.plugins.shadow)
@@ -21,6 +21,7 @@ dokka {
 }
 
 tasks.shadowJar {
+    archiveClassifier = ""
     dependencies {
         exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
     }

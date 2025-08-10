@@ -1,6 +1,6 @@
 plugins {
     id("build.kotlin-jvm")
-    id("build.published-module")
+    id("build.public-module")
 }
 
 dependencies {

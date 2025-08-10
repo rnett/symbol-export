@@ -98,6 +98,7 @@ private class KspAnnotationReader(val annotation: KSAnnotation, val checkResolve
                 throw IllegalArgumentException("Null values are not allowed in array arguments")
         }
 
+        @Suppress("UNCHECKED_CAST")
         return expression.asList() as List<Any>
     }
 

@@ -1,4 +1,4 @@
 plugins {
     id("build.kotlin-multiplatform")
-    id("build.published-module")
+    id("build.public-module")
 }
