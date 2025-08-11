@@ -9,12 +9,18 @@ the<org.jetbrains.dokka.gradle.DokkaExtension>().apply {
         suppressObviousFunctions = true
         suppressInheritedMembers = false
 
-        val moduleFile = layout.projectDirectory.file("Module.md")
-        if (moduleFile.asFile.exists())
-            includes.from(moduleFile)
+        if (project.rootProject == project) {
+            val moduleFile = layout.projectDirectory.file("Module.md")
+            if (moduleFile.asFile.exists())
+                includes.from(moduleFile)
+        }
     }
     dokkaSourceSets.configureEach {
         suppressGeneratedFiles = true
         jdkVersion = 17
+
+        val moduleFile = layout.projectDirectory.file("Module.md")
+        if (moduleFile.asFile.exists())
+            includes.from(moduleFile)
     }
 }

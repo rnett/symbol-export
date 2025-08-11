@@ -5,12 +5,12 @@ Symbol-export is a tool for exporting symbols from Kotlin libraries so that they
 Features:
 
 - Compile time errors if symbol names change
-- Integration with the Kotlin compiler ([symbols-kotlin-compiler]), KSP ([symbols-ksp]), and Kotlinpoet ([symbols-kotlinpoet])
+- Integration with the Kotlin compiler ([symbols-kotlin-compiler](/symbols-kotlin-compiler/index.html)), KSP ([symbols-ksp](/symbols-ksp/index.html)), and Kotlinpoet ([symbols-kotlinpoet](/symbols-kotlinpoet/index.html))
 - Reading and writing of annotation instances
 
 ### Usage
 
-All you need to do is apply the Gradle plugins ([gradle-plugins]) to the appropriate projects and add a dependency between the exported symbols and the project that uses them.
+All you need to do is apply the Gradle plugins ([gradle-plugins](/gradle-plugins/index.html)) to the appropriate projects and add a dependency between the exported symbols and the project that uses them.
 
 ```kotlin
 // exporter
@@ -34,4 +34,4 @@ dependencies {
 
 Then the importer project can import a `Symbols` object containing the exported symbols for any declarations in `exporter` marked with `@ExportSymbol` (`Symbol`'s package defaults to the project's group ID).
 
-Dependencies on the annotations ([annotations]) and symbol library ([symbols]) will be added automatically to the exporting and importing projects, respectively (this can be opted out of).
+Dependencies on the annotations ([annotations](/annotations/index.html)) and symbol library ([symbols](/symbols/index.html)) will be added automatically to the exporting and importing projects, respectively (this can be opted out of).

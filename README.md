@@ -40,4 +40,4 @@ Then the importer project can import a `Symbols` object containing the exported 
 
 ## Documentation
 
-TODO link
+Documentation can be found at [symbol-export.rnett.dev](https://symbol-export.rnett.dev).
