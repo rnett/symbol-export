@@ -1,5 +1,6 @@
 package dev.rnett.symbolexport
 
+import dev.rnett.symbolexport.reference.ExportReferences
 
 /**
  * Allows children of this declaration to be exported.
@@ -20,6 +21,13 @@ public annotation class ChildrenExported
  * All parents of the target must be marked with either [ExportSymbol] or [ChildrenExported].
  *
  * Annotation classes may use [ExportAnnotation] instead of this annotation to also export their schema.
+ *
+ * [ExportReferences] may be used to export 3rd party symbols, but should be used with caution.
+ *
+ * @see ChildrenExported
+ * @see ExportAnnotation
+ * @see ExportReceivers
+ * @see ExportReferences
  */
 @Target(
     AnnotationTarget.ANNOTATION_CLASS,

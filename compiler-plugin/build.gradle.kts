@@ -79,16 +79,28 @@ tasks.test {
     maxHeapSize = "2g"
     workingDir = projectDir
 
-    systemProperty("compilerTestRuntime.classpath", compilerTestRuntimeClasspath.map { it.asPath }.get())
+    val conf = compilerTestRuntimeClasspath.map { it.asPath }
 
-    // Properties required to run the internal test framework.
-    setLibraryProperty("org.jetbrains.kotlin.test.kotlin-stdlib", "kotlin-stdlib")
-    setLibraryProperty("org.jetbrains.kotlin.test.kotlin-stdlib-jdk8", "kotlin-stdlib-jdk8")
-    setLibraryProperty("org.jetbrains.kotlin.test.kotlin-reflect", "kotlin-reflect")
-    setLibraryProperty("org.jetbrains.kotlin.test.kotlin-test", "kotlin-test")
-    setLibraryProperty("org.jetbrains.kotlin.test.kotlin-script-runtime", "kotlin-script-runtime")
-    setLibraryProperty("org.jetbrains.kotlin.test.kotlin-annotations-jvm", "kotlin-annotations-jvm")
+    doFirst {
+        fun setLibraryProperty(propName: String, jarName: String) {
+            val path = classpath
+                .files
+                .find { """$jarName-\d.*jar""".toRegex().matches(it.name) }
+                ?.absolutePath
+                ?: return
+            systemProperty(propName, path)
+        }
 
+        systemProperty("compilerTestRuntime.classpath", conf.get())
+
+        // Properties required to run the internal test framework.
+        setLibraryProperty("org.jetbrains.kotlin.test.kotlin-stdlib", "kotlin-stdlib")
+        setLibraryProperty("org.jetbrains.kotlin.test.kotlin-stdlib-jdk8", "kotlin-stdlib-jdk8")
+        setLibraryProperty("org.jetbrains.kotlin.test.kotlin-reflect", "kotlin-reflect")
+        setLibraryProperty("org.jetbrains.kotlin.test.kotlin-test", "kotlin-test")
+        setLibraryProperty("org.jetbrains.kotlin.test.kotlin-script-runtime", "kotlin-script-runtime")
+        setLibraryProperty("org.jetbrains.kotlin.test.kotlin-annotations-jvm", "kotlin-annotations-jvm")
+    }
     systemProperty("idea.ignore.disabled.plugins", "true")
     systemProperty("idea.home.path", projectDir)
 }
@@ -120,14 +132,4 @@ tasks.test {
 
 tasks.compileTestKotlin {
     dependsOn(generateTests)
-}
-
-fun Test.setLibraryProperty(propName: String, jarName: String) {
-    val path = project.configurations
-        .testRuntimeClasspath.get()
-        .files
-        .find { """$jarName-\d.*jar""".toRegex().matches(it.name) }
-        ?.absolutePath
-        ?: return
-    systemProperty(propName, path)
 }

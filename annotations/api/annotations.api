@@ -12,3 +12,21 @@ public abstract interface annotation class dev/rnett/symbolexport/ExportReceiver
 public abstract interface annotation class dev/rnett/symbolexport/ExportSymbol : java/lang/annotation/Annotation {
 }
 
+public abstract class dev/rnett/symbolexport/reference/BaseReferenceExporter {
+	public fun <init> ()V
+	protected final fun exportAnnotation (Lkotlin/reflect/KClass;)V
+	protected final fun exportClass (Lkotlin/reflect/KClass;Z)V
+	public static synthetic fun exportClass$default (Ldev/rnett/symbolexport/reference/BaseReferenceExporter;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
+	protected final fun exportEnumEntries (Lkotlin/reflect/KClass;)V
+	protected final fun exportReference (Lkotlin/reflect/KFunction;ZZ)V
+	protected final fun exportReference (Lkotlin/reflect/KProperty;ZZ)V
+	public static synthetic fun exportReference$default (Ldev/rnett/symbolexport/reference/BaseReferenceExporter;Lkotlin/reflect/KFunction;ZZILjava/lang/Object;)V
+	public static synthetic fun exportReference$default (Ldev/rnett/symbolexport/reference/BaseReferenceExporter;Lkotlin/reflect/KProperty;ZZILjava/lang/Object;)V
+	protected final fun exportReferenced (Ljava/lang/Object;ZZ)V
+	public static synthetic fun exportReferenced$default (Ldev/rnett/symbolexport/reference/BaseReferenceExporter;Ljava/lang/Object;ZZILjava/lang/Object;)V
+	protected final fun placeholder ()Ljava/lang/Object;
+}
+
+public abstract interface annotation class dev/rnett/symbolexport/reference/ExportReferences : java/lang/annotation/Annotation {
+}
+

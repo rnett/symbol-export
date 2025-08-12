@@ -22,6 +22,8 @@ public sealed interface ParameterType {
 @Serializable
 public sealed interface InternalName {
 
+    public val qualifiedName: String
+
     @Serializable
     public sealed interface Member : InternalName
 
@@ -29,16 +31,24 @@ public sealed interface InternalName {
      * A class, interface, object, etc.
      */
     @Serializable
-    public data class Classifier(val packageName: List<String>, val classNames: List<String>) : InternalName
+    public data class Classifier(val packageName: List<String>, val classNames: List<String>) : InternalName {
+        override val qualifiedName: String by lazy { packageName.joinToString(".") + "." + classNames.joinToString(".") }
+    }
 
     @Serializable
-    public data class ClassifierMember(val classifier: Classifier, val name: String) : Member
+    public data class ClassifierMember(val classifier: Classifier, val name: String) : Member {
+        override val qualifiedName: String by lazy { "${classifier.qualifiedName}.$name" }
+    }
 
     @Serializable
-    public data class TopLevelMember(val packageName: List<String>, val name: String) : Member
+    public data class TopLevelMember(val packageName: List<String>, val name: String) : Member {
+        override val qualifiedName: String by lazy { packageName.joinToString(".") + "." + name }
+    }
 
     @Serializable
-    public data class Constructor(val classifier: Classifier, val name: String) : Member
+    public data class Constructor(val classifier: Classifier, val name: String) : Member {
+        override val qualifiedName: String by lazy { "${classifier.qualifiedName}.$name" }
+    }
 
     @Serializable
     public data class ReceiverParameter(
@@ -47,8 +57,10 @@ public sealed interface InternalName {
         val index: Int,
         @SerialName("parameterType")
         val type: Type
-    ) :
-        InternalName {
+    ) : InternalName {
+
+        override val qualifiedName: String by lazy { "${owner.qualifiedName}.$name" }
+
         @Serializable
         public enum class Type : ParameterType {
             DISPATCH, EXTENSION;
@@ -64,6 +76,8 @@ public sealed interface InternalName {
         @SerialName("parameterType")
         val type: Type
     ) : InternalName {
+        override val qualifiedName: String by lazy { "${owner.qualifiedName}.$name" }
+
         @Serializable
         public enum class Type : ParameterType {
             VALUE, CONTEXT;
@@ -71,10 +85,14 @@ public sealed interface InternalName {
     }
 
     @Serializable
-    public data class TypeParameter(val owner: InternalName, val name: String, val index: Int) : InternalName
+    public data class TypeParameter(val owner: InternalName, val name: String, val index: Int) : InternalName {
+        override val qualifiedName: String by lazy { "${owner.qualifiedName}.$name" }
+    }
 
     @Serializable
-    public data class EnumEntry(val owner: Classifier, val name: String, val ordinal: Int) : InternalName
+    public data class EnumEntry(val owner: Classifier, val name: String, val ordinal: Int) : InternalName {
+        override val qualifiedName: String by lazy { "${owner.qualifiedName}.$name" }
+    }
 
     @Serializable
     public data class Annotation(
@@ -82,6 +100,8 @@ public sealed interface InternalName {
         val classNames: List<String>,
         val parameters: List<Parameter>
     ) : InternalName {
+        override val qualifiedName: String by lazy { packageName.joinToString(".") + "." + classNames.joinToString(".") }
+
         @Serializable
         public data class Parameter(val name: String, val index: Int, val type: AnnotationParameterType)
     }

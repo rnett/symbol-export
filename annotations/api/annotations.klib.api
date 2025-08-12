@@ -6,6 +6,10 @@
 // - Show declarations: true
 
 // Library unique name: <dev.rnett.symbol-export:annotations>
+open annotation class dev.rnett.symbolexport.reference/ExportReferences : kotlin/Annotation { // dev.rnett.symbolexport.reference/ExportReferences|null[0]
+    constructor <init>() // dev.rnett.symbolexport.reference/ExportReferences.<init>|<init>(){}[0]
+}
+
 open annotation class dev.rnett.symbolexport/ChildrenExported : kotlin/Annotation { // dev.rnett.symbolexport/ChildrenExported|null[0]
     constructor <init>() // dev.rnett.symbolexport/ChildrenExported.<init>|<init>(){}[0]
 }
@@ -25,4 +29,16 @@ open annotation class dev.rnett.symbolexport/ExportReceivers : kotlin/Annotation
 
 open annotation class dev.rnett.symbolexport/ExportSymbol : kotlin/Annotation { // dev.rnett.symbolexport/ExportSymbol|null[0]
     constructor <init>() // dev.rnett.symbolexport/ExportSymbol.<init>|<init>(){}[0]
+}
+
+abstract class dev.rnett.symbolexport.reference/BaseReferenceExporter { // dev.rnett.symbolexport.reference/BaseReferenceExporter|null[0]
+    constructor <init>() // dev.rnett.symbolexport.reference/BaseReferenceExporter.<init>|<init>(){}[0]
+
+    final fun <#A1: kotlin/Any?> placeholder(): #A1 // dev.rnett.symbolexport.reference/BaseReferenceExporter.placeholder|placeholder(){0§<kotlin.Any?>}[0]
+    final fun exportAnnotation(kotlin.reflect/KClass<out kotlin/Annotation>) // dev.rnett.symbolexport.reference/BaseReferenceExporter.exportAnnotation|exportAnnotation(kotlin.reflect.KClass<out|kotlin.Annotation>){}[0]
+    final fun exportClass(kotlin.reflect/KClass<*>, kotlin/Boolean = ...) // dev.rnett.symbolexport.reference/BaseReferenceExporter.exportClass|exportClass(kotlin.reflect.KClass<*>;kotlin.Boolean){}[0]
+    final fun exportEnumEntries(kotlin.reflect/KClass<out kotlin/Enum<*>>) // dev.rnett.symbolexport.reference/BaseReferenceExporter.exportEnumEntries|exportEnumEntries(kotlin.reflect.KClass<out|kotlin.Enum<*>>){}[0]
+    final fun exportReference(kotlin.reflect/KFunction<*>, kotlin/Boolean = ..., kotlin/Boolean = ...) // dev.rnett.symbolexport.reference/BaseReferenceExporter.exportReference|exportReference(kotlin.reflect.KFunction<*>;kotlin.Boolean;kotlin.Boolean){}[0]
+    final fun exportReference(kotlin.reflect/KProperty<*>, kotlin/Boolean = ..., kotlin/Boolean = ...) // dev.rnett.symbolexport.reference/BaseReferenceExporter.exportReference|exportReference(kotlin.reflect.KProperty<*>;kotlin.Boolean;kotlin.Boolean){}[0]
+    final fun exportReferenced(kotlin/Any?, kotlin/Boolean = ..., kotlin/Boolean = ...) // dev.rnett.symbolexport.reference/BaseReferenceExporter.exportReferenced|exportReferenced(kotlin.Any?;kotlin.Boolean;kotlin.Boolean){}[0]
 }

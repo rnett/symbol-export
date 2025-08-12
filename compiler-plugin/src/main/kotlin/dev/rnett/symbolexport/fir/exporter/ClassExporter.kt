@@ -2,7 +2,6 @@ package dev.rnett.symbolexport.fir.exporter
 
 import dev.rnett.symbolexport.fir.IllegalUseCheckerImpl
 import dev.rnett.symbolexport.fir.Predicates
-import dev.rnett.symbolexport.fir.exporter.Helpers.createClassName
 import dev.rnett.symbolexport.internal.InternalName
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
@@ -23,6 +22,6 @@ class ClassExporter(session: FirSession, illegalUseChecker: IllegalUseCheckerImp
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun createName(declaration: FirClass): Pair<KtSourceElement?, InternalName>? {
-        return declaration.source to createClassName(declaration.symbol)
+        return declaration.source to InternalNames.className(declaration.symbol)
     }
 }

@@ -117,6 +117,7 @@ public final class dev/rnett/symbolexport/internal/AnnotationParameterType$Primi
 
 public abstract interface class dev/rnett/symbolexport/internal/InternalName {
 	public static final field Companion Ldev/rnett/symbolexport/internal/InternalName$Companion;
+	public abstract fun getQualifiedName ()Ljava/lang/String;
 }
 
 public final class dev/rnett/symbolexport/internal/InternalName$Annotation : dev/rnett/symbolexport/internal/InternalName {
@@ -131,6 +132,7 @@ public final class dev/rnett/symbolexport/internal/InternalName$Annotation : dev
 	public final fun getClassNames ()Ljava/util/List;
 	public final fun getPackageName ()Ljava/util/List;
 	public final fun getParameters ()Ljava/util/List;
+	public fun getQualifiedName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -191,6 +193,7 @@ public final class dev/rnett/symbolexport/internal/InternalName$Classifier : dev
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getClassNames ()Ljava/util/List;
 	public final fun getPackageName ()Ljava/util/List;
+	public fun getQualifiedName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -220,6 +223,7 @@ public final class dev/rnett/symbolexport/internal/InternalName$ClassifierMember
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getClassifier ()Ldev/rnett/symbolexport/internal/InternalName$Classifier;
 	public final fun getName ()Ljava/lang/String;
+	public fun getQualifiedName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -253,6 +257,7 @@ public final class dev/rnett/symbolexport/internal/InternalName$Constructor : de
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getClassifier ()Ldev/rnett/symbolexport/internal/InternalName$Classifier;
 	public final fun getName ()Ljava/lang/String;
+	public fun getQualifiedName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -284,6 +289,7 @@ public final class dev/rnett/symbolexport/internal/InternalName$EnumEntry : dev/
 	public final fun getName ()Ljava/lang/String;
 	public final fun getOrdinal ()I
 	public final fun getOwner ()Ldev/rnett/symbolexport/internal/InternalName$Classifier;
+	public fun getQualifiedName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -318,6 +324,7 @@ public final class dev/rnett/symbolexport/internal/InternalName$IndexedParameter
 	public final fun getIndexInList ()I
 	public final fun getName ()Ljava/lang/String;
 	public final fun getOwner ()Ldev/rnett/symbolexport/internal/InternalName$Member;
+	public fun getQualifiedName ()Ljava/lang/String;
 	public final fun getType ()Ldev/rnett/symbolexport/internal/InternalName$IndexedParameter$Type;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -372,6 +379,7 @@ public final class dev/rnett/symbolexport/internal/InternalName$ReceiverParamete
 	public final fun getIndex ()I
 	public final fun getName ()Ljava/lang/String;
 	public final fun getOwner ()Ldev/rnett/symbolexport/internal/InternalName$Member;
+	public fun getQualifiedName ()Ljava/lang/String;
 	public final fun getType ()Ldev/rnett/symbolexport/internal/InternalName$ReceiverParameter$Type;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -415,6 +423,7 @@ public final class dev/rnett/symbolexport/internal/InternalName$TopLevelMember :
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getName ()Ljava/lang/String;
 	public final fun getPackageName ()Ljava/util/List;
+	public fun getQualifiedName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -446,6 +455,7 @@ public final class dev/rnett/symbolexport/internal/InternalName$TypeParameter : 
 	public final fun getIndex ()I
 	public final fun getName ()Ljava/lang/String;
 	public final fun getOwner ()Ldev/rnett/symbolexport/internal/InternalName;
+	public fun getQualifiedName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

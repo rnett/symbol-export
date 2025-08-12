@@ -2,7 +2,6 @@ package dev.rnett.symbolexport.fir.exporter
 
 import dev.rnett.symbolexport.fir.IllegalUseCheckerImpl
 import dev.rnett.symbolexport.fir.Predicates
-import dev.rnett.symbolexport.fir.exporter.Helpers.createMemberName
 import dev.rnett.symbolexport.internal.InternalName
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
@@ -40,6 +39,6 @@ class MemberExporter<T : FirCallableDeclaration>(session: FirSession, illegalUse
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun createName(declaration: T): Pair<KtSourceElement?, InternalName>? {
-        return declaration.source to createMemberName(declaration.symbol)
+        return declaration.source to InternalNames.memberName(declaration.symbol)
     }
 }

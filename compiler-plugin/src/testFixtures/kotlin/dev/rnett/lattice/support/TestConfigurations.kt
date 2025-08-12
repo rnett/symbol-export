@@ -24,6 +24,7 @@ fun TestConfigurationBuilder.baseConfiguration() {
             ImportsPreprocessor(
                 setOf(
                     "dev.rnett.symbolexport.*",
+                    "dev.rnett.symbolexport.reference.*"
                 ),
                 it
             )

@@ -20,4 +20,7 @@ object Names {
 
     val EXPORT_ANNOTATION_ANNOTATION_FQN = FqName("dev.rnett.symbolexport.ExportAnnotation")
     val EXPORT_ANNOTATION_ANNOTATION_CLASSID = ClassId.topLevel(EXPORT_ANNOTATION_ANNOTATION_FQN)
+
+    val EXPORT_REFERENCES_ANNOTATION_FQN = FqName("dev.rnett.symbolexport.reference.ExportReferences")
+    val EXPORT_REFERENCES_ANNOTATION_CLASSID = ClassId.topLevel(EXPORT_REFERENCES_ANNOTATION_FQN)
 }

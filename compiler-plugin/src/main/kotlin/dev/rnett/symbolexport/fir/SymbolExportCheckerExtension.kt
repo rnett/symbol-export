@@ -12,6 +12,7 @@ import dev.rnett.symbolexport.fir.exporter.SymbolExporter
 import dev.rnett.symbolexport.fir.exporter.TypeParameterExporter
 import dev.rnett.symbolexport.fir.exporter.ValueParameterExporter
 import dev.rnett.symbolexport.fir.exporter.exporterCheckersOf
+import dev.rnett.symbolexport.fir.exporter.reference.ReferencesExporter
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.DeclarationCheckers
 import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
@@ -26,7 +27,9 @@ class SymbolExportCheckerExtension(session: FirSession, val warnOnExported: Bool
             Predicates.export,
             Predicates.childrenExported,
             Predicates.annotationExport,
-            Predicates.parentAnnotationExport
+            Predicates.parentAnnotationExport,
+            Predicates.exportReferences,
+            Predicates.ancestorExportsReferences
         )
     }
 
@@ -47,6 +50,7 @@ class SymbolExportCheckerExtension(session: FirSession, val warnOnExported: Bool
         override val classCheckers = exportCheckersOf(
             ClassExporter(session, illegalUseChecker),
             AnnotationExporter(session, illegalUseChecker),
+            ReferencesExporter(session)
         )
         override val callableDeclarationCheckers = exportCheckersOf(
             MemberExporter(session, illegalUseChecker),

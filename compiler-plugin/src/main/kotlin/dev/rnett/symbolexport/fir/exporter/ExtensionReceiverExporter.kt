@@ -2,10 +2,7 @@ package dev.rnett.symbolexport.fir.exporter
 
 import dev.rnett.symbolexport.fir.IllegalUseCheckerImpl
 import dev.rnett.symbolexport.fir.Names
-import dev.rnett.symbolexport.fir.exporter.Helpers.createMemberName
-import dev.rnett.symbolexport.fir.exporter.Helpers.getIndexStartOffset
 import dev.rnett.symbolexport.internal.InternalName
-import dev.rnett.symbolexport.internal.InternalName.ReceiverParameter.Type.EXTENSION
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.FirSession
@@ -15,8 +12,6 @@ import org.jetbrains.kotlin.fir.declarations.getAnnotationByClassId
 import org.jetbrains.kotlin.fir.declarations.getBooleanArgument
 import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
-import org.jetbrains.kotlin.name.SpecialNames
 
 class ExtensionReceiverExporter(session: FirSession, illegalUseChecker: IllegalUseCheckerImpl) : BaseSymbolExporter<FirReceiverParameter>(session, illegalUseChecker) {
     override fun getParent(declaration: FirReceiverParameter): FirBasedSymbol<*>? =
@@ -48,14 +43,6 @@ class ExtensionReceiverExporter(session: FirSession, illegalUseChecker: IllegalU
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun createName(declaration: FirReceiverParameter): Pair<KtSourceElement?, InternalName>? {
-        val parent = declaration.symbol.containingDeclarationSymbol as FirCallableSymbol<*>
-        val parentName = createMemberName(parent)
-
-        return declaration.source to InternalName.ReceiverParameter(
-            parentName,
-            SpecialNames.RECEIVER.asString(),
-            getIndexStartOffset(parent, EXTENSION),
-            EXTENSION
-        )
+        return declaration.source to InternalNames.extensionReceiverName(declaration)
     }
 }

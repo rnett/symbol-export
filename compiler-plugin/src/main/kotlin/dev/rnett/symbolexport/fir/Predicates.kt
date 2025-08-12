@@ -2,6 +2,7 @@ package dev.rnett.symbolexport.fir
 
 import dev.rnett.symbolexport.fir.Names.EXPORT_ANNOTATION_ANNOTATION_FQN
 import dev.rnett.symbolexport.fir.Names.EXPORT_ANNOTATION_FQN
+import dev.rnett.symbolexport.fir.Names.EXPORT_REFERENCES_ANNOTATION_FQN
 import dev.rnett.symbolexport.fir.Names.PARENT_ANNOTATION_FQN
 import org.jetbrains.kotlin.fir.extensions.predicate.DeclarationPredicate
 
@@ -21,5 +22,13 @@ object Predicates {
 
     val parentAnnotationExport = DeclarationPredicate.create {
         parentAnnotated(EXPORT_ANNOTATION_ANNOTATION_FQN)
+    }
+
+    val exportReferences = DeclarationPredicate.create {
+        annotated(EXPORT_REFERENCES_ANNOTATION_FQN)
+    }
+
+    val ancestorExportsReferences = DeclarationPredicate.create {
+        ancestorAnnotated(EXPORT_REFERENCES_ANNOTATION_FQN)
     }
 }

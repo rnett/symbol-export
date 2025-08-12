@@ -2,10 +2,7 @@ package dev.rnett.symbolexport.fir.exporter
 
 import dev.rnett.symbolexport.fir.IllegalUseCheckerImpl
 import dev.rnett.symbolexport.fir.Names
-import dev.rnett.symbolexport.fir.exporter.Helpers.createMemberName
-import dev.rnett.symbolexport.fir.exporter.Helpers.getIndexStartOffset
 import dev.rnett.symbolexport.internal.InternalName
-import dev.rnett.symbolexport.internal.InternalName.ReceiverParameter.Type.DISPATCH
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.FirSession
@@ -18,7 +15,6 @@ import org.jetbrains.kotlin.fir.dispatchReceiverClassTypeOrNull
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.types.customAnnotations
 import org.jetbrains.kotlin.fir.types.typeAnnotations
-import org.jetbrains.kotlin.name.SpecialNames
 
 class DispatchReceiverExporter<T : FirCallableDeclaration>(session: FirSession, illegalUseChecker: IllegalUseCheckerImpl) : BaseSymbolExporter<T>(session, illegalUseChecker) {
     // we're exporting a child
@@ -55,13 +51,6 @@ class DispatchReceiverExporter<T : FirCallableDeclaration>(session: FirSession, 
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun createName(declaration: T): Pair<KtSourceElement?, InternalName>? {
-        val parentName = createMemberName(declaration.symbol)
-
-        return declaration.source to InternalName.ReceiverParameter(
-            parentName,
-            SpecialNames.THIS.asString(),
-            getIndexStartOffset(declaration.symbol, DISPATCH),
-            DISPATCH
-        )
+        return InternalNames.dispatchReceiverName(declaration.symbol)?.let { declaration.source to it }
     }
 }

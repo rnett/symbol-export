@@ -15,6 +15,12 @@ fun main() {
             testClass<BaseDiagnosticCompilerTest>("ErrorsTestGenerated") {
                 model("errors")
             }
+            testClass<BaseDiagnosticCompilerTest>("ReferenceExportTestGenerated") {
+                model("reference/export")
+            }
+            testClass<BaseDiagnosticCompilerTest>("ReferenceErrorsTestGenerated") {
+                model("reference/errors")
+            }
         }
     }
 }
