@@ -5,33 +5,65 @@ Symbol-export is a tool for exporting symbols from Kotlin libraries so that they
 Features:
 
 - Compile time errors if symbol names change
-- Integration with the Kotlin compiler ([symbols-kotlin-compiler](/symbols-kotlin-compiler/index.html)), KSP ([symbols-ksp](/symbols-ksp/index.html)), and Kotlinpoet ([symbols-kotlinpoet](/symbols-kotlinpoet/index.html))
+- Integrations with the <a href="./symbols-kotlin-compiler/index.html">Kotlin compiler</a>, <a href="./symbols-ksp/index.html">KSP</a>, and <a href="./symbols-kotlinpoet/index.html">Kotlinpoet</a>
 - Reading and writing of annotation instances
 
-### Usage
+## Getting started
 
-All you need to do is apply the Gradle plugins ([gradle-plugins](/gradle-plugins/index.html)) to the appropriate projects and add a dependency between the exported symbols and the project that uses them.
+All you need to do is apply the Gradle plugins to the appropriate projects and add a dependency between the exported symbols and the project that uses them.
 
+### Exporting project
+
+##### build.gradle.kts
 ```kotlin
-// exporter
-
 plugins {
     id("dev.rnett.symbol-export.export")
 }
+
+name = "foobar"
 ```
 
-```kotlin
-// importer
+##### Your code
 
+```kotlin
+package foo.bar
+
+@ExportSymbol
+fun bar() {
+}
+
+@ExportSymbol
+class FooService {
+}
+```
+
+### Importing project
+
+##### build.gradle.kts
+
+```kotlin
 plugins {
     id("dev.rnett.symbol-export.import")
 }
 
 dependencies {
-    importSymbols(project(":exporter"))
+    importSymbols(project(":foobar"))
 }
 ```
 
+##### Your code
+
+```kotlin
+val bar = Symbols.foobar.foo_bar_bar
+val fooService = Symbols.foobar.foo_bar_FooService
+```
+
+By default, the `Symbols` object is generated with a package matching the importing project's group ID.
+
 Then the importer project can import a `Symbols` object containing the exported symbols for any declarations in `exporter` marked with `@ExportSymbol` (`Symbol`'s package defaults to the project's group ID).
 
-Dependencies on the annotations ([annotations](/annotations/index.html)) and symbol library ([symbols](/symbols/index.html)) will be added automatically to the exporting and importing projects, respectively (this can be opted out of).
+Dependencies on the <a href="./annotations/index.html">annotations</a> and <a href="./symbols/index.html">symbol library</a> will be added automatically to the exporting and importing projects, respectively (this can be opted out of).
+
+## Usage
+
+For more advanced usage, check out the available <a href="./annotations/index.html">annotations</a> and consult the configuration options of the <a href="./gradle-plugins/index.html">Gradle plugins</a>.

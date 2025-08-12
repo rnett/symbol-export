@@ -45,7 +45,7 @@ public abstract class BaseReferenceExporter {
      *
      * Exports from the call of the expression its argument evaluates to.  For example:
      * ```kotlin
-     * exportReferenced(placeholder<List<Int>>().toSet())
+     * exportReferenced(listOf<Int>().toSet())
      * ```
      * will export `kotlin.collections.toSet`.
      *

@@ -5,10 +5,10 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 
 /**
- * Configuration for importing symbols.
+ * Configuration for importing symbols. Accessible at `symbolImport` in build scripts.
  *
- * @property generatedSymbolsPackage The package to use for the generated sources.  Has no real meaning, there is no reason to set it.
- * @property symbolGenerationDirectory The directory root to place the generated sources in.
+ * @property generatedSymbolsPackage The package to use for the generated sources. Defaults to this project's group ID.
+ * @property symbolGenerationDirectory The directory root to place the generated sources in. Purely internal, there is no reason to set this.
  * @property attachToSourceSets  The source sets to attach the generated sources to.
  *   Default is empty, which attaches to all of them.
  * @property autoAddSymbolsDependency Whether to automatically add a dependency on the symbols library to sources sets the symbols are attached to.

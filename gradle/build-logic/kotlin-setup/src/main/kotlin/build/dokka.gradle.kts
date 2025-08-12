@@ -8,6 +8,7 @@ the<org.jetbrains.dokka.gradle.DokkaExtension>().apply {
     dokkaPublications.configureEach {
         suppressObviousFunctions = true
         suppressInheritedMembers = false
+        failOnWarning = true
 
         if (project.rootProject == project) {
             val moduleFile = layout.projectDirectory.file("Module.md")

@@ -44,6 +44,9 @@ public annotation class ExportSymbol
 /**
  * Applies [ExportSymbol] to this function's dispatch and extension receivers, if the appropriate flags are set.
  * Applies to both by default.
+ *
+ * @param dispatch whether to export the dispatch receiver
+ * @param extension whether to export the extension receiver
  */
 @Target(
     AnnotationTarget.FUNCTION,
