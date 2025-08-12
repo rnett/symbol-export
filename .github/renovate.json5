@@ -22,7 +22,8 @@
       ],
       branchPrefix: "kotlin-update/",
       "allowedVersions": "/.*/",
-      "ignoreUnstable": false
+      "ignoreUnstable": false,
+      automerge: false
     }
   ],
   enabledManagers: [
