@@ -3,6 +3,7 @@
   "extends": [
     "config:recommended"
   ],
+  "groupSlug": "all",
   labels: [
     "renovate"
   ],
@@ -14,10 +15,10 @@
   ],
   "packageRules": [
     {
-      "matchPackageNames": [
-        "/org.jetbrains.kotlin:.*/"
+      "matchPackagePatterns": [
+        "*"
       ],
-      "allowedVersions": "/^.*$/"
+      "allowedVersions": "/.*/i"
     }
   ],
   enabledManagers: [
