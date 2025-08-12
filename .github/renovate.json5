@@ -18,7 +18,7 @@
         "/org.jetbrains.kotlin:.*/"
       ],
       "versioning": "regex",
-      "versioningTemplate": "/^.*$/"
+      "allowedVersions": "/^.*$/"
     }
   ],
   enabledManagers: [
