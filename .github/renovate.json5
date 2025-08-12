@@ -17,7 +17,6 @@
       "matchPackageNames": [
         "/org.jetbrains.kotlin:.*/"
       ],
-      "versioning": "regex",
       "allowedVersions": "/^.*$/"
     }
   ],
