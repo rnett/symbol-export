@@ -18,15 +18,15 @@
         "digest"
       ],
       "matchDepNames": [
-        "!org.jetbrains.kotlin.**"
+        "!org.jetbrains.kotlin**"
       ],
       "automerge": true
     },
     {
       "matchPackageNames": [
-        "org.jetbrains.kotlin.**"
+        "org.jetbrains.kotlin**"
       ],
-      "allowedVersions": "/.*(?:Beta.|RC)/"
+      "allowedVersions": "/.*(?:Beta.|RC)/i"
     }
   ],
   enabledManagers: [
