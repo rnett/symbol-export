@@ -17,7 +17,7 @@
       "matchPackageNames": [
         "org.jetbrains.kotlin:kotlin-gradle-plugin"
       ],
-      "allowedVersions": "/.*/"
+      "allowedVersions": "2.2.10-RC2"
     }
   ],
   enabledManagers: [
