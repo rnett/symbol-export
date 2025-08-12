@@ -12,6 +12,15 @@
   assignees: [
     "rnett"
   ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "/org.jetbrains.kotlin:.*/"
+      ],
+      "versioning": "regex",
+      "versioningTemplate": "/^.*$/"
+    }
+  ],
   enabledManagers: [
     "gradle",
     "gradle-wrapper"
