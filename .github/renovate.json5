@@ -1,5 +1,8 @@
 {
-  dependencyDashboard: true,
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
   labels: [
     "renovate"
   ],
@@ -8,26 +11,6 @@
   ],
   assignees: [
     "rnett"
-  ],
-  "packageRules": [
-    {
-      "matchUpdateTypes": [
-        "minor",
-        "patch",
-        "pin",
-        "digest"
-      ],
-      "matchDepNames": [
-        "!org.jetbrains.kotlin**"
-      ],
-      "automerge": true
-    },
-    {
-      "matchPackageNames": [
-        "org.jetbrains.kotlin**"
-      ],
-      "allowedVersions": "/.*(?:Beta.|RC)/i"
-    }
   ],
   enabledManagers: [
     "gradle",
