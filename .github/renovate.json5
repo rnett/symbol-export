@@ -25,8 +25,7 @@
       "matchPackageNames": [
         "org.jetbrains.kotlin.**"
       ],
-      "allowedVersions": "/beta|rc/"
-      // Example - adjust regex to fit your EAP naming convention
+      "allowedVersions": "/Beta|RC/"
     }
   ],
   "managerFilePatterns": [
