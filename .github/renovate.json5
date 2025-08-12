@@ -24,7 +24,12 @@
       "allowedVersions": "/.*/",
       "ignoreUnstable": false,
       automerge: false,
-      draftPR: true
+      draftPR: true,
+      baseBranchPatterns: [
+        "main",
+        "renovate/kotlin",
+        "kotlin-update/*"
+      ]
     }
   ],
   enabledManagers: [
