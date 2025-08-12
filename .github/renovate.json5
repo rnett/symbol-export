@@ -3,7 +3,6 @@
   "extends": [
     "config:recommended"
   ],
-  "groupSlug": "all",
   labels: [
     "renovate"
   ],
@@ -15,10 +14,10 @@
   ],
   "packageRules": [
     {
-      "matchPackagePatterns": [
+      "matchPackageNames": [
         "*"
       ],
-      "allowedVersions": "/.*/i"
+      "allowedVersions": "/.*/"
     }
   ],
   enabledManagers: [
