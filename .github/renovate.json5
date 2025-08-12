@@ -29,15 +29,8 @@
       "allowedVersions": "/.*(?:Beta.|RC)/i"
     }
   ],
-  "managerFilePatterns": [
-    "/\\.gradle(\\.kts)?$/",
-    "/(^|/)gradle\\.properties$/",
-    "/(^|/)gradle/.+\\.toml$/",
-    "/(^|/)buildSrc/.+\\.kt$/",
-    "/\\.versions\\.toml$/",
-    "/(^|/)versions.props$/",
-    "/(^|/)versions.lock$/"
+  enabledManagers: [
+    "gradle",
+    "gradle-wrapper"
   ],
-  "timeout": 600,
-  "versioning": "gradle"
 }
