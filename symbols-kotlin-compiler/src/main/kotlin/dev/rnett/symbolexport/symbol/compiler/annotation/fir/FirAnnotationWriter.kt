@@ -114,6 +114,7 @@ private class FirAnnotationWriter(
                 packageFqName = enumClassId.packageFqName
                 relativeClassFqName = enumClassId.relativeClassName
                 symbol = enumClassSymbol
+                resolvedToCompanionObject = false
             }
             coneTypeOrNull = enumClassType
             calleeReference = buildResolvedNamedReference {
@@ -144,6 +145,7 @@ private class FirAnnotationWriter(
                 canBeValue = true
                 packageFqName = classId.packageFqName
                 relativeClassFqName = classId.relativeClassName
+                resolvedToCompanionObject = false
             })
         }
     }

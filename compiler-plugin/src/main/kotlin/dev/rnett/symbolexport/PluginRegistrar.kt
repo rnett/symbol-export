@@ -26,8 +26,7 @@ data class ExportWriteSpec(
 class PluginRegistrar(
     val writeSpec: ExportWriteSpec?,
     val warnOnExported: Boolean,
-) :
-    FirExtensionRegistrar() {
+) : FirExtensionRegistrar() {
 
     init {
         writeSpec?.apply {
