@@ -1,10 +1,17 @@
 package build
 
+import org.jetbrains.dokka.gradle.DokkaExtension
+import java.net.URI
+
 plugins {
     id("org.jetbrains.dokka")
 }
 
-the<org.jetbrains.dokka.gradle.DokkaExtension>().apply {
+val commit: Provider<String> = providers.exec {
+    commandLine("git", "rev-parse", "HEAD")
+}.standardOutput.asText
+
+the<DokkaExtension>().apply {
     dokkaPublications.configureEach {
         suppressObviousFunctions = true
         suppressInheritedMembers = false
@@ -17,6 +24,11 @@ the<org.jetbrains.dokka.gradle.DokkaExtension>().apply {
         }
     }
     dokkaSourceSets.configureEach {
+        sourceLink {
+            remoteUrl = commit.map { URI.create("https://github.com/rnett/symbol-export/blob/${it.trim()}") }
+            localDirectory = project.rootDir
+            remoteLineSuffix = "#L"
+        }
         suppressGeneratedFiles = true
         jdkVersion = 17
 
