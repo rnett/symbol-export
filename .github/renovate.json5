@@ -1,0 +1,43 @@
+{
+  labels: [
+    "renovate"
+  ],
+  reviewers: [
+    "rnett"
+  ],
+  assignees: [
+    "rnett"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "matchDepNames": [
+        "!org.jetbrains.kotlin.**"
+      ],
+      "automerge": true
+    },
+    {
+      "matchPackageNames": [
+        "org.jetbrains.kotlin.**"
+      ],
+      "allowedVersions": "/beta|rc/"
+      // Example - adjust regex to fit your EAP naming convention
+    }
+  ],
+  "managerFilePatterns": [
+    "/\\.gradle(\\.kts)?$/",
+    "/(^|/)gradle\\.properties$/",
+    "/(^|/)gradle/.+\\.toml$/",
+    "/(^|/)buildSrc/.+\\.kt$/",
+    "/\\.versions\\.toml$/",
+    "/(^|/)versions.props$/",
+    "/(^|/)versions.lock$/"
+  ],
+  "timeout": 600,
+  "versioning": "gradle"
+}

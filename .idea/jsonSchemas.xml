@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JsonSchemaMappingsProjectConfiguration">
+    <state>
+      <map>
+        <entry key="renovate-schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="New Schema" />
+              <option name="name" value="renovate-schema" />
+              <option name="relativePathToSchema" value="https://docs.renovatebot.com/renovate-schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="path" value=".github/renovate.json5" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+      </map>
+    </state>
+  </component>
+</project>
