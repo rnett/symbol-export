@@ -9,12 +9,12 @@ import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.diagnostics.DiagnosticFactory1DelegateProvider
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactoryToRendererMap
+import org.jetbrains.kotlin.diagnostics.KtDiagnosticsContainer
 import org.jetbrains.kotlin.diagnostics.Severity
 import org.jetbrains.kotlin.diagnostics.SourceElementPositioningStrategies
 import org.jetbrains.kotlin.diagnostics.error0
 import org.jetbrains.kotlin.diagnostics.rendering.BaseDiagnosticRendererFactory
 import org.jetbrains.kotlin.diagnostics.rendering.Renderer
-import org.jetbrains.kotlin.diagnostics.rendering.RootDiagnosticRendererFactory
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.diagnostics.warning0
 import org.jetbrains.kotlin.fir.FirElement
@@ -81,15 +81,15 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
     @OptIn(DirectDeclarationsAccess::class)
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun exportSymbols(declaration: FirClass): Iterable<Pair<KtSourceElement?, InternalName>> {
-        val extendsBaseClass = declaration.findNonInterfaceSupertype(context)?.toRegularClassSymbol(session)?.classId == ExportFunctionNames.baseClass
+        val extendsBaseClass = declaration.findNonInterfaceSupertype()?.toRegularClassSymbol(session)?.classId == ExportFunctionNames.baseClass
         val annotated = session.predicateBasedProvider.matches(Predicates.exportReferences, declaration)
         if (extendsBaseClass && !annotated) {
-            reporter.reportOn(declaration.source, Errors.SYMBOL_EXPORT_REFERENCE_MUST_BE_ANNOTATED)
+            reporter.reportOn(declaration.source, Diagnostics.SYMBOL_EXPORT_REFERENCE_MUST_BE_ANNOTATED)
             return emptyList()
         }
 
         if (annotated && !extendsBaseClass) {
-            reporter.reportOn(declaration.source, Errors.SYMBOL_EXPORT_REFERENCE_MUST_EXTEND_BASE)
+            reporter.reportOn(declaration.source, Diagnostics.SYMBOL_EXPORT_REFERENCE_MUST_EXTEND_BASE)
         }
 
         if (!annotated) {
@@ -97,12 +97,12 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
         }
 
         if (declaration.classKind != ClassKind.OBJECT) {
-            reporter.reportOn(declaration.source, Errors.SYMBOL_EXPORT_REFERENCE_NOT_OBJECT)
+            reporter.reportOn(declaration.source, Diagnostics.SYMBOL_EXPORT_REFERENCE_NOT_OBJECT)
             return emptyList()
         }
 
         if (declaration.isLocal) {
-            reporter.reportOn(declaration.source, Errors.SYMBOL_EXPORT_REFERENCE_NOT_OBJECT)
+            reporter.reportOn(declaration.source, Diagnostics.SYMBOL_EXPORT_REFERENCE_NOT_OBJECT)
             return emptyList()
         }
 
@@ -116,7 +116,7 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
                 if (it is FirConstructorSymbol && it.isPrimary)
                     return@processAllDeclarations
 
-                reporter.reportOn(it.source, Errors.SYMBOL_EXPORT_REFERENCE_NOT_INIT_BLOCK)
+                reporter.reportOn(it.source, Diagnostics.SYMBOL_EXPORT_REFERENCE_NOT_INIT_BLOCK)
             }
         }
 
@@ -146,7 +146,7 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
 
             override fun visitFunctionCall(functionCall: FirFunctionCall) {
                 if (functionCall.calleeReference.toResolvedCallableSymbol()?.callableId in ExportFunctionNames.exportFunctions) {
-                    reporter.reportOn(functionCall.source, Errors.SYMBOL_EXPORT_REFERENCE_NOT_IN_INIT_BLOCK)
+                    reporter.reportOn(functionCall.source, Diagnostics.SYMBOL_EXPORT_REFERENCE_NOT_IN_INIT_BLOCK)
                 }
                 super.visitFunctionCall(functionCall)
             }
@@ -163,13 +163,13 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
                 ExportFunctionNames.exportAnnotation -> processExportAnnotation(statement).map { statement.source to it }
                 ExportFunctionNames.exportEnumEntries -> processExportEnumEntries(statement).map { statement.source to it }
                 else -> {
-                    reporter.reportOn(statement.source, Errors.SYMBOL_EXPORT_REFERENCE_MEANINGLESS_STATEMENT)
+                    reporter.reportOn(statement.source, Diagnostics.SYMBOL_EXPORT_REFERENCE_MEANINGLESS_STATEMENT)
                     null
                 }
             }
 
             if (!exported.isNullOrEmpty()) {
-                reporter.reportOn(statement.source, Errors.SYMBOL_EXPORT_REFERENCE_EXPORTING, exported.map { it.second })
+                reporter.reportOn(statement.source, Diagnostics.SYMBOL_EXPORT_REFERENCE_EXPORTING, exported.map { it.second })
             }
 
             return exported ?: emptyList()
@@ -184,17 +184,17 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
     private fun checkExportedSymbol(source: KtSourceElement?, symbol: FirBasedSymbol<*>): Boolean {
 
         if (session.predicateBasedProvider.matches(Predicates.ancestorExportsReferences, symbol)) {
-            reporter.reportOn(source, Errors.SYMBOL_EXPORT_REFERENCE_REFERENCE_DECLARATION)
+            reporter.reportOn(source, Diagnostics.SYMBOL_EXPORT_REFERENCE_REFERENCE_DECLARATION)
             return false
         }
 
         if (symbol.getContainingClassSymbol()?.classId == ExportFunctionNames.baseClass) {
-            reporter.reportOn(source, Errors.SYMBOL_EXPORT_REFERENCE_REFERENCE_DECLARATION)
+            reporter.reportOn(source, Diagnostics.SYMBOL_EXPORT_REFERENCE_REFERENCE_DECLARATION)
             return false
         }
 
         if (!symbol.fir.isNonLocal) {
-            reporter.reportOn(source, Errors.SYMBOL_EXPORT_REFERENCE_LOCAL_DECLARATION)
+            reporter.reportOn(source, Diagnostics.SYMBOL_EXPORT_REFERENCE_LOCAL_DECLARATION)
             return false
         }
         return true
@@ -209,7 +209,7 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
         val referencedSymbol = referenced.toResolvedCallableSymbol(session)
 
         if (referencedSymbol == null) {
-            reporter.reportOn(referenced.source, Errors.SYMBOL_EXPORT_REFERENCE_NOT_ACCESS_LITERAL)
+            reporter.reportOn(referenced.source, Diagnostics.SYMBOL_EXPORT_REFERENCE_NOT_ACCESS_LITERAL)
             return emptyList()
         }
 
@@ -225,7 +225,7 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
         val referencedSymbol = (referenced as? FirCallableReferenceAccess)?.calleeReference?.toResolvedCallableSymbol()
 
         if (referencedSymbol == null) {
-            reporter.reportOn(referenced.source, Errors.SYMBOL_EXPORT_REFERENCE_NOT_REFERENCE_LITERAL)
+            reporter.reportOn(referenced.source, Diagnostics.SYMBOL_EXPORT_REFERENCE_NOT_REFERENCE_LITERAL)
             return emptyList()
         }
 
@@ -277,7 +277,7 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
         val cls = getClassLiteral(call) ?: return emptyList()
 
         if (cls.classKind != ClassKind.ANNOTATION_CLASS) {
-            reporter.reportOn(call.arguments[0].source, Errors.SYMBOL_EXPORT_REFERENCE_NOT_ANNOTATION_CLASS)
+            reporter.reportOn(call.arguments[0].source, Diagnostics.SYMBOL_EXPORT_REFERENCE_NOT_ANNOTATION_CLASS)
             return emptyList()
         }
 
@@ -290,7 +290,7 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
         val cls = getClassLiteral(call) ?: return emptyList()
 
         if (cls.classKind != ClassKind.ENUM_CLASS) {
-            reporter.reportOn(call.arguments[0].source, Errors.SYMBOL_EXPORT_REFERENCE_NOT_ENUM_CLASS)
+            reporter.reportOn(call.arguments[0].source, Diagnostics.SYMBOL_EXPORT_REFERENCE_NOT_ENUM_CLASS)
             return emptyList()
         }
 
@@ -310,7 +310,7 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
         val cls = arg.extractClassFromArgument(session)
 
         if (cls == null) {
-            reporter.reportOn(arg.source, Errors.SYMBOL_EXPORT_REFERENCE_NOT_CLASS_LITERAL)
+            reporter.reportOn(arg.source, Diagnostics.SYMBOL_EXPORT_REFERENCE_NOT_CLASS_LITERAL)
             return null
         }
 
@@ -329,14 +329,14 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
         val constValue = value.evaluateAs<FirLiteralExpression>(session)?.value as? Boolean
 
         if (constValue == null) {
-            reporter.reportOn(value.source, Errors.SYMBOL_EXPORT_REFERENCE_NOT_BOOLEAN_LITERAL)
+            reporter.reportOn(value.source, Diagnostics.SYMBOL_EXPORT_REFERENCE_NOT_BOOLEAN_LITERAL)
             return null
         }
 
         return constValue
     }
 
-    object Errors : BaseDiagnosticRendererFactory() {
+    object Diagnostics : KtDiagnosticsContainer() {
         val SYMBOL_EXPORT_REFERENCE_MUST_BE_ANNOTATED by error0<KtDeclaration>()
         val SYMBOL_EXPORT_REFERENCE_MUST_EXTEND_BASE by error0<KtDeclaration>()
         val SYMBOL_EXPORT_REFERENCE_NOT_OBJECT by error0<KtDeclaration>()
@@ -354,79 +354,80 @@ class ReferencesExporter(val session: FirSession) : SymbolExporter<FirClass> {
         val SYMBOL_EXPORT_REFERENCE_EXPORTING by DiagnosticFactory1DelegateProvider<List<InternalName>>(
             Severity.INFO,
             SourceElementPositioningStrategies.DEFAULT,
-            KtDeclaration::class
+            KtDeclaration::class,
+            this
         )
 
-        override val MAP = KtDiagnosticFactoryToRendererMap("SymbolExport").apply {
-            put(
-                SYMBOL_EXPORT_REFERENCE_MUST_BE_ANNOTATED,
-                "Implementors of BaseReferenceExporter must be annotated with @ExportReferences"
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_MUST_EXTEND_BASE,
-                "Objects annotated with @ExportReferences must extend ${ExportFunctionNames.baseClass.asFqNameString()}"
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_NOT_OBJECT,
-                "@ExportReferences annotated classes must be non-anonymous objects"
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_NOT_INIT_BLOCK,
-                "@ExportReferences annotated objects may only have init blocks, not any other kind of declaration."
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_MEANINGLESS_STATEMENT,
-                "Statement does not export anything and thus is meaningless."
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_NOT_IN_INIT_BLOCK,
-                "Export functions can only be called directly from init blocks."
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_NOT_ACCESS_LITERAL,
-                "Must be a property or function access expression"
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_NOT_REFERENCE_LITERAL,
-                "Must be a property or function access reference expression"
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_NOT_CLASS_LITERAL,
-                "Must be a class literal expression"
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_NOT_BOOLEAN_LITERAL,
-                "Must be a boolean literal expression"
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_NOT_ANNOTATION_CLASS,
-                "Class referenced by class literal is not an annotation class"
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_NOT_ENUM_CLASS,
-                "Class referenced by class literal is not an enum class"
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_REFERENCE_DECLARATION,
-                "Cannot export references to declarations of @ExportReferences classes"
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_LOCAL_DECLARATION,
-                "Cannot export references to local declarations"
-            )
-            put(
-                SYMBOL_EXPORT_REFERENCE_EXPORTING,
-                "Exported symbols:\n{0}",
-                Renderer {
-                    it.distinct().joinToString("\n") {
-                        it.qualifiedName
-                    }
-                }
-            )
-        }
+        override fun getRendererFactory(): BaseDiagnosticRendererFactory = RenderFactory
 
-        init {
-            RootDiagnosticRendererFactory.registerFactory(this)
+        object RenderFactory : BaseDiagnosticRendererFactory() {
+            override val MAP: KtDiagnosticFactoryToRendererMap by KtDiagnosticFactoryToRendererMap("SymbolExportReference") {
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_MUST_BE_ANNOTATED,
+                    "Implementors of BaseReferenceExporter must be annotated with @ExportReferences"
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_MUST_EXTEND_BASE,
+                    "Objects annotated with @ExportReferences must extend ${ExportFunctionNames.baseClass.asFqNameString()}"
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_NOT_OBJECT,
+                    "@ExportReferences annotated classes must be non-anonymous objects"
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_NOT_INIT_BLOCK,
+                    "@ExportReferences annotated objects may only have init blocks, not any other kind of declaration."
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_MEANINGLESS_STATEMENT,
+                    "Statement does not export anything and thus is meaningless."
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_NOT_IN_INIT_BLOCK,
+                    "Export functions can only be called directly from init blocks."
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_NOT_ACCESS_LITERAL,
+                    "Must be a property or function access expression"
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_NOT_REFERENCE_LITERAL,
+                    "Must be a property or function access reference expression"
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_NOT_CLASS_LITERAL,
+                    "Must be a class literal expression"
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_NOT_BOOLEAN_LITERAL,
+                    "Must be a boolean literal expression"
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_NOT_ANNOTATION_CLASS,
+                    "Class referenced by class literal is not an annotation class"
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_NOT_ENUM_CLASS,
+                    "Class referenced by class literal is not an enum class"
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_REFERENCE_DECLARATION,
+                    "Cannot export references to declarations of @ExportReferences classes"
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_LOCAL_DECLARATION,
+                    "Cannot export references to local declarations"
+                )
+                it.put(
+                    SYMBOL_EXPORT_REFERENCE_EXPORTING,
+                    "Exported symbols:\n{0}",
+                    Renderer {
+                        it.distinct().joinToString("\n") {
+                            it.qualifiedName
+                        }
+                    }
+                )
+            }
         }
     }
 
