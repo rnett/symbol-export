@@ -39,6 +39,10 @@ object ClasspathBasedStandardLibrariesPathProvider : KotlinStandardLibrariesPath
     override fun fullJsStdlib(): File = getFile("kotlin-stdlib-js")
     override fun defaultJsStdlib(): File = getFile("kotlin-stdlib-js")
     override fun kotlinTestJsKLib(): File = getFile("kotlin-test-js")
+    override fun commonStdlibForTests(): File {
+        TODO("Not yet implemented")
+    }
+
     override fun scriptingPluginFilesForTests(): Collection<File> {
         TODO("KT-67573")
     }

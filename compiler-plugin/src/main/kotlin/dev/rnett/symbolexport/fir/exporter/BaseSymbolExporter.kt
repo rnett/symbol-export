@@ -1,7 +1,7 @@
 package dev.rnett.symbolexport.fir.exporter
 
 import dev.rnett.symbolexport.NameReporter
-import dev.rnett.symbolexport.fir.Errors
+import dev.rnett.symbolexport.fir.Diagnostics
 import dev.rnett.symbolexport.fir.Predicates
 import dev.rnett.symbolexport.internal.InternalName
 import org.jetbrains.kotlin.KtSourceElement
@@ -80,7 +80,7 @@ class SymbolExporterChecker<T : FirDeclaration>(val exporter: SymbolExporter<T>,
         val names = exporter.exportSymbols(declaration)
         names.forEach {
             if (reportNameDiagnostics) {
-                reporter.reportOn(it.first, Errors.symbolExportMarker(it.second), it.second)
+                reporter.reportOn(it.first, Diagnostics.symbolExportMarker(it.second), it.second)
             }
             nameReporter.reportName(it.second)
         }

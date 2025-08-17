@@ -42,7 +42,7 @@ class IllegalUseCheckerImpl(val session: FirSession) : FirBasicDeclarationChecke
         if (declaration.isLocalMember) {
             reporter.reportOn(
                 declaration.source,
-                Errors.SYMBOL_EXPORT_NO_LOCAL_DECLARATIONS
+                Diagnostics.SYMBOL_EXPORT_NO_LOCAL_DECLARATIONS
             )
             return true
         }
@@ -53,7 +53,7 @@ class IllegalUseCheckerImpl(val session: FirSession) : FirBasicDeclarationChecke
             if (!visibility.publicApi) {
                 reporter.reportOn(
                     declaration.source,
-                    Errors.SYMBOL_EXPORT_MUST_BE_PUBLIC_OR_PUBLISHED_API,
+                    Diagnostics.SYMBOL_EXPORT_MUST_BE_PUBLIC_OR_PUBLISHED_API,
                     declaration.effectiveVisibility.toString()
                 )
                 return true
@@ -87,7 +87,7 @@ class IllegalUseCheckerImpl(val session: FirSession) : FirBasicDeclarationChecke
         ) {
             reporter.reportOn(
                 parent.source,
-                Errors.SYMBOL_EXPORT_PARENT_MUST_BE_EXPOSED
+                Diagnostics.SYMBOL_EXPORT_PARENT_MUST_BE_EXPOSED
             )
             return true
         }
