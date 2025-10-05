@@ -1,6 +1,6 @@
 package dev.rnett.symbolexport.fir.exporter
 
-import dev.rnett.symbolexport.fir.Errors
+import dev.rnett.symbolexport.fir.Diagnostics
 import dev.rnett.symbolexport.fir.Predicates
 import dev.rnett.symbolexport.internal.InternalName
 import org.jetbrains.kotlin.KtSourceElement
@@ -27,19 +27,19 @@ class AnnotationExporter(session: FirSession, illegalUseChecker: IllegalUseCheck
     override fun additionalChecks(declaration: FirClass): Boolean {
 
         if (declaration.classKind != ClassKind.ANNOTATION_CLASS) {
-            reporter.reportOn(declaration.source, Errors.SYMBOL_EXPORT_EXPORTED_ANNOTATION_NOT_AN_ANNOTATION_CLASS)
+            reporter.reportOn(declaration.source, Diagnostics.SYMBOL_EXPORT_EXPORTED_ANNOTATION_NOT_AN_ANNOTATION_CLASS)
             return false
         }
 
         val properties = session.declaredMemberScope(declaration, null).collectAllProperties()
         properties.forEach {
             if (session.predicateBasedProvider.matches(Predicates.export, it)) {
-                reporter.reportOn(it.source, Errors.SYMBOL_EXPORT_EXPORTING_FROM_EXPORTED_ANNOTATION)
+                reporter.reportOn(it.source, Diagnostics.SYMBOL_EXPORT_EXPORTING_FROM_EXPORTED_ANNOTATION)
             }
         }
 
         if (session.predicateBasedProvider.matches(Predicates.export, declaration) || session.predicateBasedProvider.matches(Predicates.childrenExported, declaration)) {
-            reporter.reportOn(declaration.source, Errors.SYMBOL_EXPORT_EXPORTING_EXPORTED_ANNOTATION)
+            reporter.reportOn(declaration.source, Diagnostics.SYMBOL_EXPORT_EXPORTING_EXPORTED_ANNOTATION)
         }
 
         val unmarkedAnnotationProperties = properties
@@ -53,7 +53,7 @@ class AnnotationExporter(session: FirSession, illegalUseChecker: IllegalUseCheck
 
         if (unmarkedAnnotationProperties.isNotEmpty()) {
             unmarkedAnnotationProperties.forEach { (prop, _) ->
-                reporter.reportOn(prop.source, Errors.SYMBOL_EXPORT_EXPORTED_ANNOTATION_ANNOTATION_PROPERTY_NOT_EXPORTED)
+                reporter.reportOn(prop.source, Diagnostics.SYMBOL_EXPORT_EXPORTED_ANNOTATION_ANNOTATION_PROPERTY_NOT_EXPORTED)
             }
             return false
         }
