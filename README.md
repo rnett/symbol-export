@@ -1,4 +1,5 @@
 [![Maven Central Version](https://img.shields.io/maven-central/v/dev.rnett.symbol-export/symbols?style=for-the-badge)](https://central.sonatype.com/artifact/dev.rnett.symbol-export/symbols)
+![Maven snapshots](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fdev%2Frnett%2Fsymbol-export%2Fgradle-plugins%2Fmaven-metadata.xml&strategy=latestProperty&style=for-the-badge&label=SNAPSHOT&color=yellow)
 [![Documentation](https://img.shields.io/badge/documentation-symbol--export.rnett.dev-blue?style=for-the-badge&link=https%3A%2F%2Fsymbol-export.rnett.dev%2F)](https://symbol-export.rnett.dev)
 [![GitHub License](https://img.shields.io/github/license/rnett/symbol-export?style=for-the-badge)](./LICENSE)
 
