@@ -23,7 +23,13 @@
       branchPrefix: "kotlin-update/",
       "allowedVersions": "/.*/",
       "ignoreUnstable": false,
-      automerge: false
+      automerge: false,
+      draftPR: true,
+      baseBranchPatterns: [
+        "main",
+        "renovate/kotlin",
+        "kotlin-update/*"
+      ]
     }
   ],
   enabledManagers: [

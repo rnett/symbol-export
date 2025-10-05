@@ -16,12 +16,6 @@ dependencies {
     implementation(project(":generator"))
 }
 
-dokka {
-    dokkaPublications.configureEach {
-        includes.from("Module.md")
-    }
-}
-
 tasks.shadowJar {
     archiveClassifier = ""
     dependencies {
