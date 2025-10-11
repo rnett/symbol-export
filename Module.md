@@ -1,6 +1,6 @@
 # Symbol-export
 
-Symbol-export is a tool for exporting symbols from Kotlin libraries so that they can be referenced by tooling such as compile plugins or annotation processors.
+[Symbol-export](https://github.com/rnett/symbol-export) is a tool for exporting symbols from Kotlin libraries so that they can be referenced by tooling such as compile plugins or annotation processors.
 
 Features:
 
