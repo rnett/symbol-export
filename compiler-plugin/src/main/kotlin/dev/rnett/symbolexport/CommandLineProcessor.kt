@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.CompilerConfigurationKey
 import java.nio.file.Path
 import kotlin.io.path.Path
+import dev.rnett.`symbol-export`.BuildConfig
 
 @Suppress("unused") // Used via reflection.
 class CommandLineProcessor : CommandLineProcessor {

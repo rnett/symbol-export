@@ -4,9 +4,16 @@ plugins {
     id("java-gradle-plugin")
     alias(libs.plugins.buildconfig)
     alias(libs.plugins.shadow)
+    // KCP-Development: setup for Gradle-side support plugins
+    alias(libs.plugins.kcp.dev.gradle)
 }
 
 description = "The symbol-export export and import Gradle plugins"
+
+// Wire the Gradle plugin module to the compiler plugin project for coordinates and metadata
+compilerSupportPluginDevelopment {
+    compilerPluginProjectPath = ":compiler-plugin"
+}
 
 dependencies {
     compileOnly(kotlin("stdlib"))
@@ -37,13 +44,6 @@ fun libraryCoordinates(project: Project) = buildString {
 
 buildConfig {
     packageName("dev.rnett.symbolexport")
-
-    buildConfigField("String", "KOTLIN_PLUGIN_ID", "\"${rootProject.group}\"")
-
-    val pluginProject = project(":compiler-plugin")
-    buildConfigField("String", "KOTLIN_PLUGIN_GROUP", "\"${pluginProject.group}\"")
-    buildConfigField("String", "KOTLIN_PLUGIN_NAME", "\"${pluginProject.name}\"")
-    buildConfigField("String", "KOTLIN_PLUGIN_VERSION", "\"${pluginProject.version}\"")
 
     buildConfigField(
         type = "String",

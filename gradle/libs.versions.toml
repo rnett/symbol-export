@@ -7,6 +7,7 @@ kotlinpoet = "2.2.0"
 shadow = "9.3.0"
 dokka = "2.1.0"
 publishing-plugin = "0.35.0"
+kcp-development = "0.0.1-SNAPSHOT"
 
 [libraries]
 ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
@@ -24,3 +25,7 @@ kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", vers
 buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 publishing = { id = "com.vanniktech.maven.publish", version.ref = "publishing-plugin" }
+
+# KCP-Development plugin aliases
+kcp-dev-compiler = { id = "dev.rnett.kcp-development.compiler-plugin", version.ref = "kcp-development" }
+kcp-dev-gradle = { id = "dev.rnett.kcp-development.gradle-plugin", version.ref = "kcp-development" }

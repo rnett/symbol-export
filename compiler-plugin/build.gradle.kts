@@ -4,17 +4,16 @@ import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 plugins {
     id("build.kotlin-jvm")
     id("build.publishing")
-    alias(libs.plugins.buildconfig)
-    alias(libs.plugins.shadow)
-    `java-test-fixtures`
-    idea
+    // KCP-Development: unified plugin for Kotlin compiler plugin projects
+    alias(libs.plugins.kcp.dev.compiler)
 }
 
 description = "The compiler plugin that powers symbol-export by exporting marked symbols as JSON"
 
-val compilerTestRuntimeClasspath by configurations.registering {
-    isCanBeResolved = true
-    isTransitive = true
+// Configure the KCP-Development extension with our registrar and CLI processor
+compilerPluginDevelopment {
+    compilerPluginRegistrar = "dev.rnett.symbolexport.PluginComponentRegistrar"
+    commandLineProcessor = "dev.rnett.symbolexport.CommandLineProcessor"
 }
 
 dependencies {
@@ -23,43 +22,12 @@ dependencies {
 
     implementation(project(":names-internal"))
 
-    compilerTestRuntimeClasspath(project(":annotations"))
-
-    testFixturesApi(kotlin("test-junit5"))
-    testFixturesApi(kotlin("compiler-internal-test-framework"))
-    testFixturesApi(kotlin("compiler"))
-
-    // Dependencies required to run the internal test framework.
-    testRuntimeOnly(kotlin("script-runtime"))
-    testRuntimeOnly(kotlin("annotations-jvm"))
-}
-
-sourceSets {
-    test {
-        java.srcDir("src/test-gen")
-        resources.srcDir("src/testData")
-    }
-}
-
-idea {
-    module.generatedSourceDirs.add(projectDir.resolve("src/test-gen"))
+    // Add our runtime inputs for compiler tests (configuration provided by kcp plugin)
+    add("compilerTestRuntimeClasspath", project(":annotations"))
 }
 
 tasks.shadowJar {
-    archiveClassifier = ""
-    dependencies {
-        exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
-    }
     relocate("kotlinx.serialization", "dev.rnett.symbolexport.kotlinx.serialization")
-}
-
-buildConfig {
-    useKotlinOutput {
-        internalVisibility = true
-    }
-
-    packageName("dev.rnett.symbolexport")
-    buildConfigField("String", "KOTLIN_PLUGIN_ID", "\"${rootProject.group}\"")
 }
 
 kotlin {
@@ -72,64 +40,4 @@ kotlin {
     explicitApi = ExplicitApiMode.Disabled
     @OptIn(ExperimentalAbiValidation::class)
     abiValidation { enabled = false }
-}
-
-tasks.test {
-    dependsOn(compilerTestRuntimeClasspath)
-    maxHeapSize = "2g"
-    workingDir = projectDir
-
-    val conf = compilerTestRuntimeClasspath.map { it.asPath }
-
-    doFirst {
-        fun setLibraryProperty(propName: String, jarName: String) {
-            val path = classpath
-                .files
-                .find { """$jarName-\d.*jar""".toRegex().matches(it.name) }
-                ?.absolutePath
-                ?: return
-            systemProperty(propName, path)
-        }
-
-        systemProperty("compilerTestRuntime.classpath", conf.get())
-
-        // Properties required to run the internal test framework.
-        setLibraryProperty("org.jetbrains.kotlin.test.kotlin-stdlib", "kotlin-stdlib")
-        setLibraryProperty("org.jetbrains.kotlin.test.kotlin-stdlib-jdk8", "kotlin-stdlib-jdk8")
-        setLibraryProperty("org.jetbrains.kotlin.test.kotlin-reflect", "kotlin-reflect")
-        setLibraryProperty("org.jetbrains.kotlin.test.kotlin-test", "kotlin-test")
-        setLibraryProperty("org.jetbrains.kotlin.test.kotlin-script-runtime", "kotlin-script-runtime")
-        setLibraryProperty("org.jetbrains.kotlin.test.kotlin-annotations-jvm", "kotlin-annotations-jvm")
-    }
-    systemProperty("idea.ignore.disabled.plugins", "true")
-    systemProperty("idea.home.path", projectDir)
-}
-
-val generateTests by tasks.registering(JavaExec::class) {
-    inputs.dir(layout.projectDirectory.dir("src/testData"))
-        .withPropertyName("testData")
-        .withPathSensitivity(PathSensitivity.RELATIVE)
-    outputs.dir(layout.projectDirectory.dir("src/test-gen"))
-        .withPropertyName("generatedTests")
-
-    classpath = sourceSets.testFixtures.get().runtimeClasspath
-    mainClass.set("dev.rnett.lattice.GenerateTestsKt")
-    workingDir = projectDir
-}
-
-val clearDumps by tasks.registering(Delete::class) {
-    delete(
-        fileTree(layout.projectDirectory.dir("src/testData")) {
-            include("**/*.fir.txt")
-            include("**/*.fir.ir.txt")
-        }
-    )
-}
-
-tasks.test {
-    mustRunAfter(clearDumps)
-}
-
-tasks.compileTestKotlin {
-    dependsOn(generateTests)
 }
