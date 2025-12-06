@@ -1,37 +1,46 @@
 package dev.rnett.symbolexport
 
+import dev.rnett.kcp.development.options.get
+import dev.rnett.kcp.development.registrar.BaseSpecCompilerPluginRegistrar
 import dev.rnett.symbolexport.internal.ProjectCoordinates
-import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CompilerConfiguration
-import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrarAdapter
 
-class PluginComponentRegistrar : CompilerPluginRegistrar() {
+@OptIn(ExperimentalCompilerApi::class)
+class PluginComponentRegistrar : BaseSpecCompilerPluginRegistrar<PluginComponentRegistrar.Spec>() {
     override val supportsK2: Boolean
         get() = true
 
-    override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
-        val outputFile = configuration.getNotNull(CommandLineProcessor.Keys.outputFile)
+    data class Spec(
+        val writeSpec: ExportWriteSpec?,
+        val warnOnExported: Boolean,
+    )
 
-        val projectName = configuration.getNotNull(CommandLineProcessor.Keys.projectName)
+    override fun produceSpec(configuration: CompilerConfiguration): Spec {
+        // Read from kcp-development options; enforce required semantics as before
+        val outputFile = configuration[SymbolExportOptions.outputFile]
+        val projectName = configuration[SymbolExportOptions.projectName]
+        val projectGroup = configuration[SymbolExportOptions.projectGroup]
+        val projectArtifact = configuration[SymbolExportOptions.projectArtifact]
+        val projectVersion = configuration[SymbolExportOptions.projectVersion]
+        val sourceSetName = configuration[SymbolExportOptions.sourceSetName]
+        val warnOnExported = configuration[SymbolExportOptions.warnOnExported]
 
-        val projectGroup = configuration.getNotNull(CommandLineProcessor.Keys.projectGroup)
-        val projectArtifact = configuration.getNotNull(CommandLineProcessor.Keys.projectArtifact)
-        val projectVersion = configuration.getNotNull(CommandLineProcessor.Keys.projectVersion)
-
-        val sourceSetName = configuration.getNotNull(CommandLineProcessor.Keys.sourceSetName)
-
-        val warnOnExported = configuration.get(CommandLineProcessor.Keys.warnOnExported, false)
-
-        FirExtensionRegistrarAdapter.registerExtension(
-            PluginRegistrar(
-                ExportWriteSpec(
-                    outputFile,
-                    projectName,
-                    ProjectCoordinates(projectGroup, projectArtifact, projectVersion),
-                    sourceSetName,
-                ),
-                warnOnExported
+        val writeSpec = if (outputFile != null && projectName != null && projectGroup != null && projectArtifact != null && projectVersion != null && sourceSetName != null) {
+            ExportWriteSpec(
+                outputFile,
+                projectName,
+                ProjectCoordinates(projectGroup, projectArtifact, projectVersion),
+                sourceSetName,
             )
-        )
+        } else {
+            null
+        }
+
+        return Spec(writeSpec, warnOnExported)
     }
+
+    override fun firExtension(spec: Spec) = PluginRegistrar(spec.writeSpec, spec.warnOnExported)
+
+    override fun irExtension(spec: Spec) = null
 }

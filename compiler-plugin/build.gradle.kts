@@ -14,6 +14,8 @@ description = "The compiler plugin that powers symbol-export by exporting marked
 compilerPluginDevelopment {
     compilerPluginRegistrar = "dev.rnett.symbolexport.PluginComponentRegistrar"
     commandLineProcessor = "dev.rnett.symbolexport.CommandLineProcessor"
+    // Use kcp-development's test support generator defined in testFixtures
+    testGenerator = "dev.rnett.symbolexport.tests.TestGenerator"
 }
 
 dependencies {
