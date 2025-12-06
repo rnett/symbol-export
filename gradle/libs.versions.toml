@@ -4,7 +4,7 @@ ksp = "2.2.20-2.0.3"
 kotlinx-serialization = "1.9.0"
 buildconfig = "6.0.0"
 kotlinpoet = "2.2.0"
-shadow = "9.2.2"
+shadow = "9.3.0"
 dokka = "2.1.0"
 publishing-plugin = "0.35.0"
 
