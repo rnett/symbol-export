@@ -1,8 +1,6 @@
 package build
 
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 plugins {
     id("com.vanniktech.maven.publish.base")
@@ -68,16 +66,6 @@ plugins.withId("com.gradleup.shadow") {
     tasks.named { it == "shadowJar" }.configureEach {
         dependsOn("jar")
     }
-}
-
-extensionIfPresent<JavaPluginExtension> {
-    withSourcesJar()
-}
-extensionIfPresent<KotlinMultiplatformExtension> {
-    withSourcesJar(true)
-}
-extensionIfPresent<KotlinJvmExtension> {
-    target.withSourcesJar(true)
 }
 
 afterEvaluate {
