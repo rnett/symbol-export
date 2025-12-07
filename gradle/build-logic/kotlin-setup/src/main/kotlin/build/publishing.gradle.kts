@@ -1,6 +1,7 @@
 package build
 
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 plugins {
@@ -10,7 +11,7 @@ plugins {
 
 extensionIfPresent<MavenPublishBaseExtension> {
     publishToMavenCentral(automaticRelease = true)
-    signAllPublications()
+//    signAllPublications()
     coordinates(group.toString(), project.name, project.version.toString())
 
     pom {
@@ -63,12 +64,6 @@ plugins.withId("org.gradle.java-test-fixtures") {
     component.withVariantsFromConfiguration(configurations["testFixturesRuntimeElements"]) { skip() }
 }
 
-plugins.withId("com.gradleup.shadow") {
-    tasks.named { it == "shadowJar" }.configureEach {
-        dependsOn("jar")
-    }
-}
-
 afterEvaluate {
     val hasGradlePlugin = project.plugins.hasPlugin("java-gradle-plugin")
     val hasKotlinJvm = project.plugins.hasPlugin("org.jetbrains.kotlin.jvm")
@@ -85,6 +80,12 @@ afterEvaluate {
     extensionIfPresent<JavaPluginExtension> {
         withSourcesJar()
     }
+    extensionIfPresent<KotlinMultiplatformExtension> {
+        withSourcesJar(true)
+    }
+    extensionIfPresent<KotlinJvmExtension> {
+        target.withSourcesJar(true)
+    }
 
     when {
         hasKotlinJvm -> {
@@ -98,14 +99,14 @@ afterEvaluate {
             mavenPublicationsWithoutPluginMarker {
                 artifact(javadocTask)
             }
+            mavenPublicationsWithoutPluginMarker {
+                artifact(tasks.named("sourcesJar"))
+            }
         }
 
         hasKotlinMultiplatform -> {
             mavenPublications {
                 artifact(registerDokkaJavadocTask(this.name))
-            }
-            extensionIfPresent<KotlinMultiplatformExtension> {
-                withSourcesJar(true)
             }
         }
     }
