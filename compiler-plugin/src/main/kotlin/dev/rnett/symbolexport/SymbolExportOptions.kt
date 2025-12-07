@@ -10,7 +10,6 @@ import kotlin.io.path.Path
  */
 object SymbolExportOptions : CompilerOptionsHost() {
 
-    // Required in practice; previously not marked required at CLI but enforced by registrar.
     val outputFile by singular<Path>(
         name = "outputFile",
         valueDescription = "<path>",

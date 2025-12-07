@@ -4,7 +4,6 @@ plugins {
     id("java-gradle-plugin")
     alias(libs.plugins.buildconfig)
     alias(libs.plugins.shadow)
-    // KCP-Development: setup for Gradle-side support plugins
     alias(libs.plugins.kcp.dev.gradle)
 }
 
@@ -16,9 +15,6 @@ compilerSupportPluginDevelopment {
 }
 
 dependencies {
-    compileOnly(kotlin("stdlib"))
-    compileOnly(kotlin("gradle-plugin-api"))
-
     implementation(project(":names-internal"))
     implementation(project(":generator"))
 }

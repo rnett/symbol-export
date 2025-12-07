@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 plugins {
     id("build.kotlin-jvm")
     id("build.publishing")
-    // KCP-Development: unified plugin for Kotlin compiler plugin projects
     alias(libs.plugins.kcp.dev.compiler)
 }
 
