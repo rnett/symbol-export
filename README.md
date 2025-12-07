@@ -11,7 +11,7 @@ Features:
 
 - Compile time errors if symbol names change
 - Integrations with the Kotlin compiler, KSP, and Kotlinpoet
-- Reading and writing of annotation instances
+- Reading and writing of annotation instances, including their arguments, from compiler plugins or annotation processors
 
 > [!WARNING]
 > Compatibility of compiler plugins with Kotlin's Incremental Compilation is somewhat iffy and may cause issues in some scenarios.
@@ -23,6 +23,7 @@ All you need to do is apply the Gradle plugins to the appropriate projects and a
 ### Exporting project
 
 ##### build.gradle.kts
+
 ```kotlin
 plugins {
     id("dev.rnett.symbol-export.export")
