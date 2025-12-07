@@ -17,6 +17,8 @@ extensionIfPresent<MavenPublishBaseExtension> {
         name = "Symbol Export - ${project.name}"
         description = provider { project.description }
         inceptionYear = "2025"
+        url = "https://symbol-export.rnett.dev/"
+
         licenses {
             license {
                 name = "The Apache License, Version 2.0"
