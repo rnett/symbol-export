@@ -11,7 +11,7 @@ plugins {
 
 extensionIfPresent<MavenPublishBaseExtension> {
     publishToMavenCentral(automaticRelease = true)
-//    signAllPublications()
+    signAllPublications()
     coordinates(group.toString(), project.name, project.version.toString())
 
     pom {
