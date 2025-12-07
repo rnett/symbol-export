@@ -15,7 +15,7 @@ extensionIfPresent<MavenPublishBaseExtension> {
 
     pom {
         name = "Symbol Export - ${project.name}"
-        description = provider { project.description }
+        description = provider { project.description ?: "Symbol Export - ${project.name}" }
         inceptionYear = "2025"
         url = "https://symbol-export.rnett.dev/"
 
@@ -82,16 +82,16 @@ afterEvaluate {
         }
     }
 
+    extensionIfPresent<JavaPluginExtension> {
+        withSourcesJar()
+    }
+
     when {
         hasKotlinJvm -> {
             gradlePublishing.publications.register<MavenPublication>("maven") {
                 val componentName = if (hasShadowPlugin) "shadow" else "java"
 
                 from(project.components.getByName(componentName))
-            }
-
-            extensionIfPresent<JavaPluginExtension> {
-                withSourcesJar()
             }
 
             val javadocTask = registerDokkaJavadocTask()
