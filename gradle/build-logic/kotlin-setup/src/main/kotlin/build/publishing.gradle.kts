@@ -70,6 +70,16 @@ plugins.withId("com.gradleup.shadow") {
     }
 }
 
+extensionIfPresent<JavaPluginExtension> {
+    withSourcesJar()
+}
+extensionIfPresent<KotlinMultiplatformExtension> {
+    withSourcesJar(true)
+}
+extensionIfPresent<KotlinJvmExtension> {
+    target.withSourcesJar(true)
+}
+
 afterEvaluate {
     val hasGradlePlugin = project.plugins.hasPlugin("java-gradle-plugin")
     val hasKotlinJvm = project.plugins.hasPlugin("org.jetbrains.kotlin.jvm")
@@ -83,30 +93,20 @@ afterEvaluate {
         }
     }
 
-    extensionIfPresent<JavaPluginExtension> {
-        withSourcesJar()
-    }
-    extensionIfPresent<KotlinMultiplatformExtension> {
-        withSourcesJar(true)
-    }
-    extensionIfPresent<KotlinJvmExtension> {
-        target.withSourcesJar(true)
-    }
-
     when {
         hasKotlinJvm -> {
             gradlePublishing.publications.register<MavenPublication>("maven") {
                 val componentName = if (hasShadowPlugin) "shadow" else "java"
 
                 from(project.components.getByName(componentName))
+                artifact(tasks.named("kotlinSourcesJar")) {
+                    classifier = "sources"
+                }
             }
 
             val javadocTask = registerDokkaJavadocTask()
             mavenPublicationsWithoutPluginMarker {
                 artifact(javadocTask)
-            }
-            mavenPublicationsWithoutPluginMarker {
-                artifact(tasks.named("sourcesJar"))
             }
         }
 
