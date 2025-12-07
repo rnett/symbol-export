@@ -8,6 +8,8 @@ Features:
 - Integrations with the <a href="./symbols-kotlin-compiler/index.html">Kotlin compiler</a>, <a href="./symbols-ksp/index.html">KSP</a>, and <a href="./symbols-kotlinpoet/index.html">Kotlinpoet</a>
 - Reading and writing of annotation instances
 
+**WARNING:** Compatibility of compiler plugins with Kotlin's Incremental Compilation is somewhat iffy and may cause issues in some scenarios.
+
 ## Getting started
 
 All you need to do is apply the Gradle plugins to the appropriate projects and add a dependency between the exported symbols and the project that uses them.
