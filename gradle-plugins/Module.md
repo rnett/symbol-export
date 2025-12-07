@@ -15,4 +15,4 @@ See [ExportPlugin] and [ExportExtension] for details.
 
 The import plugin.
 
-See [ImportPlugin] and [ExportExtension] for details.
+See [ImportPlugin] and [ImportExtension] for details.
