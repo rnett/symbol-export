@@ -64,6 +64,12 @@ plugins.withId("org.gradle.java-test-fixtures") {
     component.withVariantsFromConfiguration(configurations["testFixturesRuntimeElements"]) { skip() }
 }
 
+plugins.withId("com.gradleup.shadow") {
+    tasks.named { it == "shadowJar" }.configureEach {
+        dependsOn("jar")
+    }
+}
+
 afterEvaluate {
     val hasGradlePlugin = project.plugins.hasPlugin("java-gradle-plugin")
     val hasKotlinJvm = project.plugins.hasPlugin("org.jetbrains.kotlin.jvm")
