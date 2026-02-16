@@ -9,7 +9,6 @@ import dev.rnett.symbolexport.internal.InternalName.ReceiverParameter.Type.DISPA
 import dev.rnett.symbolexport.internal.InternalName.ReceiverParameter.Type.EXTENSION
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.analysis.checkers.getContainingClassSymbol
 import org.jetbrains.kotlin.fir.declarations.FirClass
 import org.jetbrains.kotlin.fir.declarations.FirEnumEntry
 import org.jetbrains.kotlin.fir.declarations.FirReceiverParameter
@@ -20,6 +19,7 @@ import org.jetbrains.kotlin.fir.declarations.collectEnumEntries
 import org.jetbrains.kotlin.fir.declarations.primaryConstructorIfAny
 import org.jetbrains.kotlin.fir.declarations.utils.isEnumClass
 import org.jetbrains.kotlin.fir.packageFqName
+import org.jetbrains.kotlin.fir.resolve.getContainingClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals

@@ -8,7 +8,6 @@ import dev.rnett.symbolexport.symbol.compiler.asClassId
 import dev.rnett.symbolexport.symbol.compiler.toClassifier
 import org.jetbrains.kotlin.fir.FirAnnotationContainer
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.analysis.checkers.getContainingClassSymbol
 import org.jetbrains.kotlin.fir.declarations.evaluateAs
 import org.jetbrains.kotlin.fir.declarations.extractEnumValueArgumentInfo
 import org.jetbrains.kotlin.fir.declarations.findArgumentByName
@@ -29,6 +28,7 @@ import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
 import org.jetbrains.kotlin.fir.expressions.unwrapArgument
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.render
+import org.jetbrains.kotlin.fir.resolve.getContainingClassSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.types.classId

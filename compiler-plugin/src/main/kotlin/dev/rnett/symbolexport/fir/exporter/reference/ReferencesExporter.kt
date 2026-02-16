@@ -22,15 +22,12 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.extractClassFromArgument
 import org.jetbrains.kotlin.fir.analysis.checkers.findNonInterfaceSupertype
-import org.jetbrains.kotlin.fir.analysis.checkers.getContainingClassSymbol
-import org.jetbrains.kotlin.fir.analysis.checkers.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirAnonymousInitializer
 import org.jetbrains.kotlin.fir.declarations.FirClass
 import org.jetbrains.kotlin.fir.declarations.collectEnumEntries
 import org.jetbrains.kotlin.fir.declarations.evaluateAs
 import org.jetbrains.kotlin.fir.declarations.processAllDeclarations
-import org.jetbrains.kotlin.fir.declarations.utils.isLocal
 import org.jetbrains.kotlin.fir.declarations.utils.isNonLocal
 import org.jetbrains.kotlin.fir.expressions.FirCallableReferenceAccess
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
@@ -41,6 +38,7 @@ import org.jetbrains.kotlin.fir.expressions.resolvedArgumentMapping
 import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
 import org.jetbrains.kotlin.fir.extensions.predicateBasedProvider
 import org.jetbrains.kotlin.fir.references.toResolvedCallableSymbol
+import org.jetbrains.kotlin.fir.resolve.getContainingClassSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirAnonymousInitializerSymbol
@@ -50,6 +48,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirFieldSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
+import org.jetbrains.kotlin.fir.types.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.visitors.FirVisitorVoid
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId

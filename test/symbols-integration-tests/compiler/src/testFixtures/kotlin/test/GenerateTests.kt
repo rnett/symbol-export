@@ -1,6 +1,6 @@
 package test
 
-import org.jetbrains.kotlin.generators.generateTestGroupSuiteWithJUnit5
+import org.jetbrains.kotlin.generators.dsl.junit5.generateTestGroupSuiteWithJUnit5
 import test.cases.Cases
 import test.tests.BaseCompilerTest
 import java.nio.file.StandardOpenOption

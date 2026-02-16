@@ -7,12 +7,12 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-import org.jetbrains.kotlin.fir.analysis.checkers.getContainingClassSymbol
 import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirFunction
 import org.jetbrains.kotlin.fir.declarations.FirProperty
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.extensions.predicateBasedProvider
+import org.jetbrains.kotlin.fir.resolve.getContainingClassSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 
 class MemberExporter<T : FirCallableDeclaration>(session: FirSession, illegalUseChecker: IllegalUseCheckerImpl) : BaseSymbolExporter<T>(session, illegalUseChecker) {
