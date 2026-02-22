@@ -10,8 +10,6 @@ kotlin {
     js() {
         browser()
     }
-    linuxX64()
-    mingwX64()
 
     val commonMain by sourceSets.getting {
     }

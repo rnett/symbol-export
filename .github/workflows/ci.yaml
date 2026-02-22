@@ -78,8 +78,9 @@ jobs:
           build-scan-terms-of-use-agree: 'yes'
 
       - name: Build library
+        working-directory: ./test
         run: |
-          ./gradlew assemble
+          ./gradlew :symbol-export:assembleAll
 
       - name: Build tests
         working-directory: ./test
@@ -87,7 +88,8 @@ jobs:
           ./gradlew assemble
 
       - name: Test library
-        run: ./gradlew check
+        working-directory: ./test
+        run: ./gradlew :symbol-export:checkAll
 
       - name: Run integration tests
         working-directory: ./test

@@ -19,6 +19,11 @@ tasks.register("checkAll") {
     dependsOn(project.subprojects.map { it.tasks.named("check") })
 }
 
+tasks.register("assembleAll") {
+    group = "build"
+    dependsOn(project.subprojects.map { it.tasks.named("assemble") })
+}
+
 afterEvaluate {
     tasks.register("publishAllToMavenCentral") {
         group = "publishing"

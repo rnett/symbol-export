@@ -11,11 +11,11 @@ val onlyJvm = providers.systemProperty("symbol-export.onlyJvm").orNull?.lowercas
 kotlin {
     jvmToolchain(Shared::toolchain)
     jvm()
+    js() {
+        browser()
+        nodejs()
+    }
     if (!onlyJvm) {
-        js() {
-            browser()
-            nodejs()
-        }
         @OptIn(ExperimentalWasmDsl::class)
         wasmJs() {
             d8()
