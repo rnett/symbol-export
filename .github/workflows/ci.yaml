@@ -43,6 +43,7 @@ jobs:
 
   buildAndTest:
     name: Build and test
+    needs: checkVersion
     strategy:
       matrix:
         os: ${{ fromJson(needs.checkVersion.outputs.os_matrix) }}
