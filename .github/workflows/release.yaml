@@ -11,6 +11,8 @@ permissions:
 jobs:
   ci:
     uses: ./.github/workflows/ci.yaml
+    with:
+      run_all_platforms: true
     secrets: inherit
 
   release:
