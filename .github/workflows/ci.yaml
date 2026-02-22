@@ -102,7 +102,7 @@ jobs:
   publishSnapshot:
     name: Publish snapshot
     needs: [ buildAndTest, checkVersion ]
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     if: ${{ github.event_name != 'workflow_call' && github.ref == 'refs/heads/main' && endsWith(needs.checkVersion.outputs.version, '-SNAPSHOT') }}
     env:
       GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m"
