@@ -6,12 +6,14 @@ import org.jetbrains.kotlin.gradle.dsl.abi.AbiValidationExtension
 import org.jetbrains.kotlin.gradle.dsl.abi.AbiValidationMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
+val onlyJvm = providers.systemProperty("symbol-export.onlyJvm").orNull?.lowercase() == "true"
+
 extensionIfPresent<KotlinMultiplatformExtension> {
     @OptIn(ExperimentalAbiValidation::class)
     extensionIfPresent<AbiValidationMultiplatformExtension> {
         enabled = true
         klib {
-            enabled = true
+            enabled = !onlyJvm
             keepUnsupportedTargets = true
         }
     }
