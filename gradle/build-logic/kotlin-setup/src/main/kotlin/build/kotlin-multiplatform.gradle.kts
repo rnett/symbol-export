@@ -1,9 +1,17 @@
 package build
 
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.power-assert")
+}
+
+@OptIn(ExperimentalKotlinGradlePluginApi::class)
+configure<PowerAssertGradleExtension> {
+    functions.set(listOf("kotlin.test.assertTrue", "kotlin.test.assertEquals", "kotlin.test.assertNotNull", "kotlin.test.assertFalse"))
 }
 
 val onlyJvm = providers.systemProperty("symbol-export.onlyJvm").orNull?.lowercase() == "true"
@@ -57,6 +65,10 @@ kotlin {
     }
 
     applyDefaultHierarchyTemplate()
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-parameters")
+    }
 }
 
 tasks.withType<Test>().configureEach {

@@ -27,6 +27,10 @@ tasks.shadowJar {
     relocate("kotlinx.serialization", "dev.rnett.symbolexport.kotlinx.serialization")
 }
 
+tasks.jar {
+    archiveClassifier = "single"
+}
+
 fun libraryCoordinates(project: Project) = buildString {
     append(group)
     append(":")
@@ -61,6 +65,12 @@ gradlePlugin {
             displayName = "Symbol export - export"
             description = "Allows the exporting of annotated symbols for reference by other modules."
             implementationClass = "dev.rnett.symbolexport.export.ExportPlugin"
+        }
+        create("SymbolExportExport2") {
+            id = "dev.rnett.symbol-export.export2"
+            displayName = "Symbol export - export2"
+            description = "Allows the exporting of annotated symbols for reference by other modules."
+            implementationClass = "dev.rnett.symbolexport.export.Export2Plugin"
         }
         create("SymbolExportImport") {
             id = "dev.rnett.symbol-export.import"

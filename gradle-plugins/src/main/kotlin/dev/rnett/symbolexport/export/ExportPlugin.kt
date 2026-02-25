@@ -50,6 +50,7 @@ public class ExportPlugin : KotlinCompilerPluginSupportPlugin {
     }
 
     override fun apply(target: Project) {
+        Export2Plugin().apply(target)
         target.extensions.create("symbolExport", ExportExtension::class.java).apply {
             symbolExportOutputDirectory.convention(target.layout.buildDirectory.dir("symbol-export"))
             autoAddAnnotationDependency.convention(true)

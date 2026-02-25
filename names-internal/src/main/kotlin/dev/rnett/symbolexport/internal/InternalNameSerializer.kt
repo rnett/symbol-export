@@ -3,9 +3,10 @@ package dev.rnett.symbolexport.internal
 import kotlinx.serialization.json.Json
 
 public object InternalNameSerializer {
-    private val json: Json = Json {
+    internal val json: Json = Json {
         isLenient = true
         useArrayPolymorphism = true
+        ignoreUnknownKeys = true
     }
 
     public fun serializeEntry(entry: InternalNameEntry): String = json.encodeToString(entry)
