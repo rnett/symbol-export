@@ -82,6 +82,12 @@ public class ExportTestGenerated extends AbstractLeveledFirTest {
   }
 
   @Test
+  @TestMetadata("ExportParameters.kt")
+  public void testExportParameters() {
+    runTest("src/testData/export/ExportParameters.kt");
+  }
+
+  @Test
   @TestMetadata("ExtensionReceiver.kt")
   public void testExtensionReceiver() {
     runTest("src/testData/export/ExtensionReceiver.kt");

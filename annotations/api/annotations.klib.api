@@ -18,6 +18,10 @@ open annotation class dev.rnett.symbolexport/ExportAnnotation : kotlin/Annotatio
     constructor <init>() // dev.rnett.symbolexport/ExportAnnotation.<init>|<init>(){}[0]
 }
 
+open annotation class dev.rnett.symbolexport/ExportParameters : kotlin/Annotation { // dev.rnett.symbolexport/ExportParameters|null[0]
+    constructor <init>() // dev.rnett.symbolexport/ExportParameters.<init>|<init>(){}[0]
+}
+
 open annotation class dev.rnett.symbolexport/ExportReceivers : kotlin/Annotation { // dev.rnett.symbolexport/ExportReceivers|null[0]
     constructor <init>(kotlin/Boolean = ..., kotlin/Boolean = ...) // dev.rnett.symbolexport/ExportReceivers.<init>|<init>(kotlin.Boolean;kotlin.Boolean){}[0]
 

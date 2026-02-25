@@ -31,4 +31,8 @@ object Predicates {
     val ancestorExportsReferences = DeclarationPredicate.create {
         ancestorAnnotated(EXPORT_REFERENCES_ANNOTATION_FQN)
     }
+
+    val exportParameters = DeclarationPredicate.create {
+        annotated(Names.ExportParameters.asSingleFqName())
+    }
 }

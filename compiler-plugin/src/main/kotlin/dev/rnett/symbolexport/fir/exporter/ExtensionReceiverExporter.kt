@@ -28,6 +28,10 @@ class ExtensionReceiverExporter(session: FirSession, illegalUseChecker: IllegalU
         if (declaration.typeRef.hasAnnotation(Names.EXPORT_ANNOTATION_CLASSID, session))
             return true
 
+        if (declaration.containingDeclarationSymbol.hasAnnotation(Names.ExportParameters, session))
+            return true
+
+
         val exportReceiverAnnotation = declaration.containingDeclarationSymbol.getAnnotationByClassId(
             Names.EXPORT_RECEIVERS_ANNOTATION_CLASSID,
             session

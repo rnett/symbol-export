@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
 import org.jetbrains.kotlin.fir.declarations.getAnnotationByClassId
 import org.jetbrains.kotlin.fir.declarations.getBooleanArgument
+import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.declarations.toAnnotationClassId
 import org.jetbrains.kotlin.fir.dispatchReceiverClassTypeOrNull
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
@@ -35,6 +36,9 @@ class DispatchReceiverExporter<T : FirCallableDeclaration>(session: FirSession, 
             })
             return true
 
+        if (declaration.hasAnnotation(Names.ExportParameters, session)) {
+            return true
+        }
 
         val exportReceiverAnnotation = declaration.getAnnotationByClassId(
             Names.EXPORT_RECEIVERS_ANNOTATION_CLASSID,

@@ -42,6 +42,19 @@ public annotation class ChildrenExported
 public annotation class ExportSymbol
 
 /**
+ * Applies [ExportSymbol] to this declaration's parameters.
+ */
+@Target(
+    AnnotationTarget.FUNCTION,
+    AnnotationTarget.CONSTRUCTOR,
+    AnnotationTarget.PROPERTY,
+    AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER,
+)
+@Retention(AnnotationRetention.SOURCE)
+public annotation class ExportParameters()
+
+/**
  * Applies [ExportSymbol] to this function's dispatch and extension receivers, if the appropriate flags are set.
  * Applies to both by default.
  *
