@@ -8,7 +8,8 @@ kotlin {
 }
 
 dependencies {
-    importSymbols(project(":import-export:produce-a"))
-    importSymbols(project(":import-export:produce-b"))
+    //TODO update to new dependencies
+//    importSymbols(project(":import-export:produce-a"))
+//    importSymbols(project(":import-export:produce-b"))
     testImplementation(kotlin("test"))
 }

@@ -8,10 +8,10 @@ public sealed interface AnnotationParameterType {
     public data object KClass : AnnotationParameterType
 
     @Serializable
-    public data class Enum(val enumClass: InternalName.Classifier) : AnnotationParameterType
+    public data class Enum(val enumClass: InternalDeclaration.Classifier) : AnnotationParameterType
 
     @Serializable
-    public data class Annotation(val annotationClass: InternalName.Classifier) : AnnotationParameterType
+    public data class Annotation(val annotationClass: InternalDeclaration.Classifier) : AnnotationParameterType
 
     @Serializable
     public data class Array(val elementType: AnnotationParameterType) : AnnotationParameterType

@@ -16,7 +16,8 @@ dependencies {
 
     implementation("dev.rnett.symbol-export:symbols-kotlin-compiler")
 
-    importSymbols(project(":symbols-integration-tests:test-symbols"))
+    //TODO update to new dependencies
+//    importSymbols(project(":symbols-integration-tests:test-symbols"))
     compilerTestRuntimeClasspath(project(":symbols-integration-tests:test-symbols"))
 
     testFixturesApi(kotlin("test-junit5"))

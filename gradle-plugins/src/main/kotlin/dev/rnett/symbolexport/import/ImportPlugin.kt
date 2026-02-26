@@ -2,24 +2,11 @@ package dev.rnett.symbolexport.import
 
 import dev.rnett.symbolexport.BuildConfig
 import dev.rnett.symbolexport.Shared
-import dev.rnett.symbolexport.Shared.EXPORTED_SYMBOLS_FILENAME
 import dev.rnett.symbolexport.export.ExportPlugin
-import dev.rnett.symbolexport.generator.SymbolFileWriter
 import dev.rnett.symbolexport.kotlinExtension
-import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.attributes.Usage
-import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.provider.Property
-import org.gradle.api.tasks.CacheableTask
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 
 /**
@@ -40,50 +27,75 @@ import org.gradle.api.tasks.TaskProvider
 public class ImportPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         val extension = target.extensions.create("symbolImport", ImportExtension::class.java).apply {
-            generatedSymbolsPackage.convention(target.provider { target.group.toString() })
+            generatedSymbolsPackage.convention("symbols")
             autoAddSymbolsDependency.convention(true)
             symbolGenerationDirectory.convention(target.layout.buildDirectory.dir("generated/sources/symbol-export"))
-            flattenDependencyProjects.convention(false)
         }
 
-        val configuration = target.configurations.register("importSymbols") {
-            it.isCanBeConsumed = false
-            it.attributes {
-                it.attribute(
-                    Usage.USAGE_ATTRIBUTE,
-                    target.objects.named(Usage::class.java, Shared.USAGE_ATTRIBUTE_VALUE)
-                )
+        val helperConfiguration = target.configurations.register("symbolExportRunner") {
+            it.isCanBeConsumed = true
+        }
+
+        target.dependencies.add(
+            helperConfiguration.name,
+            "${BuildConfig.KOTLIN_PLUGIN_GROUP}:plugin-support:${BuildConfig.KOTLIN_PLUGIN_VERSION}"
+        )
+
+        val importedFiles = extension.importedSymbols.map {
+            it.mapValues {
+                target.configurations.detachedConfiguration(target.dependencies.create(it.value))
+                    .apply {
+                        isCanBeResolved = true
+                        attributes.attribute(
+                            Usage.USAGE_ATTRIBUTE,
+                            target.objects.named(Usage::class.java, Shared.USAGE_ATTRIBUTE_VALUE)
+                        )
+                        incoming.artifactView {
+                            it.attributes.attribute(
+                                Usage.USAGE_ATTRIBUTE,
+                                target.objects.named(Usage::class.java, Shared.USAGE_ATTRIBUTE_VALUE)
+                            )
+                        }
+                    }.resolve().single()
             }
         }
 
-        val task = target.tasks.register("generateSymbolExports", ImportSymbolGenerationTask::class.java) {
-            it.symbolFiles.from(configuration.get())
+        val generationTask = target.tasks.register("generateSymbols", SymbolGenerationTask::class.java) {
+            it.group = "symbol export"
+            it.dependencies.set(importedFiles.map {
+                it.map { (name, file) ->
+                    target.objects.newInstance(SymbolGenerationTask.SymbolDependency::class.java).apply {
+                        this.name.set(name)
+                        this.file.set(file)
+                    }
+                }
+            })
+            it.basePackage.set(extension.generatedSymbolsPackage)
             it.outputDirectory.convention(extension.symbolGenerationDirectory)
-            it.packageName.convention(extension.generatedSymbolsPackage)
-            it.flattenProjects.convention(extension.flattenDependencyProjects)
+            it.classpath.from(helperConfiguration)
         }
 
         target.pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
             extension.attachToSourceSets.convention(setOf("main"))
-            makeKotlinDependOn(target, extension, task)
+            makeKotlinDependOn(target, extension, generationTask)
         }
 
 
         target.pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
             extension.attachToSourceSets.convention(setOf("commonMain"))
-            makeKotlinDependOn(target, extension, task)
+            makeKotlinDependOn(target, extension, generationTask)
         }
 
         target.pluginManager.withPlugin("org.jetbrains.kotlin.android") {
             extension.attachToSourceSets.convention(setOf("main"))
-            makeKotlinDependOn(target, extension, task)
+            makeKotlinDependOn(target, extension, generationTask)
         }
     }
 
     private fun makeKotlinDependOn(
         target: Project,
         extension: ImportExtension,
-        task: TaskProvider<ImportSymbolGenerationTask>
+        task: TaskProvider<SymbolGenerationTask>
     ) {
         val kotlinExtension = target.kotlinExtension
         kotlinExtension.sourceSets.configureEach {
@@ -115,48 +127,6 @@ public class ImportPlugin : Plugin<Project> {
                 )
             }
         }
-    }
-
-}
-
-@CacheableTask
-public abstract class ImportSymbolGenerationTask : DefaultTask() {
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    public abstract val symbolFiles: ConfigurableFileCollection
-
-    @get:Input
-    public abstract val packageName: Property<String>
-
-    @get:Input
-    public abstract val flattenProjects: Property<Boolean>
-
-    @get:OutputDirectory
-    public abstract val outputDirectory: DirectoryProperty
-
-    @TaskAction
-    public fun doGeneration() {
-        val files =
-            symbolFiles.files.filter { it.exists() && it.isFile && it.name == EXPORTED_SYMBOLS_FILENAME }
-
-        if (files.isEmpty()) {
-            didWork = false
-            return
-        }
-
-        val outputDir = outputDirectory.asFile.get()
-
-        if (outputDir.exists()) {
-            outputDir.deleteRecursively()
-        }
-        outputDir.mkdirs()
-
-        SymbolFileWriter.generateAndWriteSymbolFiles(
-            files,
-            outputDir,
-            packageName.get(),
-            flattenProjects.get()
-        )
     }
 
 }

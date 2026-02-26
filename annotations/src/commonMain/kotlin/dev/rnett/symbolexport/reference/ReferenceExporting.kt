@@ -1,6 +1,5 @@
 package dev.rnett.symbolexport.reference
 
-import dev.rnett.symbolexport.ExportAnnotation
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KProperty

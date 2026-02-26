@@ -1,23 +1,22 @@
 package dev.rnett.symbolexport.fir
 
-import dev.rnett.symbolexport.fir.Names.EXPORT_ANNOTATION_ANNOTATION_FQN
-import dev.rnett.symbolexport.fir.Names.EXPORT_ANNOTATION_FQN
-import dev.rnett.symbolexport.fir.Names.EXPORT_REFERENCES_ANNOTATION_FQN
-import dev.rnett.symbolexport.fir.Names.PARENT_ANNOTATION_FQN
+import dev.rnett.symbolexport.Names
+import dev.rnett.symbolexport.Names.EXPORT_ANNOTATION_ANNOTATION_FQN
+import dev.rnett.symbolexport.Names.EXPORT_REFERENCES_ANNOTATION_FQN
 import org.jetbrains.kotlin.fir.extensions.predicate.DeclarationPredicate
 
 object Predicates {
 
     val export = DeclarationPredicate.create {
-        annotated(EXPORT_ANNOTATION_FQN)
+        annotated(Names.ExportSymbol.asSingleFqName())
     }
 
     val childrenExported = DeclarationPredicate.create {
-        annotated(PARENT_ANNOTATION_FQN)
+        annotated(Names.ChildrenExported.asSingleFqName())
     }
 
-    val annotationExport = DeclarationPredicate.create {
-        annotated(EXPORT_ANNOTATION_ANNOTATION_FQN)
+    val declarationExport = DeclarationPredicate.create {
+        annotated(Names.ExportDeclaration.asSingleFqName())
     }
 
     val parentAnnotationExport = DeclarationPredicate.create {

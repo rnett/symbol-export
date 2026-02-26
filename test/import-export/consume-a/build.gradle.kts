@@ -8,10 +8,9 @@ kotlin {
 }
 
 symbolImport {
-    flattenDependencyProjects = true
+    import("a", project(":import-export:produce-a"))
 }
 
 dependencies {
-    importSymbols(project(":import-export:produce-a"))
     testImplementation(kotlin("test"))
 }

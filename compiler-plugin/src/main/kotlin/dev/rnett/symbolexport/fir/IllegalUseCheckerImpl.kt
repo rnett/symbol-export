@@ -1,6 +1,6 @@
 package dev.rnett.symbolexport.fir
 
-import dev.rnett.symbolexport.fir.exporter.BaseSymbolExporter
+import dev.rnett.symbolexport.Names
 import dev.rnett.symbolexport.fir.exporter.IllegalUseChecker
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
@@ -31,11 +31,11 @@ class IllegalUseCheckerImpl(val session: FirSession) : FirBasicDeclarationChecke
     private fun checkIllegalUse(declaration: FirDeclaration): Boolean? {
         if (
             !session.predicateBasedProvider.matches(Predicates.export, declaration) &&
-            !declaration.hasAnnotation(Names.EXPORT_ANNOTATION_CLASSID, session) &&
+            !declaration.hasAnnotation(Names.ExportSymbol, session) &&
             !session.predicateBasedProvider.matches(Predicates.childrenExported, declaration) &&
-            !declaration.hasAnnotation(Names.PARENT_ANNOTATION_CLASSID, session) &&
-            !session.predicateBasedProvider.matches(Predicates.annotationExport, declaration) &&
-            !declaration.hasAnnotation(Names.EXPORT_ANNOTATION_CLASSID, session)
+            !declaration.hasAnnotation(Names.ChildrenExported, session) &&
+            !session.predicateBasedProvider.matches(Predicates.declarationExport, declaration) &&
+            !declaration.hasAnnotation(Names.ExportDeclaration, session)
         )
             return null
 
@@ -68,30 +68,10 @@ class IllegalUseCheckerImpl(val session: FirSession) : FirBasicDeclarationChecke
     }
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
-    override fun <T : FirDeclaration> checkIllegalUse(declaration: T, checker: BaseSymbolExporter<T>?): Boolean {
+    override fun <T : FirDeclaration> checkIllegalUse(declaration: T): Boolean {
         val isDeclarationIllegal = isIllegalUse(declaration)
-        val parent = checker?.getParent(declaration) ?: return isDeclarationIllegal
-
-        val parentIllegal = isParentIllegal(parent)
-
-        return parentIllegal || isDeclarationIllegal
+        return isDeclarationIllegal
 
     }
 
-    context(context: CheckerContext, reporter: DiagnosticReporter)
-    private fun isParentIllegal(parent: FirBasedSymbol<*>): Boolean {
-        if (
-            !session.predicateBasedProvider.matches(Predicates.childrenExported, parent) &&
-            !session.predicateBasedProvider.matches(Predicates.export, parent) &&
-            !session.predicateBasedProvider.matches(Predicates.annotationExport, parent)
-        ) {
-            reporter.reportOn(
-                parent.source,
-                Diagnostics.SYMBOL_EXPORT_PARENT_MUST_BE_EXPOSED
-            )
-            return true
-        }
-
-        return false
-    }
 }

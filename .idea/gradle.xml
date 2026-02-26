@@ -12,9 +12,9 @@
                   <project path="$PROJECT_DIR$" />
                   <project path="$PROJECT_DIR$/annotations" />
                   <project path="$PROJECT_DIR$/compiler-plugin" />
-                  <project path="$PROJECT_DIR$/generator" />
                   <project path="$PROJECT_DIR$/gradle-plugins" />
                   <project path="$PROJECT_DIR$/names-internal" />
+                  <project path="$PROJECT_DIR$/plugin-support" />
                   <project path="$PROJECT_DIR$/symbols" />
                   <project path="$PROJECT_DIR$/symbols-kotlin-compiler" />
                   <project path="$PROJECT_DIR$/symbols-kotlinpoet" />
@@ -36,11 +36,11 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/annotations" />
             <option value="$PROJECT_DIR$/compiler-plugin" />
-            <option value="$PROJECT_DIR$/generator" />
             <option value="$PROJECT_DIR$/gradle-plugins" />
             <option value="$PROJECT_DIR$/gradle/build-logic" />
             <option value="$PROJECT_DIR$/gradle/build-logic/kotlin-setup" />
             <option value="$PROJECT_DIR$/names-internal" />
+            <option value="$PROJECT_DIR$/plugin-support" />
             <option value="$PROJECT_DIR$/symbols" />
             <option value="$PROJECT_DIR$/symbols-kotlin-compiler" />
             <option value="$PROJECT_DIR$/symbols-kotlinpoet" />

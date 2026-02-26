@@ -31,7 +31,7 @@ include(
     ":compiler-plugin",
     ":annotations",
     ":gradle-plugins",
-    ":generator"
+    ":plugin-support"
 )
 
 includeBuild("gradle/build-logic")

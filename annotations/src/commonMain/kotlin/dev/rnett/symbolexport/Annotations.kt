@@ -16,17 +16,20 @@ import dev.rnett.symbolexport.reference.ExportReferences
 @Retention(AnnotationRetention.SOURCE)
 public annotation class ChildrenExported
 
+//TODO forbid names used by Symbol
+
 /**
  * Generates a symbol entry for the annotated target.
  * All parents of the target must be marked with either [ExportSymbol] or [ChildrenExported].
  *
- * Annotation classes may use [ExportAnnotation] instead of this annotation to also export their schema.
+ * This annotation exports just the symbol reference to this declaration.
+ * See [ExportDeclaration] exports a more full data model about the target.
  *
- * [ExportReferences] may be used to export 3rd party symbols, but should be used with caution.
+ * [exportedName] is used to disambiguate conflicts in the generated symbol accessors, if necessary.
+ * Only relevant for functions - ignored otherwise.
  *
  * @see ChildrenExported
- * @see ExportAnnotation
- * @see ExportReceivers
+ * @see ExportDeclaration
  * @see ExportReferences
  */
 @Target(
@@ -34,48 +37,35 @@ public annotation class ChildrenExported
     AnnotationTarget.CLASS,
     AnnotationTarget.PROPERTY,
     AnnotationTarget.FUNCTION,
-    AnnotationTarget.TYPE_PARAMETER,
-    AnnotationTarget.VALUE_PARAMETER,
     AnnotationTarget.CONSTRUCTOR
 )
 @Retention(AnnotationRetention.SOURCE)
-public annotation class ExportSymbol
+public annotation class ExportSymbol(val exportedName: String = "")
 
 /**
- * Applies [ExportSymbol] to this declaration's parameters.
- */
-@Target(
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.CONSTRUCTOR,
-    AnnotationTarget.PROPERTY,
-    AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.PROPERTY_SETTER,
-)
-@Retention(AnnotationRetention.SOURCE)
-public annotation class ExportParameters()
-
-/**
- * Applies [ExportSymbol] to this function's dispatch and extension receivers, if the appropriate flags are set.
- * Applies to both by default.
+ * Generates a symbol entry for the annotated target.
+ * All parents of the target must be marked with [ExportSymbol], [ExportDeclaration], or [ChildrenExported].
  *
- * @param dispatch whether to export the dispatch receiver
- * @param extension whether to export the extension receiver
- */
-@Target(
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.CONSTRUCTOR,
-    AnnotationTarget.PROPERTY,
-)
-@Retention(AnnotationRetention.SOURCE)
-public annotation class ExportReceivers(val dispatch: Boolean = true, val extension: Boolean = true)
-
-/**
- * Implies [ExportSymbol], and also exports the annotation's properties in a way that allows annotations to be easily read or created by users of the symbols (e.g. to/from `FirAnnotation` or `IrAnnotation`).
+ * Applies [ExportSymbol], and exports some additional information, depending on the target:
+ *  * Type parameters and parameters are exported
+ *  * If the target is an annotation, a type-safe annotation reader and writer are created
+ *  * If the target target is a class, a type-safe type constructor is created
+ *  * If the target is a callable (function or property), a type-safe call reader and creator is created
+ *  * If the target is a property, any public-ABI getter or setter is exported (TODO: backing field and delegate)
+ *  * If the target is an enum, all entries are exported
  *
- * Requires any referenced annotation types to also use [ExportAnnotation].
+ * [exportedName] is used to disambiguate conflicts in the generated declaration accessors, if necessary.
+ * Only relevant for functions - ignored otherwise.
+ *
+ * @see ChildrenExported
+ * @see ExportSymbol
  */
 @Target(
     AnnotationTarget.ANNOTATION_CLASS,
+    AnnotationTarget.CLASS,
+    AnnotationTarget.PROPERTY,
+    AnnotationTarget.FUNCTION,
+    AnnotationTarget.CONSTRUCTOR
 )
 @Retention(AnnotationRetention.SOURCE)
-public annotation class ExportAnnotation
+public annotation class ExportDeclaration(val exportedName: String = "")

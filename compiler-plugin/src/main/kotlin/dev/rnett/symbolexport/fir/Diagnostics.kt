@@ -1,6 +1,6 @@
 package dev.rnett.symbolexport.fir
 
-import dev.rnett.symbolexport.internal.InternalName
+import dev.rnett.symbolexport.internal.InternalSymbol
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactory1
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactoryToRendererMap
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticsContainer
@@ -26,7 +26,7 @@ object Diagnostics : KtDiagnosticsContainer() {
     val SYMBOL_EXPORT_EXPORTED_ANNOTATION_ANNOTATION_PROPERTY_NOT_EXPORTED by error0<KtDeclaration>()
     val SYMBOL_EXPORT_UNSUPPORTED_ANNOTATION_PROPERTY_TYPE by error1<KtDeclaration, ConeKotlinType>()
 
-    fun symbolExportMarker(name: InternalName): KtDiagnosticFactory1<InternalName> {
+    fun symbolExportMarker(name: InternalSymbol): KtDiagnosticFactory1<InternalSymbol> {
         return KtDiagnosticFactory1(
             "EXPORTED_MARKER_$name",
             Severity.WARNING,

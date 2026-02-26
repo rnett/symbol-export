@@ -3,7 +3,7 @@ plugins {
     id("build.public-module")
     id("java-gradle-plugin")
     alias(libs.plugins.buildconfig)
-    alias(libs.plugins.shadow)
+//    alias(libs.plugins.shadow)
     alias(libs.plugins.kcp.dev.gradle)
 }
 
@@ -15,17 +15,15 @@ compilerSupportPluginDevelopment {
 }
 
 dependencies {
-    implementation(project(":names-internal"))
-    implementation(project(":generator"))
 }
 
-tasks.shadowJar {
-    archiveClassifier = ""
-    dependencies {
-        exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
-    }
-    relocate("kotlinx.serialization", "dev.rnett.symbolexport.kotlinx.serialization")
-}
+//tasks.shadowJar {
+//    archiveClassifier = ""
+//    dependencies {
+//        exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
+//    }
+//    relocate("kotlinx.serialization", "dev.rnett.symbolexport.kotlinx.serialization")
+//}
 
 fun libraryCoordinates(project: Project) = buildString {
     append(group)

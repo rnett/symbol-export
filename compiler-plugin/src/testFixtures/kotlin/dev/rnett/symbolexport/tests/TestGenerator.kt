@@ -23,7 +23,7 @@ object TestGenerator : BaseTestGenerator() {
     )
 
     override fun TestGenerationBuilder.generateTests() {
-        withTestSpec(PluginComponentRegistrar::class, PluginComponentRegistrar.Spec(writeSpec = null, warnOnExported = true))
+        withTestSpec(PluginComponentRegistrar::class, PluginComponentRegistrar.Spec(warnOnExported = true, outputDir = null, rootPath = null))
         // Global compiler test configuration needed by our test data
         configure {
             defaultDirectives {

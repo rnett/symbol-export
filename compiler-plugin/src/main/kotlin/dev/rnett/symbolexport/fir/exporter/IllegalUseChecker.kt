@@ -6,5 +6,5 @@ import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 
 interface IllegalUseChecker {
     context(context: CheckerContext, reporter: DiagnosticReporter)
-    fun <T : FirDeclaration> checkIllegalUse(declaration: T, checker: BaseSymbolExporter<T>?): Boolean
+    fun <T : FirDeclaration> checkIllegalUse(declaration: T): Boolean
 }

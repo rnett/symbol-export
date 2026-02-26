@@ -4,6 +4,10 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
 }
 
+kotlin {
+    jvmToolchain(8)
+}
+
 dependencies {
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.kotlinx.serialization.json)

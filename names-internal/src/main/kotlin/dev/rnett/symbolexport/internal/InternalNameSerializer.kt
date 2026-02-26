@@ -1,6 +1,8 @@
 package dev.rnett.symbolexport.internal
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 
 public object InternalNameSerializer {
     private val json: Json = Json {
@@ -8,7 +10,9 @@ public object InternalNameSerializer {
         useArrayPolymorphism = true
     }
 
-    public fun serializeEntry(entry: InternalNameEntry): String = json.encodeToString(entry)
-    public fun deserializeEntry(json: String): InternalNameEntry = this.json.decodeFromString(json)
+    public fun <T> serialize(entry: T, serializer: KSerializer<T>): String = json.encodeToString(serializer, entry)
+    public fun <T> deserialize(data: String, serializer: KSerializer<T>): T = json.decodeFromString(serializer, data)
 
+    public inline fun <reified T> serialize(entry: T): String = serialize(entry, serializer())
+    public inline fun <reified T> deserialize(data: String): T = deserialize(data, serializer())
 }

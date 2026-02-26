@@ -5,7 +5,8 @@ plugins {
 
 
 dependencies {
-    importSymbols(project(":symbols-integration-tests:test-symbols"))
+    //TODO update to new dependencies
+//    importSymbols(project(":symbols-integration-tests:test-symbols"))
     testImplementation(project(":symbols-integration-tests:test-symbols"))
 
     testImplementation(libs.kotlinpoet)

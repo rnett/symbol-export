@@ -10,10 +10,17 @@ import kotlin.io.path.Path
  */
 object SymbolExportOptions : CompilerOptionsHost() {
 
-    val outputFile by singular<Path>(
-        name = "outputFile",
+    val outputDir by singular<Path>(
+        name = "outputDir",
         valueDescription = "<path>",
         description = "The file to output the exported symbols to",
+        required = true,
+    ) { runCatching { Path(it) }.getOrNull() }
+
+    val rootDir by singular<Path>(
+        name = "rootDir",
+        valueDescription = "<path>",
+        description = "The root directory of the gradle project",
         required = true,
     ) { runCatching { Path(it) }.getOrNull() }
 
