@@ -9,6 +9,10 @@ plugins {
 val onlyJvm = providers.systemProperty("symbol-export.onlyJvm").orNull?.lowercase() == "true"
 
 kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-parameters")
+    }
+
     jvmToolchain(Shared::toolchain)
     jvm()
     js() {

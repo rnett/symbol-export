@@ -6,6 +6,9 @@ plugins {
 
 kotlin {
     jvmToolchain(Shared::toolchain)
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-parameters")
+    }
 }
 
 dependencies {

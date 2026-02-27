@@ -75,6 +75,16 @@ Symbol-related imports and Kotlin test imports, when available, are automaticall
 
 Each directory of test files has a corresponding test in `/test-gen`. These are created by `GenerateTests.kt`'s `main` function.
 
+### Generator Snapshot Tests
+
+The generator tests live in `plugin-support/src/test/kotlin/dev/rnett/symbolexport/generator` and use snapshots to verify the generated Kotlin code.
+
+- Snapshots are stored in `plugin-support/src/test/resources/snapshots`.
+- Each snapshot is a `.kt` file containing the expected generated code.
+- To update snapshots, run the tests with the `-DupdateSnapshots=true` system property.
+- When running without the update flag, the test compares the actual generated code with the snapshot and then attempts to compile the generated code using the `K2JVMCompiler` to ensure it's valid Kotlin.
+- A failure during compilation will throw an `AssertionFailedError` with the compiler exit code.
+
 ### Testing Diagnostics
 
 To test a diagnostic, create a Kotlin file that would trigger it and include the diagnostic ID in the file. For example, for the diagnostic `SYMBOL_EXPORT_PARENT_MUST_BE_EXPOSED`:

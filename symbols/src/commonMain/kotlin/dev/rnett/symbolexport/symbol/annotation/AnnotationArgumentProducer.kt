@@ -20,6 +20,16 @@ public interface AnnotationArgumentProducer {
      * @throws AnnotationGettingArgumentsException if there is an error getting the raw value of an argument.
      */
     public fun <A : AnnotationArgument, P : AnnotationParameterType<A>> getArgument(parameter: AnnotationParameter<P>): A?
+
+    @Suppress("UNCHECKED_CAST")
+    public fun produceMap(parameters: List<AnnotationParameter<*>>): Map<AnnotationParameter<*>, AnnotationArgument> = buildMap {
+        parameters.forEach { parameter ->
+            val argument = getArgument<AnnotationArgument, _>(parameter as AnnotationParameter<Nothing>)
+            if (argument != null) {
+                put(parameter, argument)
+            }
+        }
+    }
 }
 
 /**

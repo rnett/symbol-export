@@ -9,23 +9,27 @@ import dev.rnett.symbolexport.internal.InternalSymbol
  *
  * This generator adds the appropriate superclass and constructor parameters to the symbol object so that it implements `HasDeclaration<>` with the SymbolDeclaration corresponding to the given symbol.
  */
-internal object SymbolImplGenerator {
-    fun addSymbolDeclarationInstance(builder: TypeSpec.Builder, symbol: InternalSymbol) {
-        val isConstructor = symbol is InternalSymbol.Function && symbol.name == Names.INIT
+internal interface SymbolImplGenerator {
+    fun addSymbolDeclarationInstance(builder: TypeSpec.Builder, symbol: InternalSymbol)
 
-        val declarationType = when (symbol) {
-            is InternalSymbol.Classifier -> Names.ClassSymbolDeclaration
-            is InternalSymbol.EnumEntry -> Names.EnumEntrySymbolDeclaration
-            is InternalSymbol.Function -> if (isConstructor) {
-                Names.ConstructorSymbolDeclaration
-            } else {
-                Names.SimpleFunctionSymbolDeclaration
+    companion object : SymbolImplGenerator {
+        override fun addSymbolDeclarationInstance(builder: TypeSpec.Builder, symbol: InternalSymbol) {
+            val isConstructor = symbol is InternalSymbol.Function && symbol.name == Names.INIT
+
+            val declarationType = when (symbol) {
+                is InternalSymbol.Classifier -> Names.ClassSymbolDeclaration
+                is InternalSymbol.EnumEntry -> Names.EnumEntrySymbolDeclaration
+                is InternalSymbol.Function -> if (isConstructor) {
+                    Names.ConstructorSymbolDeclaration
+                } else {
+                    Names.SimpleFunctionSymbolDeclaration
+                }
+
+                is InternalSymbol.Property -> Names.PropertySymbolDeclaration
             }
 
-            is InternalSymbol.Property -> Names.PropertySymbolDeclaration
+            builder.superclass(Names.HasDeclaration.parameterizedBy(declarationType))
+            builder.addSuperclassConstructorParameter("%T.Impl(%L)", declarationType, SymbolInstanceGenerator.symbolInstance(symbol))
         }
-
-        builder.superclass(Names.HasDeclaration.parameterizedBy(declarationType))
-        builder.addSuperclassConstructorParameter("%T.Impl(%L)", declarationType, SymbolInstanceGenerator.symbolInstance(symbol))
     }
 }

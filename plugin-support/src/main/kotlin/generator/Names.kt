@@ -1,6 +1,10 @@
 package dev.rnett.symbolexport.generator
 
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.STAR
+import com.squareup.kotlinpoet.TypeName
+import com.squareup.kotlinpoet.asClassName
 
 internal object Names {
     val packageName = "dev.rnett.symbolexport.symbol.v2"
@@ -15,6 +19,10 @@ internal object Names {
     val EnumEntrySymbol = ClassName(packageName, "EnumEntrySymbol")
 
     val ClassDeclaration = ClassName(packageName, "ClassDeclaration")
+    val AnnotationDeclaration = ClassName(packageName, "AnnotationDeclaration")
+    val AnnotationDeclaration_Instance = AnnotationDeclaration.nestedClass("Instance")
+    val AnnotationDeclaration_ArgumentsMap = AnnotationDeclaration.nestedClass("ArgumentsMap")
+    val ObjectDeclaration = ClassName(packageName, "ObjectDeclaration")
     val SimpleFunctionDeclaration = ClassName(packageName, "SimpleFunctionDeclaration")
     val ConstructorDeclaration = ClassName(packageName, "ConstructorDeclaration")
     val PropertyDeclaration = ClassName(packageName, "PropertyDeclaration")
@@ -46,4 +54,14 @@ internal object Names {
     val Projection = ClassName(packageName, "FunctionSignature", "TypeArgumentSignature", "Projection")
     val Wildcard = ClassName(packageName, "FunctionSignature", "TypeArgumentSignature", "Wildcard")
     val Variance = ClassName(packageName, "FunctionSignature", "TypeArgumentSignature", "Variance")
+
+    val annotationPackage = "dev.rnett.symbolexport.symbol.annotation"
+    val AnnotationParameter = ClassName(annotationPackage, "AnnotationParameter")
+    val AnnotationParameterType = ClassName(annotationPackage, "AnnotationParameterType")
+    val AnnotationArgument = ClassName(annotationPackage, "AnnotationArgument")
+    val AnnotationArgumentProducer = ClassName(annotationPackage, "AnnotationArgumentProducer")
+
+    object Types {
+        val ParameterList: TypeName = List::class.asClassName().parameterizedBy(AnnotationParameter.parameterizedBy(STAR))
+    }
 }
