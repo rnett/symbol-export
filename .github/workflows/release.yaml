@@ -59,6 +59,8 @@ jobs:
           ./gradlew assemble
 
       - name: Generate dokka docs
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m -Dsymbol-export.onlyJvm=true"
         run: |
           ./gradlew dokkaGenerate
 

@@ -16,10 +16,12 @@ kotlin {
     jvmToolchain(Shared::toolchain)
     jvm()
     js() {
-        browser()
         nodejs()
     }
     if (!onlyJvm) {
+        js() {
+            browser()
+        }
         @OptIn(ExperimentalWasmDsl::class)
         wasmJs() {
             d8()
