@@ -17,11 +17,9 @@ kotlin {
     jvm()
     js() {
         nodejs()
+        browser()
     }
     if (!onlyJvm) {
-        js() {
-            browser()
-        }
         @OptIn(ExperimentalWasmDsl::class)
         wasmJs() {
             d8()
