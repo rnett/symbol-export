@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.fir.declarations.getTargetType
 import org.jetbrains.kotlin.fir.declarations.resolved
 import org.jetbrains.kotlin.fir.declarations.toAnnotationClassId
 import org.jetbrains.kotlin.fir.expressions.FirAnnotation
-import org.jetbrains.kotlin.fir.expressions.FirArrayLiteral
+import org.jetbrains.kotlin.fir.expressions.FirCollectionLiteral
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.expressions.FirGetClassCall
@@ -100,7 +100,7 @@ private abstract class BaseFirAnnotationArgumentProvider(val session: FirSession
     }
 
     override fun extractArrayArguments(expression: FirExpression): List<FirExpression> {
-        val arrayLiteral = expression.evaluateAs<FirArrayLiteral>(session) ?: throw IllegalArgumentException("Expected array literal")
+        val arrayLiteral = expression.evaluateAs<FirCollectionLiteral>(session) ?: throw IllegalArgumentException("Expected array literal")
         return arrayLiteral.arguments
     }
 

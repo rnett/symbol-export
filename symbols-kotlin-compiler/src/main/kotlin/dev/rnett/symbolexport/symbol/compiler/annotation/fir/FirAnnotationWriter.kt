@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.fir.expressions.buildUnaryArgumentList
 import org.jetbrains.kotlin.fir.expressions.builder.buildAnnotation
 import org.jetbrains.kotlin.fir.expressions.builder.buildAnnotationArgumentMapping
 import org.jetbrains.kotlin.fir.expressions.builder.buildArgumentList
-import org.jetbrains.kotlin.fir.expressions.builder.buildArrayLiteral
+import org.jetbrains.kotlin.fir.expressions.builder.buildCollectionLiteral
 import org.jetbrains.kotlin.fir.expressions.builder.buildGetClassCall
 import org.jetbrains.kotlin.fir.expressions.builder.buildLiteralExpression
 import org.jetbrains.kotlin.fir.expressions.builder.buildPropertyAccessExpression
@@ -82,7 +82,7 @@ private class FirAnnotationWriter(
         elements: List<FirExpression>,
         elementType: AnnotationParameterType<*>
     ): FirExpression {
-        return buildArrayLiteral {
+        return buildCollectionLiteral {
             source = this@FirAnnotationWriter.source
             coneTypeOrNull = elementType.toConeType()
             argumentList = buildArgumentList {
