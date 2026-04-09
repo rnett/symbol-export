@@ -1,7 +1,7 @@
 [versions]
 kotlin = "2.3.20"
 ksp = "2.3.3"
-kotlinx-serialization = "1.10.0"
+kotlinx-serialization = "1.11.0"
 buildconfig = "6.0.9"
 kotlinpoet = "2.3.0"
 shadow = "9.4.1"
