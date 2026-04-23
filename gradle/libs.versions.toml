@@ -1,6 +1,6 @@
 [versions]
-kotlin = "2.3.21"
-ksp = "2.3.3"
+kotlin = "2.4.0-Beta2"
+ksp = "2.3.7"
 kotlinx-serialization = "1.11.0"
 buildconfig = "6.0.9"
 kotlinpoet = "2.3.0"
