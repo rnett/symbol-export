@@ -1,6 +1,7 @@
 package test
 
 import org.jetbrains.kotlin.test.services.KotlinStandardLibrariesPathProvider
+import org.jetbrains.kotlin.platform.wasm.WasmTarget
 import java.io.File
 import java.io.File.pathSeparator
 import java.io.File.separator
@@ -47,5 +48,13 @@ object ClasspathBasedStandardLibrariesPathProvider : KotlinStandardLibrariesPath
 
     override fun scriptingPluginFilesForTests(): Collection<File> {
         TODO("KT-67573")
+    }
+
+    override fun fullWasmStdlib(target: WasmTarget): File {
+        TODO("Not yet implemented")
+    }
+
+    override fun kotlinTestWasmKLib(target: WasmTarget): File {
+        TODO("Not yet implemented")
     }
 }

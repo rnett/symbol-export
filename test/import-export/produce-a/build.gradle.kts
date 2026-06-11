@@ -13,8 +13,4 @@ kotlin {
 
     val commonMain by sourceSets.getting {
     }
-
-    compilerOptions {
-        freeCompilerArgs.add("-Xcontext-parameters")
-    }
 }

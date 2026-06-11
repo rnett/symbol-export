@@ -89,11 +89,13 @@ jobs:
 
       - name: Test library
         working-directory: ./test
-        run: ./gradlew :symbol-export:checkAll
+        run: |
+          ./gradlew :symbol-export:kotlinUpgradeYarnLock :symbol-export:checkAll
 
       - name: Run integration tests
         working-directory: ./test
-        run: ./gradlew check
+        run: |
+          ./gradlew :kotlinUpgradeYarnLock check
 
       - name: Get version
         id: get-version

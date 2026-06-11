@@ -8,7 +8,7 @@ import dev.rnett.kcp.development.testing.tests.levels.TestWithLevel;
 import dev.rnett.kcp.development.testing.tests.levels.TestLevel;
 import dev.rnett.symbolexport.tests.TestGenerator;
 import dev.rnett.kcp.development.testing.generation.configuration.ConfigurationHost;
-import org.jetbrains.kotlin.test.builders.TestConfigurationBuilder;
+import org.jetbrains.kotlin.test.builders.NonGroupingPhaseTestConfigurationBuilder;
 import dev.rnett.kcp.development.testing.tests.levels.AbstractLeveledFirTest;
 import org.jetbrains.kotlin.test.TestMetadata;
 import org.junit.jupiter.api.Test;
@@ -23,9 +23,13 @@ import java.util.regex.Pattern;
 @TestWithLevel(level = TestLevel.Diagnostics)
 public class ExportTestGenerated extends AbstractLeveledFirTest {
   @Override
-  public void configure(TestConfigurationBuilder builder) {
+  public void configure(NonGroupingPhaseTestConfigurationBuilder builder) {
     super.configure(builder);
     ConfigurationHost.applyRuntimeConfiguration(this, builder, TestGenerator.class);
+  }
+
+  private void run(String fileName) {
+    runTest("src/testData/reference/export/" + fileName);
   }
 
   @Test
@@ -36,66 +40,66 @@ public class ExportTestGenerated extends AbstractLeveledFirTest {
   @Test
   @TestMetadata("ExportAnnotation.kt")
   public void testExportAnnotation() {
-    runTest("src/testData/reference/export/ExportAnnotation.kt");
+    run("ExportAnnotation.kt");
   }
 
   @Test
   @TestMetadata("ExportClass.kt")
   public void testExportClass() {
-    runTest("src/testData/reference/export/ExportClass.kt");
+    run("ExportClass.kt");
   }
 
   @Test
   @TestMetadata("ExportClassWithTypeParams.kt")
   public void testExportClassWithTypeParams() {
-    runTest("src/testData/reference/export/ExportClassWithTypeParams.kt");
+    run("ExportClassWithTypeParams.kt");
   }
 
   @Test
   @TestMetadata("ExportEnumEntries.kt")
   public void testExportEnumEntries() {
-    runTest("src/testData/reference/export/ExportEnumEntries.kt");
+    run("ExportEnumEntries.kt");
   }
 
   @Test
   @TestMetadata("ExportFunction.kt")
   public void testExportFunction() {
-    runTest("src/testData/reference/export/ExportFunction.kt");
+    run("ExportFunction.kt");
   }
 
   @Test
   @TestMetadata("ExportFunctionWithParameters.kt")
   public void testExportFunctionWithParameters() {
-    runTest("src/testData/reference/export/ExportFunctionWithParameters.kt");
+    run("ExportFunctionWithParameters.kt");
   }
 
   @Test
   @TestMetadata("ExportProperty.kt")
   public void testExportProperty() {
-    runTest("src/testData/reference/export/ExportProperty.kt");
+    run("ExportProperty.kt");
   }
 
   @Test
   @TestMetadata("ExportPropertyWithParameters.kt")
   public void testExportPropertyWithParameters() {
-    runTest("src/testData/reference/export/ExportPropertyWithParameters.kt");
+    run("ExportPropertyWithParameters.kt");
   }
 
   @Test
   @TestMetadata("ExportReferencedFunction.kt")
   public void testExportReferencedFunction() {
-    runTest("src/testData/reference/export/ExportReferencedFunction.kt");
+    run("ExportReferencedFunction.kt");
   }
 
   @Test
   @TestMetadata("ExportReferencedFunctionWithParameters.kt")
   public void testExportReferencedFunctionWithParameters() {
-    runTest("src/testData/reference/export/ExportReferencedFunctionWithParameters.kt");
+    run("ExportReferencedFunctionWithParameters.kt");
   }
 
   @Test
   @TestMetadata("ExportReferencedProperty.kt")
   public void testExportReferencedProperty() {
-    runTest("src/testData/reference/export/ExportReferencedProperty.kt");
+    run("ExportReferencedProperty.kt");
   }
 }

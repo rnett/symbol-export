@@ -8,7 +8,7 @@ import dev.rnett.kcp.development.testing.tests.levels.TestWithLevel;
 import dev.rnett.kcp.development.testing.tests.levels.TestLevel;
 import dev.rnett.symbolexport.tests.TestGenerator;
 import dev.rnett.kcp.development.testing.generation.configuration.ConfigurationHost;
-import org.jetbrains.kotlin.test.builders.TestConfigurationBuilder;
+import org.jetbrains.kotlin.test.builders.NonGroupingPhaseTestConfigurationBuilder;
 import dev.rnett.kcp.development.testing.tests.levels.AbstractLeveledFirTest;
 import org.jetbrains.kotlin.test.TestMetadata;
 import org.junit.jupiter.api.Test;
@@ -23,9 +23,13 @@ import java.util.regex.Pattern;
 @TestWithLevel(level = TestLevel.Diagnostics)
 public class ErrorsTestGenerated extends AbstractLeveledFirTest {
   @Override
-  public void configure(TestConfigurationBuilder builder) {
+  public void configure(NonGroupingPhaseTestConfigurationBuilder builder) {
     super.configure(builder);
     ConfigurationHost.applyRuntimeConfiguration(this, builder, TestGenerator.class);
+  }
+
+  private void run(String fileName) {
+    runTest("src/testData/errors/" + fileName);
   }
 
   @Test
@@ -36,60 +40,60 @@ public class ErrorsTestGenerated extends AbstractLeveledFirTest {
   @Test
   @TestMetadata("AnnotationExportDuplicates.kt")
   public void testAnnotationExportDuplicates() {
-    runTest("src/testData/errors/AnnotationExportDuplicates.kt");
+    run("AnnotationExportDuplicates.kt");
   }
 
   @Test
   @TestMetadata("AnnotationExportNonAnnotation.kt")
   public void testAnnotationExportNonAnnotation() {
-    runTest("src/testData/errors/AnnotationExportNonAnnotation.kt");
+    run("AnnotationExportNonAnnotation.kt");
   }
 
   @Test
   @TestMetadata("AnnotationExportNonExportedAnnotationParam.kt")
   public void testAnnotationExportNonExportedAnnotationParam() {
-    runTest("src/testData/errors/AnnotationExportNonExportedAnnotationParam.kt");
+    run("AnnotationExportNonExportedAnnotationParam.kt");
   }
 
   @Test
   @TestMetadata("InternalDeclarations.kt")
   public void testInternalDeclarations() {
-    runTest("src/testData/errors/InternalDeclarations.kt");
+    run("InternalDeclarations.kt");
   }
 
   @Test
   @TestMetadata("LocalDeclarations.kt")
   public void testLocalDeclarations() {
-    runTest("src/testData/errors/LocalDeclarations.kt");
+    run("LocalDeclarations.kt");
   }
 
   @Test
   @TestMetadata("OKProtectedDeclarations.kt")
   public void testOKProtectedDeclarations() {
-    runTest("src/testData/errors/OKProtectedDeclarations.kt");
+    run("OKProtectedDeclarations.kt");
   }
 
   @Test
   @TestMetadata("OKPublicDeclarations.kt")
   public void testOKPublicDeclarations() {
-    runTest("src/testData/errors/OKPublicDeclarations.kt");
+    run("OKPublicDeclarations.kt");
   }
 
   @Test
   @TestMetadata("OKPublishedAPIDeclarations.kt")
   public void testOKPublishedAPIDeclarations() {
-    runTest("src/testData/errors/OKPublishedAPIDeclarations.kt");
+    run("OKPublishedAPIDeclarations.kt");
   }
 
   @Test
   @TestMetadata("ParentsNotMarked.kt")
   public void testParentsNotMarked() {
-    runTest("src/testData/errors/ParentsNotMarked.kt");
+    run("ParentsNotMarked.kt");
   }
 
   @Test
   @TestMetadata("PrivateDeclarations.kt")
   public void testPrivateDeclarations() {
-    runTest("src/testData/errors/PrivateDeclarations.kt");
+    run("PrivateDeclarations.kt");
   }
 }

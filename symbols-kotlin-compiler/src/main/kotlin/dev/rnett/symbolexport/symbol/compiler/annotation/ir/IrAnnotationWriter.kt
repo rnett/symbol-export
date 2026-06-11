@@ -11,13 +11,14 @@ import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.descriptors.SourceElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.declarations.IrEnumEntry
-import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
+import org.jetbrains.kotlin.ir.expressions.IrAnnotation
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin
+import org.jetbrains.kotlin.ir.expressions.impl.IrAnnotationImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrClassReferenceImpl
-import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrGetEnumValueImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl
+import org.jetbrains.kotlin.ir.expressions.impl.fromSymbolOwner
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.defaultType
@@ -30,7 +31,7 @@ import org.jetbrains.kotlin.ir.util.toIrConst
 import org.jetbrains.kotlin.name.Name
 
 /**
- * Create an annotation [IrConstructorCall] from an annotation instance.
+ * Create an annotation [IrAnnotation] from an annotation instance.
  */
 @UnsafeDuringIrConstructionAPI
 public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> I.toIrAnnotation(
@@ -39,7 +40,7 @@ public fun <S : Symbol.Annotation<S, I>, I : Symbol.Annotation.Instance<S, I>> I
     endOffset: Int = UNDEFINED_OFFSET,
     origin: IrStatementOrigin? = null,
     source: SourceElement? = null
-): IrConstructorCall = IrAnnotationWriter(context, startOffset, endOffset, origin, source).write(this)
+): IrAnnotation = IrAnnotationWriter(context, startOffset, endOffset, origin, source).write(this)
 
 @UnsafeDuringIrConstructionAPI
 private class IrAnnotationWriter(
@@ -48,12 +49,12 @@ private class IrAnnotationWriter(
     val endOffset: Int = UNDEFINED_OFFSET,
     val origin: IrStatementOrigin? = null,
     val source: SourceElement? = null
-) : BaseAnnotationWriter<IrConstructorCall, IrExpression>() {
+) : BaseAnnotationWriter<IrAnnotation, IrExpression>() {
     override fun assembleAnnotation(
         annotation: Symbol.Annotation<*, *>,
         arguments: Map<AnnotationParameter<*>, IrExpression?>,
         isTopLevel: Boolean
-    ): IrConstructorCall {
+    ): IrAnnotation {
         val annotationClass = context.referenceClass(annotation.asClassId()) ?: error("No class found for $annotation")
 
         val primaryCtor = context.referenceConstructors(annotation.asClassId()).singleOrNull { it.owner.isPrimary } ?: error("No primary constructor found for $annotation")
@@ -61,16 +62,14 @@ private class IrAnnotationWriter(
         if (annotationClass.owner.typeParameters.isNotEmpty())
             error("Annotations with type parameters are not supported: $annotation")
 
-        val call = IrConstructorCallImpl(
-            startOffset,
-            endOffset,
-            annotationClass.defaultType,
-            primaryCtor,
-            0,
-            0,
-            origin,
-            source ?: SourceElement.NO_SOURCE
+        val call = IrAnnotationImpl.fromSymbolOwner(
+            type = annotationClass.defaultType,
+            constructorSymbol = primaryCtor,
+            origin = origin
         )
+        call.startOffset = startOffset
+        call.endOffset = endOffset
+        if (source != null) call.source = source
 
         arguments.forEach { (param, value) ->
             call.arguments[param.index] = value

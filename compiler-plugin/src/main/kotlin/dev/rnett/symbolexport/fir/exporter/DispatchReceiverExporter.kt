@@ -46,7 +46,7 @@ class DispatchReceiverExporter<T : FirCallableDeclaration>(session: FirSession, 
         )
 
         if (exportReceiverAnnotation != null) {
-            if (exportReceiverAnnotation.getBooleanArgument(Names.EXPORT_RECEIVERS_DISPATCH_PROP, session) != false)
+            if (exportReceiverAnnotation.getBooleanArgument(Names.EXPORT_RECEIVERS_DISPATCH_PROP) != false)
                 return true
 
         }
