@@ -6,7 +6,7 @@ description: >-
   or integrating Renovate PRs.
 metadata:
   author: rnett
-  version: "1.0"
+  version: "1.1"
 ---
 
 # Kotlin Update & Release Workflow
@@ -191,6 +191,81 @@ git push origin main
 - `test-support/src/main/kotlin/.../generation/` — generation templates and builders
 - `test-support/src/main/kotlin/.../tests/` — abstract test base classes
 - Regenerate test files by running the build (they are auto-generated from templates)
+
+### `IrAnnotation` Type Change (Kotlin 2.4.0+)
+
+**Error:** `IrAnnotationImpl` constructor or `makeIrAnnotationImpl` no longer available / type mismatch.
+
+**Fix:** In Kotlin 2.4.0, `IrAnnotationImpl` was replaced by `IrAnnotation` as the primary type. Use `IrAnnotationImpl.fromSymbolOwner()` to create annotations from symbol owners, and return `IrAnnotation` instead of `IrAnnotationImpl` where the API expects it.
+
+**Affected areas:**
+
+- Compiler plugin IR transformers that create or manipulate annotations
+- Any code that directly constructs `IrAnnotationImpl` objects
+
+### `ClasspathBasedStandardLibrariesPathProvider` Abstract Members (Kotlin 2.4.0+)
+
+**Error:** `ClasspathBasedStandardLibrariesPathProvider` does not implement `fullWasmStdlib` and `kotlinTestWasmKLib`.
+
+**Fix in** `test/symbols-integration-tests/compiler/src/testFixtures/kotlin/test/ClasspathBasedStandardLibrariesPathProvider.kt`:
+
+Kotlin 2.4.0 added two new abstract members to `KotlinStandardLibrariesPathProvider`:
+
+```kotlin
+import org.jetbrains.kotlin.platform.wasm.WasmTarget
+
+override fun fullWasmStdlib(target: WasmTarget): File {
+    TODO("Not yet implemented")
+}
+
+override fun kotlinTestWasmKLib(target: WasmTarget): File {
+    TODO("Not yet implemented")
+}
+```
+
+The `TODO()` stubs are appropriate because:
+- The existing code already uses `TODO()` for `commonStdlibForTests()` and `scriptingPluginFilesForTests()`
+- Only JVM tests are run in this project (wasm targets are not tested)
+
+### `abiValidation` Additional Configuration (Kotlin 2.4.0+)
+
+**Error:** `keepLocallyUnsupportedTargets` property not found or `checkLegacyAbi` task dependency issues.
+
+**Fix:**
+
+- `keepLocallyUnsupportedTargets` is now configurable in the `abiValidation {}` DSL block
+- The `checkLegacyAbi` task may not exist in all subprojects — conditionally add dependencies:
+
+```kotlin
+tasks.named("checkLegacyAbi") {
+    // Only add if the task exists
+}
+// Or use:
+afterEvaluate {
+    if (tasks.findByName("checkLegacyAbi") != null) {
+        tasks.check { dependsOn("checkLegacyAbi") }
+    }
+}
+```
+
+- If `abiValidation` causes issues on JVM-only builds with enabled wasm/js targets, conditionally disable it with `enabled = false` after evaluation
+
+### `-Xcontext-parameters` Compiler Argument Removal (Kotlin 2.4.0+)
+
+**Error:** Unrecognized compiler argument `-Xcontext-parameters`.
+
+**Fix:** Remove any `-Xcontext-parameters` entries from `freeCompilerArgs` in build scripts. This was likely an experimental flag that has been removed or renamed in Kotlin 2.4.0.
+
+### JS/Yarn Lock Cross-Platform Issues
+
+**Error:** CI fails with yarn lock inconsistencies after Kotlin update.
+
+**Fix in** `.github/workflows/ci.yaml`:
+
+- Add a `kotlinUpgradeYarnLock` step before the main build/check
+- Run `./gradlew kotlinUpgradeYarnLock` (or `:symbol-export:kotlinUpgradeYarnLock`) before the `check` task
+- This ensures the yarn lock is regenerated consistently for the current platform and Kotlin version
+- Alternative: add `-Pkotlin.yarn.update=true` to the Gradle command, but `kotlinUpgradeYarnLock` as a separate step is more reliable
 
 ## Project Configuration
 
