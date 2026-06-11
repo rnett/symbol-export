@@ -15,6 +15,10 @@ import java.util.regex.Pattern;
 @TestMetadata("src/testData/cases")
 @TestDataPath("$PROJECT_ROOT")
 public class CasesTestGenerated extends BaseCompilerTest {
+  private void run(String fileName) {
+    runTest("src/testData/cases/" + fileName);
+  }
+
   @Test
   public void testAllFilesPresentInCases() {
     KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("src/testData/cases"), Pattern.compile("^(.+)\\.kt$"), null, true);
@@ -23,42 +27,42 @@ public class CasesTestGenerated extends BaseCompilerTest {
   @Test
   @TestMetadata("firRead.kt")
   public void testFirRead() {
-    runTest("src/testData/cases/firRead.kt");
+    run("firRead.kt");
   }
 
   @Test
   @TestMetadata("firWrite.kt")
   public void testFirWrite() {
-    runTest("src/testData/cases/firWrite.kt");
+    run("firWrite.kt");
   }
 
   @Test
   @TestMetadata("firWriteIrRead.kt")
   public void testFirWriteIrRead() {
-    runTest("src/testData/cases/firWriteIrRead.kt");
+    run("firWriteIrRead.kt");
   }
 
   @Test
   @TestMetadata("firWriteReadEquality.kt")
   public void testFirWriteReadEquality() {
-    runTest("src/testData/cases/firWriteReadEquality.kt");
+    run("firWriteReadEquality.kt");
   }
 
   @Test
   @TestMetadata("irRead.kt")
   public void testIrRead() {
-    runTest("src/testData/cases/irRead.kt");
+    run("irRead.kt");
   }
 
   @Test
   @TestMetadata("irWrite.kt")
   public void testIrWrite() {
-    runTest("src/testData/cases/irWrite.kt");
+    run("irWrite.kt");
   }
 
   @Test
   @TestMetadata("irWriteReadEquality.kt")
   public void testIrWriteReadEquality() {
-    runTest("src/testData/cases/irWriteReadEquality.kt");
+    run("irWriteReadEquality.kt");
   }
 }
