@@ -56,7 +56,7 @@ jobs:
 
       - name: Build
         run: |
-          ./gradlew assemble
+          ./gradlew assemble -Pkotlin.yarn.update=true
 
       - name: Generate dokka docs
         run: |

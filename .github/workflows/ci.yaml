@@ -80,20 +80,20 @@ jobs:
       - name: Build library
         working-directory: ./test
         run: |
-          ./gradlew :symbol-export:assembleAll
+          ./gradlew :symbol-export:assembleAll -Pkotlin.yarn.update=true
 
       - name: Build tests
         working-directory: ./test
         run: |
-          ./gradlew assemble
+          ./gradlew assemble -Pkotlin.yarn.update=true
 
       - name: Test library
         working-directory: ./test
-        run: ./gradlew :symbol-export:checkAll
+        run: ./gradlew :symbol-export:checkAll -Pkotlin.yarn.update=true
 
       - name: Run integration tests
         working-directory: ./test
-        run: ./gradlew check
+        run: ./gradlew check -Pkotlin.yarn.update=true
 
       - name: Get version
         id: get-version
