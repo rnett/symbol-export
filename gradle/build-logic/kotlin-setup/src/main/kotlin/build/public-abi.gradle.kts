@@ -4,10 +4,14 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
+val onlyJvm = providers.systemProperty("symbol-export.onlyJvm").orNull?.lowercase() == "true"
+
 extensionIfPresent<KotlinMultiplatformExtension> {
-    @OptIn(ExperimentalAbiValidation::class)
-    abiValidation {
-        keepLocallyUnsupportedTargets = true
+    if (!onlyJvm) {
+        @OptIn(ExperimentalAbiValidation::class)
+        abiValidation {
+            keepLocallyUnsupportedTargets = true
+        }
     }
 
     sourceSets.configureEach {
