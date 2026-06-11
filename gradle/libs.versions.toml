@@ -7,7 +7,7 @@ kotlinpoet = "2.3.0"
 shadow = "9.4.2"
 dokka = "2.2.0"
 publishing-plugin = "0.36.0"
-kcp-development = "0.0.3"
+kcp-development = "0.0.4"
 
 [libraries]
 ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }

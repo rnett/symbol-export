@@ -8,7 +8,7 @@ import dev.rnett.kcp.development.testing.tests.levels.TestWithLevel;
 import dev.rnett.kcp.development.testing.tests.levels.TestLevel;
 import dev.rnett.symbolexport.tests.TestGenerator;
 import dev.rnett.kcp.development.testing.generation.configuration.ConfigurationHost;
-import org.jetbrains.kotlin.test.builders.TestConfigurationBuilder;
+import org.jetbrains.kotlin.test.builders.NonGroupingPhaseTestConfigurationBuilder;
 import dev.rnett.kcp.development.testing.tests.levels.AbstractLeveledFirTest;
 import org.jetbrains.kotlin.test.TestMetadata;
 import org.junit.jupiter.api.Test;
@@ -23,9 +23,13 @@ import java.util.regex.Pattern;
 @TestWithLevel(level = TestLevel.Diagnostics)
 public class ErrorsTestGenerated extends AbstractLeveledFirTest {
   @Override
-  public void configure(TestConfigurationBuilder builder) {
+  public void configure(NonGroupingPhaseTestConfigurationBuilder builder) {
     super.configure(builder);
     ConfigurationHost.applyRuntimeConfiguration(this, builder, TestGenerator.class);
+  }
+
+  private void run(String fileName) {
+    runTest("src/testData/reference/errors/" + fileName);
   }
 
   @Test
@@ -36,78 +40,78 @@ public class ErrorsTestGenerated extends AbstractLeveledFirTest {
   @Test
   @TestMetadata("MeaninglessStatement.kt")
   public void testMeaninglessStatement() {
-    runTest("src/testData/reference/errors/MeaninglessStatement.kt");
+    run("MeaninglessStatement.kt");
   }
 
   @Test
   @TestMetadata("MoreReferenceErrors.kt")
   public void testMoreReferenceErrors() {
-    runTest("src/testData/reference/errors/MoreReferenceErrors.kt");
+    run("MoreReferenceErrors.kt");
   }
 
   @Test
   @TestMetadata("MustBeAnnotated.kt")
   public void testMustBeAnnotated() {
-    runTest("src/testData/reference/errors/MustBeAnnotated.kt");
+    run("MustBeAnnotated.kt");
   }
 
   @Test
   @TestMetadata("MustBeObject.kt")
   public void testMustBeObject() {
-    runTest("src/testData/reference/errors/MustBeObject.kt");
+    run("MustBeObject.kt");
   }
 
   @Test
   @TestMetadata("MustExtendBase.kt")
   public void testMustExtendBase() {
-    runTest("src/testData/reference/errors/MustExtendBase.kt");
+    run("MustExtendBase.kt");
   }
 
   @Test
   @TestMetadata("NotAccessLiteral.kt")
   public void testNotAccessLiteral() {
-    runTest("src/testData/reference/errors/NotAccessLiteral.kt");
+    run("NotAccessLiteral.kt");
   }
 
   @Test
   @TestMetadata("NotBooleanLiteral.kt")
   public void testNotBooleanLiteral() {
-    runTest("src/testData/reference/errors/NotBooleanLiteral.kt");
+    run("NotBooleanLiteral.kt");
   }
 
   @Test
   @TestMetadata("NotClassLiteral.kt")
   public void testNotClassLiteral() {
-    runTest("src/testData/reference/errors/NotClassLiteral.kt");
+    run("NotClassLiteral.kt");
   }
 
   @Test
   @TestMetadata("NotInInitBlock.kt")
   public void testNotInInitBlock() {
-    runTest("src/testData/reference/errors/NotInInitBlock.kt");
+    run("NotInInitBlock.kt");
   }
 
   @Test
   @TestMetadata("NotInitBlock.kt")
   public void testNotInitBlock() {
-    runTest("src/testData/reference/errors/NotInitBlock.kt");
+    run("NotInitBlock.kt");
   }
 
   @Test
   @TestMetadata("NotReferenceLiteral.kt")
   public void testNotReferenceLiteral() {
-    runTest("src/testData/reference/errors/NotReferenceLiteral.kt");
+    run("NotReferenceLiteral.kt");
   }
 
   @Test
   @TestMetadata("ReferencedDeclaration.kt")
   public void testReferencedDeclaration() {
-    runTest("src/testData/reference/errors/ReferencedDeclaration.kt");
+    run("ReferencedDeclaration.kt");
   }
 
   @Test
   @TestMetadata("ReferencedNotCall.kt")
   public void testReferencedNotCall() {
-    runTest("src/testData/reference/errors/ReferencedNotCall.kt");
+    run("ReferencedNotCall.kt");
   }
 }

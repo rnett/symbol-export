@@ -38,7 +38,7 @@ class ExtensionReceiverExporter(session: FirSession, illegalUseChecker: IllegalU
         )
 
         if (exportReceiverAnnotation != null) {
-            if (exportReceiverAnnotation.getBooleanArgument(Names.EXPORT_RECEIVERS_EXTENSION_PROP, session) != false)
+            if (exportReceiverAnnotation.getBooleanArgument(Names.EXPORT_RECEIVERS_EXTENSION_PROP) != false)
                 return true
 
         }

@@ -8,7 +8,7 @@ import dev.rnett.kcp.development.testing.tests.levels.TestWithLevel;
 import dev.rnett.kcp.development.testing.tests.levels.TestLevel;
 import dev.rnett.symbolexport.tests.TestGenerator;
 import dev.rnett.kcp.development.testing.generation.configuration.ConfigurationHost;
-import org.jetbrains.kotlin.test.builders.TestConfigurationBuilder;
+import org.jetbrains.kotlin.test.builders.NonGroupingPhaseTestConfigurationBuilder;
 import dev.rnett.kcp.development.testing.tests.levels.AbstractLeveledFirTest;
 import org.jetbrains.kotlin.test.TestMetadata;
 import org.junit.jupiter.api.Test;
@@ -23,9 +23,13 @@ import java.util.regex.Pattern;
 @TestWithLevel(level = TestLevel.Diagnostics)
 public class ExportTestGenerated extends AbstractLeveledFirTest {
   @Override
-  public void configure(TestConfigurationBuilder builder) {
+  public void configure(NonGroupingPhaseTestConfigurationBuilder builder) {
     super.configure(builder);
     ConfigurationHost.applyRuntimeConfiguration(this, builder, TestGenerator.class);
+  }
+
+  private void run(String fileName) {
+    runTest("src/testData/export/" + fileName);
   }
 
   @Test
@@ -36,90 +40,90 @@ public class ExportTestGenerated extends AbstractLeveledFirTest {
   @Test
   @TestMetadata("Annotation.kt")
   public void testAnnotation() {
-    runTest("src/testData/export/Annotation.kt");
+    run("Annotation.kt");
   }
 
   @Test
   @TestMetadata("AnnotationSymbol.kt")
   public void testAnnotationSymbol() {
-    runTest("src/testData/export/AnnotationSymbol.kt");
+    run("AnnotationSymbol.kt");
   }
 
   @Test
   @TestMetadata("Class.kt")
   public void testClass() {
-    runTest("src/testData/export/Class.kt");
+    run("Class.kt");
   }
 
   @Test
   @TestMetadata("ClassMembers.kt")
   public void testClassMembers() {
-    runTest("src/testData/export/ClassMembers.kt");
+    run("ClassMembers.kt");
   }
 
   @Test
   @TestMetadata("ContextParameters.kt")
   public void testContextParameters() {
-    runTest("src/testData/export/ContextParameters.kt");
+    run("ContextParameters.kt");
   }
 
   @Test
   @TestMetadata("DispatchReceiver.kt")
   public void testDispatchReceiver() {
-    runTest("src/testData/export/DispatchReceiver.kt");
+    run("DispatchReceiver.kt");
   }
 
   @Test
   @TestMetadata("EnumEntry.kt")
   public void testEnumEntry() {
-    runTest("src/testData/export/EnumEntry.kt");
+    run("EnumEntry.kt");
   }
 
   @Test
   @TestMetadata("ExportObject.kt")
   public void testExportObject() {
-    runTest("src/testData/export/ExportObject.kt");
+    run("ExportObject.kt");
   }
 
   @Test
   @TestMetadata("ExportParameters.kt")
   public void testExportParameters() {
-    runTest("src/testData/export/ExportParameters.kt");
+    run("ExportParameters.kt");
   }
 
   @Test
   @TestMetadata("ExtensionReceiver.kt")
   public void testExtensionReceiver() {
-    runTest("src/testData/export/ExtensionReceiver.kt");
+    run("ExtensionReceiver.kt");
   }
 
   @Test
   @TestMetadata("Interface.kt")
   public void testInterface() {
-    runTest("src/testData/export/Interface.kt");
+    run("Interface.kt");
   }
 
   @Test
   @TestMetadata("NestedClass.kt")
   public void testNestedClass() {
-    runTest("src/testData/export/NestedClass.kt");
+    run("NestedClass.kt");
   }
 
   @Test
   @TestMetadata("TopLevelMembers.kt")
   public void testTopLevelMembers() {
-    runTest("src/testData/export/TopLevelMembers.kt");
+    run("TopLevelMembers.kt");
   }
 
   @Test
   @TestMetadata("TypeParameters.kt")
   public void testTypeParameters() {
-    runTest("src/testData/export/TypeParameters.kt");
+    run("TypeParameters.kt");
   }
 
   @Test
   @TestMetadata("ValueParameters.kt")
   public void testValueParameters() {
-    runTest("src/testData/export/ValueParameters.kt");
+    run("ValueParameters.kt");
   }
 }
