@@ -42,8 +42,8 @@ public final class dev/rnett/symbolexport/symbol/compiler/annotation/ir/IrAnnota
 }
 
 public final class dev/rnett/symbolexport/symbol/compiler/annotation/ir/IrAnnotationWriterKt {
-	public static final fun toIrAnnotation (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Lorg/jetbrains/kotlin/backend/common/extensions/IrPluginContext;IILorg/jetbrains/kotlin/ir/expressions/IrStatementOrigin;Lorg/jetbrains/kotlin/descriptors/SourceElement;)Lorg/jetbrains/kotlin/ir/expressions/IrConstructorCall;
-	public static synthetic fun toIrAnnotation$default (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Lorg/jetbrains/kotlin/backend/common/extensions/IrPluginContext;IILorg/jetbrains/kotlin/ir/expressions/IrStatementOrigin;Lorg/jetbrains/kotlin/descriptors/SourceElement;ILjava/lang/Object;)Lorg/jetbrains/kotlin/ir/expressions/IrConstructorCall;
+	public static final fun toIrAnnotation (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Lorg/jetbrains/kotlin/backend/common/extensions/IrPluginContext;IILorg/jetbrains/kotlin/ir/expressions/IrStatementOrigin;Lorg/jetbrains/kotlin/descriptors/SourceElement;)Lorg/jetbrains/kotlin/ir/expressions/IrAnnotation;
+	public static synthetic fun toIrAnnotation$default (Ldev/rnett/symbolexport/symbol/Symbol$Annotation$Instance;Lorg/jetbrains/kotlin/backend/common/extensions/IrPluginContext;IILorg/jetbrains/kotlin/ir/expressions/IrStatementOrigin;Lorg/jetbrains/kotlin/descriptors/SourceElement;ILjava/lang/Object;)Lorg/jetbrains/kotlin/ir/expressions/IrAnnotation;
 }
 
 public final class dev/rnett/symbolexport/symbol/compiler/annotation/ir/IrHelpersKt {
