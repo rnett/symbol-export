@@ -26,6 +26,11 @@ extensionIfPresent<KotlinJvmExtension>() {
     @OptIn(ExperimentalAbiValidation::class)
     abiValidation()
 }
-tasks.named("check") {
-    dependsOn("checkLegacyAbi")
+afterEvaluate {
+    val checkLegacyAbi = tasks.findByName("checkLegacyAbi")
+    if (checkLegacyAbi != null) {
+        tasks.named("check") {
+            dependsOn(checkLegacyAbi)
+        }
+    }
 }
